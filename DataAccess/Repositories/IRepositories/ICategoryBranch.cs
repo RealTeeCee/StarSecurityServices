@@ -1,7 +1,6 @@
 ﻿namespace DataAccess.Repositories.IRepositories
 {
-    public class IUserDetail
+    public class ICategoryBranch
     {
-
     }
 }
