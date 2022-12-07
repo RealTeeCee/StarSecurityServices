@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
@@ -20,14 +14,27 @@ namespace DataAccess.Data
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Branch> Branches { get; set; }
+        //public DbSet<Role> Roles { get; set; }
+        //public DbSet<Module> Modules { get; set; }
+        //public DbSet<Testimonial> Testimonials { get; set; }
+
+        //public DbSet<User> Users { get; set; }
+
+        //public DbSet<UserDetail> UserDetails { get; set; }
+
         //public DbSet<Category> Categories { get; set; }
-        //public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
-        //public DbSet<Language> Languages { get; set; }
+
         //public DbSet<Service> Services { get; set; }
+
+        //public DbSet<Language> Languages { get; set; }
+
+        //public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
+
         //public DbSet<ServiceTranslation> ServiceTranslations { get; set; }
         //public DbSet<Session> Sessions { get; set; }
-        //public DbSet<Testimonial> Testimonials { get; set; }
-        //public DbSet<UserDetail> UserDetails { get; set; }
-        //public DbSet<User> Users { get; set; }
+
+
+
+
     }
 }
