@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccess.Repositories.IRepositories;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebClient.Models;
 
@@ -6,16 +7,17 @@ namespace WebClient.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUnitOfWork unitOfWork)
         {
-            _logger = logger;
+            this.unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var branchList = await unitOfWork.Branch.GetAll();
+            return View(branchList);
         }
 
         public IActionResult Privacy()
