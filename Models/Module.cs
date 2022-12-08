@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Language
+    public class Module
     {
         public long Id { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
-        public bool IsDefault { get; set; }
+        [StringLength(255)]
+        public string Title { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
+
     }
 }
