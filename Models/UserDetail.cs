@@ -6,6 +6,7 @@ namespace Models
     public class UserDetail
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
         public long UserId { get; set; }
@@ -16,10 +17,10 @@ namespace Models
         [StringLength(20)]
         [Required]
         public string? UserCode { get; set; }
-
+        [Column(TypeName ="nvarchar")]
         [StringLength(255)]
         public string? Education { get; set; }
-
+        [Column(TypeName = "nvarchar")]
         [StringLength(100)]
         public string? Department { get; set; }
 

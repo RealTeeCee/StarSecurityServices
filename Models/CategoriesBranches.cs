@@ -6,6 +6,7 @@ namespace Models
     public class CategoriesBranches
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
         public long CategoryId { get; set; }

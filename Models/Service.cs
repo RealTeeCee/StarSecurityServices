@@ -6,8 +6,9 @@ namespace Models
     public class Service
     {
         [Key]
-        public long Id { get; set; }
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }        
+        [StringLength(255)]
         public string? Image { get; set; }
 
         public long CategoryId { get; set; }
