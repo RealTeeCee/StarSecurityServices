@@ -8,5 +8,9 @@ namespace Models
 {
     public class Category
     {
+<<<<<<< Updated upstream
+=======
+       
+>>>>>>> Stashed changes
     }
 }
