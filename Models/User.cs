@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,10 +10,7 @@ namespace Models
     public class User : IdentityUser
     {           
         [StringLength(255)]
-        public string? Address { get; set; }
-        
-        [StringLength(255)]
-        public string Address { get; set; }
+        public string? Address { get; set; }             
         
         [StringLength(255)]
         public string Image { get; set; }
