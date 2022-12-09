@@ -1,12 +1,15 @@
-﻿using System;
+﻿using DataAccess.Repositories.GenericRepositories;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.IRepositories
-{
-    internal class ILanguage
+{    
+    public interface ILanguage : IRepository<Language>
     {
+        void Update(Branch obj);
     }
 }
