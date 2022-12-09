@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
-    public class CategoryTranslation
+    public class CategoriesBranches
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -14,12 +14,12 @@ namespace Models
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
 
-        public string LanguageId { get; set; }
-        //Tạo phương thức ảo ràng buộc FK LanguageId vs Id cua Model Language
-        [ForeignKey("LanguageId")]
-        public virtual Language Language { get; set; }
+        public long BranchId { get; set; }
+        //Tạo phương thức ảo ràng buộc FK BranchId vs Id cua Model Language
+        [ForeignKey("BranchId")]
+        public virtual Branch Branch { get; set; }
 
-        public string? Name { get; set; }
-        public string? Slug { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? UpdatedAt { get; set; }
     }
 }
