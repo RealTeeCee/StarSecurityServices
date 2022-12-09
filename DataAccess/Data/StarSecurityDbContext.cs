@@ -9,13 +9,18 @@ namespace DataAccess.Data
         {
 
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
+
         public DbSet<Branch> Branches { get; set; }
+
         public DbSet<Role> Roles { get; set; }
+
         public DbSet<Module> Modules { get; set; }
+
         public DbSet<Testimonial> Testimonials { get; set; }
 
         public DbSet<User> Users { get; set; }
@@ -31,10 +36,7 @@ namespace DataAccess.Data
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
 
         public DbSet<ServiceTranslation> ServiceTranslations { get; set; }
+
         public DbSet<Session> Sessions { get; set; }
-
-
-
-
     }
 }
