@@ -14,7 +14,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<StarSecurityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StarDB")));
 
-//Dang ky Identity su dung giao dien
+//Dang ky Identity su dung giao dien.
 //builder.Services.AddIdentity<User, IdentityUser>()
 //                  .AddEntityFrameworkStores<StarSecurityDbContext>()
 //                  .AddDefaultTokenProviders();
