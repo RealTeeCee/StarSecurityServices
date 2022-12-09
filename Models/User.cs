@@ -13,7 +13,7 @@ namespace Models
         public string? Address { get; set; }             
         
         [StringLength(255)]
-        public string Image { get; set; }
+        public string? Image { get; set; }
        
         public long BranchId { get; set; }
         [ForeignKey("BranchId")]
