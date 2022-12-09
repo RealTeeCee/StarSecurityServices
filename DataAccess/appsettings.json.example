@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "StarDB": "server=DESKTOP-HB47811\\TEECEE;Initial Catalog=StarDB;User ID=sa;Password=5563079789Aa@123"
+  }
+}
