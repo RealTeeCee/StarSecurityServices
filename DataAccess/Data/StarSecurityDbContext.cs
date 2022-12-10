@@ -26,7 +26,7 @@ namespace DataAccess.Data
         public DbSet<Branch> Branches { get; set; }
         public DbSet<CategoryBranch> CategoriesBranches { get; set; }
         public DbSet<Module> Modules { get; set; }
-        public DbSet<Testimonial> Testimonials { get; set; }        
+        public DbSet<Testimonial> Testimonials { get; set; }
         public DbSet<UserDetail> UserDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Service> Services { get; set; }

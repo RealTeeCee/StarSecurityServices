@@ -10,6 +10,6 @@ namespace DataAccess.Repositories.IRepositories
 {  
     public interface IUser : IRepository<User>
     {
-        void Update(Branch obj);
+        void Update(User obj);
     }
 }

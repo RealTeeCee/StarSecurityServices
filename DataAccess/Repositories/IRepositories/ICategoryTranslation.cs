@@ -10,6 +10,6 @@ namespace DataAccess.Repositories.IRepositories
 {
     public interface ICategoryTranslation : IRepository<CategoryTranslation>
     {
-        void Update(Branch obj);
+        void Update(CategoryTranslation obj);
     }
 }

@@ -1,4 +1,4 @@
-﻿using DataAccess.Data;
+using DataAccess.Data;
 using DataAccess.Repositories.IRepositories;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Identity;
@@ -15,14 +15,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<StarSecurityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StarDB")));
 
 //Dang ky Identity su dung giao dien.
-//builder.Services.AddIdentity<User, IdentityUser>()
-//                  .AddEntityFrameworkStores<StarSecurityDbContext>()
-//                  .AddDefaultTokenProviders();
-
-//Dang ky Identity su dung giao dien default
-builder.Services.AddDefaultIdentity<User>()
+builder.Services.AddIdentity<User, IdentityRole>()
                   .AddEntityFrameworkStores<StarSecurityDbContext>()
                   .AddDefaultTokenProviders();
+
+//Dang ky Identity su dung giao dien default
+//builder.Services.AddDefaultIdentity<User>()
+//                  .AddEntityFrameworkStores<StarSecurityDbContext>()
+//                  .AddDefaultTokenProviders();
 
 //Add service Mail
 builder.Services.AddOptions(); // Kích hoạt Options
