@@ -10,6 +10,6 @@ namespace DataAccess.Repositories.IRepositories
 { 
     public interface ITestimonial : IRepository<Testimonial>
     {
-        void Update(Branch obj);
+        void Update(long id, Testimonial obj);
     }
 }

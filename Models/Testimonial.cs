@@ -19,5 +19,15 @@ namespace Models
         public string? Description { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
+
+        public void CopyFromNotNull(Testimonial info)
+        {
+            this.Id = info.Id;
+            if (!string.IsNullOrEmpty(info.Name)) this.Name = info.Name;
+            if (!string.IsNullOrEmpty(info.Title)) this.Title = info.Title;
+            if (!string.IsNullOrEmpty(info.Description)) this.Description = info.Description;
+            if (info.CreatedAt.HasValue) this.CreatedAt = info.CreatedAt;
+            if (info.UpdatedAt.HasValue) this.UpdatedAt = info.UpdatedAt;
+        }
     }
 }
