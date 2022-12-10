@@ -10,6 +10,6 @@ namespace DataAccess.Repositories.IRepositories
 {    
     public interface ILanguage : IRepository<Language>
     {
-        void Update(Branch obj);
+        void Update(Language obj);
     }
 }

@@ -10,6 +10,6 @@ namespace DataAccess.Repositories.IRepositories
 {
     public interface IServiceTranslation : IRepository<ServiceTranslation>
     {
-        void Update(Branch obj);
+        void Update(ServiceTranslation obj);
     }
 }

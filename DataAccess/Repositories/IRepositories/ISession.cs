@@ -5,6 +5,6 @@ namespace DataAccess.Repositories.IRepositories
 {
     public interface ISession : IRepository<Session>
     {
-        void Update(Branch obj);
+        void Update(Session obj);
     }
 }
