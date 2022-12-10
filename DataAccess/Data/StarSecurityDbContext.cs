@@ -24,7 +24,7 @@ namespace DataAccess.Data
         }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Branch> Branches { get; set; }
-        public DbSet<CategoriesBranches> CategoriesBranches { get; set; }
+        public DbSet<CategoryBranch> CategoriesBranches { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<Testimonial> Testimonials { get; set; }        
         public DbSet<UserDetail> UserDetails { get; set; }
