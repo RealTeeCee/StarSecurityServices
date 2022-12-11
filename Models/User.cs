@@ -14,10 +14,10 @@ namespace Models
         
         [StringLength(255)]
         public string? Image { get; set; }
-        [DefaultValue(1)]       
-        public long? BranchId { get; set; }
-        [ForeignKey("BranchId")]
-        public virtual Branch Branches { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? BirthDate { get; set; }
+        
         [DefaultValue(0)]
         public int Role { get; set; }
         [DefaultValue(0)]
