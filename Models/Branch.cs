@@ -14,9 +14,26 @@ namespace Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         [Column(TypeName = "nvarchar")]
-        [StringLength(255)]
-        [Required]
+        [StringLength(255)]        
         public string? Name { get; set; }
+        [Column(TypeName = "nvarchar")]
+        [StringLength(255)]
+        public string? Address { get; set; }
+        
+        [StringLength(100)]
+        public string? Email { get; set; }
+        [StringLength(15)]
+        public string? Phone { get; set; }
+        [StringLength(100)]
+        public string? TimeOpen { get; set; }
+        [StringLength(255)]
+        public string? Facebook { get; set; }
+        [StringLength(255)]
+        public string? Twitter { get; set; }
+        [StringLength(255)]
+        public string? Youtube { get; set; }
+        [StringLength(255)]
+        public string? Instagram { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }

@@ -4,7 +4,7 @@ using Models;
 
 namespace DataAccess.Data
 {
-    public class StarSecurityDbContext : IdentityDbContext<User>
+    public class StarSecurityDbContext : DbContext
     {
         public StarSecurityDbContext(DbContextOptions options) : base(options)
         {
@@ -23,7 +23,10 @@ namespace DataAccess.Data
             //}
         }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<UserBranch> UsersBranches { get; set; }
+        public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<Branch> Branches { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         public DbSet<CategoryBranch> CategoriesBranches { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<Testimonial> Testimonials { get; set; }
