@@ -14,8 +14,8 @@ namespace Models
         
         [StringLength(255)]
         public string? Image { get; set; }
-       
-        public long BranchId { get; set; }
+        [DefaultValue(1)]       
+        public long? BranchId { get; set; }
         [ForeignKey("BranchId")]
         public virtual Branch Branches { get; set; }
         [DefaultValue(0)]

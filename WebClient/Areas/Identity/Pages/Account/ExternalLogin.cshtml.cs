@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -89,52 +89,85 @@ namespace WebClient.Areas.Identity.Pages.Account
         
         public IActionResult OnGet() => RedirectToPage("./Login");
 
-        public IActionResult OnPost(string provider, string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string provider, string returnUrl = null)
         {
-            // Request a redirect to the external login provider.
+            // Kiểm tra yêu cầu dịch vụ provider tồn tại
+            var listprovider = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var provider_process = listprovider.Find((m) => m.Name == provider);
+            if (provider_process == null)
+            {
+                return NotFound("Dịch vụ không chính xác: " + provider);
+            }
+
+            // redirectUrl - là Url sẽ chuyển hướng đến - sau khi CallbackPath (/dang-nhap-tu-google) thi hành xong
+            // nó bằng identity/account/externallogin?handler=Callback
+            // tức là gọi OnGetCallbackAsync
             var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
+
+            // Cấu hình
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            // Chuyển hướng đến dịch vụ ngoài (Googe, Facebook)
             return new ChallengeResult(provider, properties);
         }
 
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
             if (remoteError != null)
             {
-                ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-            }
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                ErrorMessage = "Error loading external login information.";
+                ErrorMessage = $"Lỗi provider: {remoteError}";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
-            // Sign in the user with this external login provider if the user already has a login.
+            // Lấy thông tin do dịch vụ ngoài chuyển đến
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ErrorMessage = "Lỗi thông tin từ dịch vụ đăng nhập.";
+                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+            }
+
+            // Đăng nhập bằng thông tin LoginProvider, ProviderKey từ info cung cấp bởi dịch vụ ngoài
+            // User nào có 2 thông tin này sẽ được đăng nhập - thông tin này lưu tại bảng UserLogins của Database
+            // Trường LoginProvider và ProviderKey ---> tương ứng UserId 
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
             if (result.Succeeded)
             {
+                // User đăng nhập thành công vào hệ thống theo thông tin info
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
             if (result.IsLockedOut)
             {
+                // Bị tạm khóa
                 return RedirectToPage("./Lockout");
             }
             else
             {
-                // If the user does not have an account, then ask the user to create an account.
+
+                var userExisted = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                if (userExisted != null)
+                {
+                    // Đã có Acount, đã liên kết với tài khoản ngoài - nhưng không đăng nhập được
+                    // có thể do chưa kích hoạt email
+                    return RedirectToPage("./RegisterConfirmation", new { Email = userExisted.Email });
+
+                }
+
+                // Chưa có Account liên kết với tài khoản ngoài
+                // Hiện thị form để thực hiện bước tiếp theo ở OnPostConfirmationAsync
                 ReturnUrl = returnUrl;
                 ProviderDisplayName = info.ProviderDisplayName;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
+                    // Có thông tin về email từ info, lấy email này hiện thị ở Form
                     Input = new InputModel
                     {
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email)
                     };
                 }
+
                 return Page();
             }
         }
