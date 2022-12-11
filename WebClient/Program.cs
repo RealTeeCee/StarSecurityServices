@@ -21,7 +21,9 @@ builder.Services.AddIdentity<User, IdentityRole>()
                   .AddEntityFrameworkStores<StarSecurityDbContext>()
                   .AddDefaultTokenProviders();
 
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddRazorPages().AddRazorPagesOptions(options => {
+    options.RootDirectory = "/Views";
+}).AddRazorRuntimeCompilation();
 //Dang ky Identity su dung giao dien default
 //builder.Services.AddDefaultIdentity<User>()
 //                  .AddEntityFrameworkStores<StarSecurityDbContext>()

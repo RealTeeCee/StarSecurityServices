@@ -1,0 +1,33 @@
+﻿@page "/admin/role"
+@model App.Admin.Role.IndexModel
+@{
+    ViewData["Title"] = "Role List";
+}
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <tr>
+        <th>Role</th>
+        <th>Permission</th>
+    </tr>
+    @foreach (var role in Model.roles)
+    {
+        <tr>
+            <td>@role.Name</td>
+            <td>
+                <form method="POST" class="d-inline">
+                    <button name="Input.ID" value="@role.Id" class="btn btn-success btn-sm"
+                        asp-page="./Add" asp-page-handler="StartUpdate">
+                        Update Role
+                    </button>
+                </form>
+                <form method="POST" class="d-inline">
+                    <button name="Input.ID" value="@role.Id" class="btn btn-success btn-sm"
+                        asp-page="./Delete">
+                        Delete Role
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
