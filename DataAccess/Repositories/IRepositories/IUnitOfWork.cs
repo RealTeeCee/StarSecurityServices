@@ -14,13 +14,10 @@ namespace DataAccess.Repositories.IRepositories
         IContact Contact { get; }
         IUserBranch UserBranch { get; }
         ICategory Category { get; }
-        ICategoryBranch CategoryBranch { get; }
-        ICategoryTranslation CategoryTranslation { get; }
-        ILanguage Language { get; }
+        ICategoryBranch CategoryBranch { get; }       
         IModule Module { get; }
         IRole Role { get; }
-        IService Service { get; }
-        IServiceTranslation ServiceTranslation { get; }
+        IService Service { get; }        
         ISession Session { get; }
         ITestimonial Testimonial { get; }
         IUser User { get; }

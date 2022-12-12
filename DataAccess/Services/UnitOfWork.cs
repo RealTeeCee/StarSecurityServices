@@ -16,9 +16,7 @@ namespace DataAccess.Services
 
         public ICategoryBranch CategoryBranch { get; private set; }
 
-        public ICategoryTranslation CategoryTranslation { get; private set; }
-
-        public ILanguage Language { get; private set; }
+     
 
         public IModule Module { get; private set; }
 
@@ -26,7 +24,7 @@ namespace DataAccess.Services
 
         public IService Service { get; private set; }
 
-        public IServiceTranslation ServiceTranslation { get; private set; }
+      
 
         public ISession Session { get; private set; }
 
@@ -50,12 +48,11 @@ namespace DataAccess.Services
             Branch = new BranchService(_context);
             Category = new CategoryService(_context);
             CategoryBranch = new CategoryBranchService(_context);
-            CategoryTranslation = new CategoryTranslationService(_context);
-            Language = new LanguageService(_context);
+   
             Module = new ModuleService(_context);
             Role = new RoleService(_context);
             Service = new ServicesService(_context);
-            ServiceTranslation = new ServiceTranslationService(_context);
+            
             Session = new SessionService(_context);
             Testimonial = new TestimonialService(_context);
             User = new UserService(_context);

@@ -10,7 +10,17 @@ namespace Models
         public long Id { get; set; }        
         [StringLength(255)]
         public string? Image { get; set; }
-
+        [Column(TypeName = "nvarchar")]
+        [StringLength(255)]
+        public string? Name { get; set; }
+        [StringLength(255)]
+        public string? Slug { get; set; }
+        [Column(TypeName = "nvarchar")]
+        [StringLength(255)]
+        public string? ShortDescription { get; set; }
+        [Column(TypeName = "nvarchar")]
+        [StringLength(400)]
+        public string? Description { get; set; }
         public long CategoryId { get; set; }
         //Tạo phương thức ảo ràng buộc FK CategoryId vs Id cua Model Category
         [ForeignKey("CategoryId")]
