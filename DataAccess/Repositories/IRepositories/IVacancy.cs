@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.IRepositories
-{
-    public interface IService : IRepository<Service>
+{    
+    public interface IVacancy : IRepository<Vacancy>
     {
-        void Update(Service obj);
+        void Update(Vacancy obj);
     }
 }

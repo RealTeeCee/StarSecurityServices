@@ -11,8 +11,7 @@ namespace DataAccess.Services
     public class UnitOfWork : IUnitOfWork
     {
         private readonly StarSecurityDbContext _context;
-        public IBranch Branch { get; private set; }
-
+        public IBranch Branch { get; private set; }   
         public ICategory Category { get; private set; }
 
         public ICategoryBranch CategoryBranch { get; private set; }
@@ -37,6 +36,14 @@ namespace DataAccess.Services
 
         public IUserDetail UserDetail { get; private set; }
 
+        public IVacancy Vacancy { get; private set; }
+
+        public ISuperAdmin SuperAdmin { get; private set; }
+
+        public IContact Contact { get; private set; }
+
+        public IUserBranch UserBranch { get; private set; }
+
         public UnitOfWork(StarSecurityDbContext context)
         {
             _context = context;
@@ -53,6 +60,10 @@ namespace DataAccess.Services
             Testimonial = new TestimonialService(_context);
             User = new UserService(_context);
             UserDetail = new UserDetailService(_context);
+            SuperAdmin = new SuperAdminService(_context);
+            Vacancy = new VacancyService(_context);
+            Contact = new ContactService(_context);
+            UserBranch = new UserBranchService(_context);
         }
 
         public void ClearTracking()

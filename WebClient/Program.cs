@@ -15,9 +15,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<StarSecurityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StarDB")));
 
 //Dang ky Identity su dung giao dien.
-builder.Services.AddIdentity<User, IdentityRole>()
-                  .AddEntityFrameworkStores<StarSecurityDbContext>()
-                  .AddDefaultTokenProviders();
+//builder.Services.AddIdentity<User, IdentityRole>()
+//                  .AddEntityFrameworkStores<StarSecurityDbContext>()
+//                  .AddDefaultTokenProviders();
 
 //Dang ky Identity su dung giao dien default
 //builder.Services.AddDefaultIdentity<User>()
@@ -85,6 +85,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

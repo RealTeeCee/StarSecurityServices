@@ -22,7 +22,9 @@ namespace DataAccess.Data
             //    }
             //}
         }
+        public DbSet<SuperAdmin> SuperAdmin { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<UserBranch> UsersBranches { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<Branch> Branches { get; set; }

@@ -1,5 +1,5 @@
 ﻿using DataAccess.Data;
-using DataAccess.Repositories.GenericRepositories;
+using DataAccess.Repositories.IRepositories.GenericRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

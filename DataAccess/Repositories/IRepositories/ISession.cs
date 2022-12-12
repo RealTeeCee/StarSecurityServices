@@ -1,4 +1,4 @@
-﻿using DataAccess.Repositories.GenericRepositories;
+﻿using DataAccess.Repositories.IRepositories.GenericRepositories;
 using Models;
 
 namespace DataAccess.Repositories.IRepositories

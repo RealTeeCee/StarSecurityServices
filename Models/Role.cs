@@ -16,10 +16,10 @@ namespace Models
         public long Id { get; set; }
 
         [StringLength(50)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Column(TypeName = "text")]
         [StringLength(255)]
-        public string Permissions { get; set; }
+        public string? Permissions { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }

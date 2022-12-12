@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.IRepositories
 {
-    public interface IService : IRepository<Service>
+    public interface IUserBranch : IRepository<UserBranch>
     {
-        void Update(Service obj);
+        void Update(UserBranch obj);
     }
 }
