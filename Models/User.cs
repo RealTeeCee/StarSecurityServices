@@ -17,9 +17,9 @@ namespace Models
 
         [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
-        
+
         [DefaultValue(0)]
-        public int Role { get; set; }
+        public int Role { get; set; } = 0;
         [DefaultValue(0)]
         public byte Status { get; set; } = 0;
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
