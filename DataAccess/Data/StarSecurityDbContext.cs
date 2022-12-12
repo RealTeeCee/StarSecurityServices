@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace DataAccess.Data
 {
-    public class StarSecurityDbContext : DbContext
+    public class StarSecurityDbContext : IdentityDbContext
     {
         public StarSecurityDbContext(DbContextOptions options) : base(options)
         {
@@ -26,11 +27,7 @@ namespace DataAccess.Data
 
         public DbSet<Service> Services { get; set; }
 
-        public DbSet<Language> Languages { get; set; }
 
-        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
-
-        public DbSet<ServiceTranslation> ServiceTranslations { get; set; }
         public DbSet<Session> Sessions { get; set; }
 
 

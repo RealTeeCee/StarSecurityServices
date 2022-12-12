@@ -13,6 +13,12 @@ namespace Models
         public long UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
+
+        [StringLength(255)]
+        public string? Name { get; set; }
+        [StringLength(255)]
+        public string? Slug { get; set; }
+
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }
