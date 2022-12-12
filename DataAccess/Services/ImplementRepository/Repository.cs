@@ -1,5 +1,5 @@
 ﻿using DataAccess.Data;
-using DataAccess.Repositories.GenericRepositories;
+using DataAccess.Repositories.IRepositories.GenericRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,18 +19,8 @@ namespace DataAccess.Services.ImplementRepository
         {
             this._context = context;
             this._dbSet = _context.Set<T>();
-        }
-
-        public Task<T> Add(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<T>> AddRange(IEnumerable<T> entities)
-        {
-            throw new NotImplementedException();
-        }
-
+        }             
+        //x => x.id == id, _context.product.include("categories, tags").tolist();
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, string? thenIncludeProperties = null)
         {
             IQueryable<T> query = _dbSet;
@@ -83,15 +73,26 @@ namespace DataAccess.Services.ImplementRepository
             }
             return await query.FirstOrDefaultAsync();
         }
+        public async Task<T> Add(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+            return entity;
+        }
+
+        public async Task<IEnumerable<T>> AddRange(IEnumerable<T> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+            return entities;
+        }
 
         public void Remove(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            _dbSet.RemoveRange(entities);
         }
     }
 }

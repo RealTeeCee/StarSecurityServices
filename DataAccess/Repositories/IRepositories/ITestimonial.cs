@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataAccess.Repositories.IRepositories.GenericRepositories;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.IRepositories
 {
-    internal class ITestimonial
+    public interface ITestimonial : IRepository<Testimonial>
     {
+        void Update(Testimonial obj);
     }
 }

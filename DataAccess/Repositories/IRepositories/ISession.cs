@@ -1,6 +1,10 @@
-﻿namespace DataAccess.Repositories.IRepositories
+﻿using DataAccess.Repositories.IRepositories.GenericRepositories;
+using Models;
+
+namespace DataAccess.Repositories.IRepositories
 {
-    public class ISession
+    public interface ISession : IRepository<Session>
     {
+        void Update(Session obj);
     }
 }

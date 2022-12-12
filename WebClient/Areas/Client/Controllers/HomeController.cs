@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebClient.Models;
 
-namespace WebClient.Controllers
+namespace WebClient.Areas.Customer.Controllers
 {
+    [Area("Client")]
     public class HomeController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
@@ -15,9 +16,8 @@ namespace WebClient.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
-            var branchList = await unitOfWork.Branch.GetAll();
-            return View(branchList);
+        {            
+            return View();
         }
 
         public IActionResult Privacy()

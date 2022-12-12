@@ -1,6 +1,10 @@
-﻿namespace DataAccess.Repositories.IRepositories
+﻿using DataAccess.Repositories.IRepositories.GenericRepositories;
+using Models;
+
+namespace DataAccess.Repositories.IRepositories
 {
-    public class IModule
+    public interface IModule : IRepository<Module>
     {
+        void Update(Module obj);
     }
 }

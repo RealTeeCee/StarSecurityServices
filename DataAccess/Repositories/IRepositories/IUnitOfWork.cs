@@ -9,6 +9,19 @@ namespace DataAccess.Repositories.IRepositories
     public interface IUnitOfWork
     {
         IBranch Branch { get; }
+        IVacancy Vacancy { get; }
+        ISuperAdmin SuperAdmin { get; }
+        IContact Contact { get; }
+        IUserBranch UserBranch { get; }
+        ICategory Category { get; }
+        ICategoryBranch CategoryBranch { get; }       
+        IModule Module { get; }
+        IRole Role { get; }
+        IService Service { get; }        
+        ISession Session { get; }
+        ITestimonial Testimonial { get; }
+        IUser User { get; }
+        IUserDetail UserDetail { get; }
         Task<int> Save();
         void ClearTracking();
     }
