@@ -29,7 +29,8 @@ namespace Models
         public string? Address { get; set; }
 
         [StringLength(255)]
-        public string? Image { get; set; }
+        
+        public string Image { get; set; } = "default.jpg";
 
         public long RoleId { get; set; }
         [ForeignKey("RoleId")]

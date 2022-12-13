@@ -1,20 +1,18 @@
 ﻿using DataAccess.Data;
 using DataAccess.Repositories.IRepositories;
-using DataAccess.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class SuperAdminController : Controller
+    public class UserController : Controller
     {
         private readonly StarSecurityDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
-        public SuperAdminController(StarSecurityDbContext context, IUnitOfWork unitOfWork)
+        public UserController(StarSecurityDbContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
             _unitOfWork = unitOfWork;
@@ -22,17 +20,15 @@ namespace WebClient.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            return View(await _unitOfWork.User.GetAll(includeProperties: "Role"));
+            return View(await _unitOfWork.User.GetAll(x=>x.Role.Id!=2 ,includeProperties: "Role"));
         }
         public async Task<IActionResult> Create()
         {
-            ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id != 1), "Id", "Name");
+            ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id != 1 && x.Id !=2), "Id", "Name");
 
             try
             {
                 return View();
-
             }
             catch (Exception)
             {
@@ -68,7 +64,7 @@ namespace WebClient.Areas.Admin.Controllers
             User user = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == id,includeProperties:"Role");
             try
             {
-                if(user == null)
+                if (user == null)
                 {
                     return RedirectToAction("Index", "Error", new { area = "Admin" });
                 }
@@ -86,10 +82,10 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-                ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id != 1), "Id", "Name");
-                var model = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == id, includeProperties: "Role"); //var model = User user
+                ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id != 1 && x.Id != 2), "Id", "Name");
+                var model = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == id); //var model = User user
                 return View(model);
-            } 
+            }
             catch (Exception)
             {
 
@@ -104,11 +100,11 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-                
+
                 if (model!=null)
                 {
                     var user = await _unitOfWork.User.GetFirstOrDefault(x => x.Id != model.Id);
-                    if(user != null)
+                    if (user != null)
                     {
                         model.Name = user.Name;
                         model.Email = user.Email;
@@ -117,13 +113,13 @@ namespace WebClient.Areas.Admin.Controllers
                         model.Address = user.Address;
                         model.Image = user.Image;
                         model.RoleId = user.RoleId;
-                        model.Status = user.Status;                                                                        
+                        model.Status = user.Status;
                         model.UpdatedAt = DateTime.Now;
                         _unitOfWork.User.Update(model);
                         await _unitOfWork.Save();
                         TempData["msg"] = "User has been Updated.";
-                        TempData["msg_type"] = "primary";                        
-                    }                   
+                        TempData["msg_type"] = "primary";
+                    }
                 }
                 return RedirectToAction("Edit");
             }

@@ -1,0 +1,5 @@
+﻿@if(TempData["msg"] != null){
+    <div class="alert alert-@TempData["msg_type"] notification">
+        @TempData["msg"]
+    </div>
+}

@@ -1,4 +1,14 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(function () {
 
-// Write your JavaScript code.
+    if ($("a.confirmDeletion").length) {
+        $("a.confirmDeletion").click(() => {
+            if(!confirm("Are you sure you want to permanently remove this item?")) return false;
+        });
+    }
+
+    if ($("div.alert.notification").length) {
+        setTimeout(() => {
+            $("div.alert.notification").fadeOut();
+        },2000);
+    }
+});
