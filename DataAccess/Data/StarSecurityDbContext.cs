@@ -4,7 +4,7 @@ using Models;
 
 namespace DataAccess.Data
 {
-    public class StarSecurityDbContext : IdentityDbContext
+    public class StarSecurityDbContext : DbContext
     {
         public StarSecurityDbContext(DbContextOptions options) : base(options)
         {
@@ -12,6 +12,7 @@ namespace DataAccess.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Seed();
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Branch> Branches { get; set; }
