@@ -25,9 +25,11 @@ namespace WebClient.Areas.Admin.Controllers
 
             return View(await _unitOfWork.User.GetAll(includeProperties: "Role"));
         }
+     
+
         public async Task<IActionResult> Create()
         {
-            ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id != 1), "Id", "Name");
+            ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id == 2), "Id", "Name");
 
             try
             {
@@ -50,8 +52,38 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 if (model!=null)
                 {
-                    await _unitOfWork.User.Add(model);
+                    //Collection{ anyValue }
+                    var branches = await _unitOfWork.Branch.GetAll();
+                    if(branches.Count() == 0)
+                    {
+                        TempData["msg"] = "Branch not found! Please create branch first!";
+                        TempData["msg_type"] = "danger";
+                        return View();
+                    }
+
+                    await _unitOfWork.User.Add(model);                    
                     await _unitOfWork.Save();
+
+                    // select * from Users LIMIT 1
+                    //SELECT TOP 1 Id FROM Users ORDERBY Id DESC
+                    // luc nay co UserId = 2 roi
+                    // 
+                    // Id = 4                  
+
+                    var user = await _context.Users.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+                    for(int i=1;i<= branches.Count(); i++ )
+                    {
+
+                        UserBranch userBranch = new UserBranch();
+                        userBranch.UserId = user.Id;
+                        userBranch.BranchId = i;
+
+                        await _unitOfWork.UserBranch.Add(userBranch);
+                        await _unitOfWork.Save();
+
+                    }
+
+
                     TempData["msg"] = "User has been Created.";
                     TempData["msg_type"] = "success";
 
@@ -77,9 +109,7 @@ namespace WebClient.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
-
             }
         }
         public async Task<IActionResult> Edit(int id)

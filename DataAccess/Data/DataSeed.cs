@@ -32,12 +32,11 @@ namespace DataAccess.Data
                 );
 
             modelBuilder.Entity<SuperAdmin>().HasData(
-                new SuperAdmin()  { Id = 1, Name = "Super Admin", Email = "Admin@gmail.com",Password = "123456",Phone =" 0123456789",Address=" 590 CMT8",Image="default.jpg", RoleId=1,Status=1, CreatedAt = DateTime.Now, UpdatedAt = null }                       
+                new SuperAdmin()  { Id = 1, Name = "Super Admin", Email = "admin@gmail.com",Password = "123456",Phone =" 0123456789",Address=" 590 CMT8",Image="default.jpg", RoleId=1,Status=1, CreatedAt = DateTime.Now, UpdatedAt = null }                       
                  );
             modelBuilder.Entity<User>().HasData(
-               new User() { Id = 1, Name = "General Admin", Email = "GAdmin@gmail.com", Password = "123456", Phone = " 0123456789", Address = " 590 CMT8", Image = "default.jpg", RoleId = 2, Status = 1, CreatedAt = DateTime.Now, UpdatedAt = null }
-                );
-           
+               new User() { Id = 1, Name = "General Admin", Email = "g_admin@gmail.com", Password = "123456", Phone = " 0123456789", Address = " 590 CMT8", Image = "default.jpg", RoleId = 2, Status = 1, CreatedAt = DateTime.Now, UpdatedAt = null }
+                );         
         }
     }
 }

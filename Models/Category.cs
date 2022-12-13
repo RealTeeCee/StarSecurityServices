@@ -18,7 +18,6 @@ namespace Models
 
         [StringLength(255)]
         public string? Image { get; set; }
-
         public long UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }

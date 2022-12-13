@@ -21,6 +21,7 @@ namespace DataAccess.Data
         public DbSet<Testimonial> Testimonials { get; set; }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserBranch> UserBranchs { get; set; }
 
         public DbSet<UserDetail> UserDetails { get; set; }
 
