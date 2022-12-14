@@ -18,6 +18,11 @@ namespace DataAccess.Services
             this._context = context;
         }
 
+        public List<Testimonial> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Testimonial obj)
         {
             var objFromDb = _context.Testimonials.FirstOrDefault(x => x.Id == obj.Id);
