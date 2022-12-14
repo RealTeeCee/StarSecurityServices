@@ -20,7 +20,14 @@ namespace DataAccess.Services
 
         public void Update(Testimonial obj)
         {
-            throw new NotImplementedException();
+            var objFromDb = _context.Testimonials.FirstOrDefault(x => x.Id == obj.Id);
+            if (objFromDb != null)
+            {
+
+                objFromDb.CreatedAt = obj.CreatedAt;
+                objFromDb.UpdatedAt = obj.UpdatedAt;
+                _context.Testimonials.Update(objFromDb);
+            }
         }
     }
 }
