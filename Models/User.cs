@@ -27,7 +27,7 @@ namespace Models
 
         [StringLength(255)]
         public string? Image { get; set; } = "default.jpg";
-
+        [Range(1, int.MaxValue, ErrorMessage = "You must choose a role")]
         public long RoleId { get; set; }
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
@@ -38,8 +38,8 @@ namespace Models
         public DateTime? UpdatedAt { get; set; }
     }
     public class Administrator
-    {       
-
+    {
+        public long Id { get; set; }
         public string Name { get; set; }
         
         public string Email { get; set; }
@@ -53,10 +53,11 @@ namespace Models
 
         
         public string? Image { get; set; } = "default.jpg";
-
+        [Range(1, long.MaxValue, ErrorMessage = "You must choose a role")]
         public long RoleId { get; set; }
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
+        [Range(1, long.MaxValue, ErrorMessage ="You must choose a branch")]
         public long BranchId { get; set; }
         [ForeignKey("BranchId")]
         public virtual Branch Branch { get; set; }

@@ -77,8 +77,8 @@
             <td>
                 @item.Role.Name
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
+            <td>                
+                    @(item.Status == 1 ? "Active" : "InActive")                
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)

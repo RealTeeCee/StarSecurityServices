@@ -18,9 +18,15 @@ namespace DataAccess.Services
             this._context = context;
         }
 
-        public void Update(UserBranch obj)
+        public void Update(UserBranch model)
         {
-            throw new NotImplementedException();
+            var userBranch =  _context.UserBranchs.FirstOrDefault(x => x.Id == model.Id);
+            if(userBranch != null)
+            {
+                userBranch.UserId = model.Id;
+                userBranch.BranchId = model.BranchId;
+                _context.UserBranchs.Update(userBranch);
+            }                      
         }
     }
 }

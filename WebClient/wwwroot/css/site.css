@@ -16,3 +16,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*-------------------------------------------------- Nguyen CSS -------------------------------------------------- */
+table.sorting tr:not(.role-2){
+    cursor: grab;
+}
+
+.ui-state-highlight{
+    border:1px dashed;
+}

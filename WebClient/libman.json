@@ -5140,6 +5140,10 @@
         "skins/moono-lisa/icons.png",
         "skins/moono-lisa/icons_hidpi.png"
       ]
+    },
+    {
+      "library": "jqueryui@1.13.2",
+      "destination": "wwwroot/lib/jqueryui/"
     }
   ]
 }

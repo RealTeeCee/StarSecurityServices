@@ -10,7 +10,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table sorting" id="page">
     <thead>
         <tr>
             <th>
@@ -52,7 +52,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="role-@item.RoleId">
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
@@ -96,3 +96,17 @@
         }
     </tbody>
 </table>
+@section Scripts {  
+    <script>
+        $("table#page tbody").sortable({
+            items: "tr:not(.role-2)",
+            placeholder: "ui-state-highlight",
+            update: function(){
+                let ids = $("table#page tbody").sortable("serialize");
+                let url = "/admin/views/reorder";
+
+                $.post(url,ids,function (){});
+            }
+        });
+    </script>
+}

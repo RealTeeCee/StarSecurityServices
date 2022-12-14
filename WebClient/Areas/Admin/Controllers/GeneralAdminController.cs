@@ -20,7 +20,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _unitOfWork.User.GetAll(x=>x.Role.Id != 1 ,includeProperties: "Role"));
+            return View(await _unitOfWork.User.GetAll(x=>x.Role.Id != 1 && x.Role.Id != 2 ,includeProperties: "Role"));
         }
         public async Task<IActionResult> Create()
         {
@@ -58,10 +58,11 @@ namespace WebClient.Areas.Admin.Controllers
                     await _unitOfWork.User.Add(user);
                     await _unitOfWork.Save();
 
-                    var newUser = _context.Users.OrderByDescending(x => x.Id).FirstOrDefault();
+                    //lấy user mới tạo ra
+                    //var newUser = _context.Users.OrderByDescending(x => x.Id).FirstOrDefault();
 
                     UserBranch userBranch = new UserBranch();
-                    userBranch.UserId = newUser.Id;
+                    userBranch.UserId = user.Id;
                     userBranch.BranchId = model.BranchId;
 
                     await _unitOfWork.UserBranch.Add(userBranch);
@@ -102,50 +103,76 @@ namespace WebClient.Areas.Admin.Controllers
             try
             {
                 ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id != 1 && x.Id != 2), "Id", "Name");
-                var model = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == id); //var model = User user
+                
+                var user = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == id); //var model = User user
+                var model = new Administrator();
+                model.Id = user.Id;
+                model.Name = user.Name;
+                model.Email = user.Email;
+                model.Password = user.Password;
+                model.Phone = user.Phone;
+                model.Address = user.Address;
+                model.Image = user.Image;
+                model.RoleId = user.RoleId;
+                model.Status = user.Status;
+            
+                // BranchId , UserId
+                var userBranch = await _unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == id);
+                model.BranchId = userBranch.BranchId;
+                
+                ViewBag.Branch = new SelectList(_context.Branches.ToList(), "Id", "Name", model.BranchId);
                 return View(model);
             }
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
 
             }
 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(User model)
+        public async Task<IActionResult> Edit(Administrator model)
         {
             try
             {
 
                 if (model!=null)
                 {
-                    var user = await _unitOfWork.User.GetFirstOrDefault(x => x.Id != model.Id);
+                    var user = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == model.Id);
+                    
                     if (user != null)
                     {
-                        model.Name = user.Name;
-                        model.Email = user.Email;
-                        model.Password = user.Password;
-                        model.Phone = user.Phone;
-                        model.Address = user.Address;
-                        model.Image = user.Image;
-                        model.RoleId = user.RoleId;
-                        model.Status = user.Status;
-                        model.UpdatedAt = DateTime.Now;
-                        _unitOfWork.User.Update(model);
+                        user.Name = model.Name;
+                        user.Email = model.Email;
+                        user.Password = model.Password;
+                        user.Phone = model.Phone;
+                        user.Address = model.Address;                        
+                        user.RoleId = model.RoleId;
+                        user.Status = model.Status;
+                        user.UpdatedAt = DateTime.Now;
+                        _unitOfWork.User.Update(user);
                         await _unitOfWork.Save();
+
+                        //var newUser = _context.Users.OrderByDescending(x => x.Id).FirstOrDefault();
+
+                        var userBranch = await _unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == model.Id);
+                        userBranch.BranchId = model.BranchId;
+
+                        _context.Update(userBranch);
+                        await _unitOfWork.Save();
+
                         TempData["msg"] = "User has been Updated.";
-                        TempData["msg_type"] = "primary";
+                        TempData["msg_type"] = "success";
                     }
                 }
-                return RedirectToAction("Edit");
+                return RedirectToAction("Index");
             }
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
         public async Task<IActionResult> Delete(int id)
@@ -157,16 +184,30 @@ namespace WebClient.Areas.Admin.Controllers
                 _unitOfWork.User.Remove(model);
                 await _unitOfWork.Save();
                 TempData["msg"] = "User has been Deleted.";
-                TempData["msg_type"] = "danger";
+                TempData["msg_type"] = "success";
                 return RedirectToAction("Index");
             }
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
 
             }
 
         }
+
+        //public async Task<IActionResult> Reorder(int[] id)
+        //{
+        //    int count = 1;
+        //    foreach (var userId in id)
+        //    {
+        //        var user = await _context.Users.FindAsync(userId);
+        //        user.Sorting = count;
+        //        _context.Update(user);
+        //        await _unitOfWork.Save();
+        //        count++;
+        //    }
+        //    return Ok();
+        //}
     }
 }

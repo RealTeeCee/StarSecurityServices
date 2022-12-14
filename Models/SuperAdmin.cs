@@ -15,7 +15,7 @@ namespace Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         [Column(TypeName = "nvarchar")]
-        [StringLength(20)]
+        [StringLength(50)]
         public string Name { get; set; }
         [StringLength(100)]
         public string Email { get; set; }

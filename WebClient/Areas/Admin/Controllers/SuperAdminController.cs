@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Org.BouncyCastle.Crypto.Tls;
 
 namespace WebClient.Areas.Admin.Controllers
 {
@@ -116,14 +117,14 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-                ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id != 1), "Id", "Name");
+                ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id != 1), "Id", "Name");                
                 var model = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == id, includeProperties: "Role"); //var model = User user
                 return View(model);
             } 
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
 
             }
 
@@ -137,30 +138,30 @@ namespace WebClient.Areas.Admin.Controllers
                 
                 if (model!=null)
                 {
-                    var user = await _unitOfWork.User.GetFirstOrDefault(x => x.Id != model.Id);
+                    var branch = await _unitOfWork.Branch.GetAll();
+                    var user = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == model.Id);
                     if(user != null)
                     {
-                        model.Name = user.Name;
-                        model.Email = user.Email;
-                        model.Password = user.Password;
-                        model.Phone = user.Phone;
-                        model.Address = user.Address;
-                        model.Image = user.Image;
-                        model.RoleId = user.RoleId;
-                        model.Status = user.Status;                                                                        
-                        model.UpdatedAt = DateTime.Now;
-                        _unitOfWork.User.Update(model);
-                        await _unitOfWork.Save();
+                        user.Name = model.Name;
+                        user.Email = model.Email;
+                        user.Password = model.Password;
+                        user.Phone = model.Phone;
+                        user.Address = model.Address;
+                        user.RoleId = model.RoleId;
+                        user.Status = model.Status;
+                        user.UpdatedAt = DateTime.Now;
+                        _unitOfWork.User.Update(user);
+                        await _unitOfWork.Save();                       
                         TempData["msg"] = "User has been Updated.";
-                        TempData["msg_type"] = "primary";                        
+                        TempData["msg_type"] = "success";                        
                     }                   
                 }
-                return RedirectToAction("Edit");
+                return RedirectToAction("Index");
             }
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
         public async Task<IActionResult> Delete(int id)
@@ -172,13 +173,13 @@ namespace WebClient.Areas.Admin.Controllers
                 _unitOfWork.User.Remove(model);
                 await _unitOfWork.Save();
                 TempData["msg"] = "User has been Deleted.";
-                TempData["msg_type"] = "danger";
+                TempData["msg_type"] = "success";
                 return RedirectToAction("Index");
             }
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
 
             }
 

@@ -24,21 +24,22 @@ namespace WebClient.Areas.Admin.Controllers
             this.env = env;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int p = 1)
         {
             try
-            {
-                CategoryVM categoryVM = new CategoryVM()
-                {
-                    Categories = (List<Category>)await _unitOfWork.Category.GetAll()
-                };
-                return View(categoryVM);
+            {                
+                var category = await _unitOfWork.Category.GetAll();
+
+                int pageSize = 6;
+                ViewBag.PageNumber = p;
+                ViewBag.PageRange = pageSize;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
+
+                return View(category);
             }
             catch (Exception)
             {
-
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
-
             }            
         }
         public async Task<IActionResult> Create()
@@ -69,8 +70,20 @@ namespace WebClient.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", "The category already exists !");
                         return View(category);
-                    }                 
+                    }
 
+                    string imageName = "default.jpg";
+                    if(category.ImageUpload != null)
+                    {
+                        string uploadDir = Path.Combine(env.WebRootPath, "media/categoies");
+                        imageName = Guid.NewGuid().ToString() + "_" + category.ImageUpload.FileName;
+                        string filePath = Path.Combine(uploadDir, imageName);
+                        FileStream fs = new FileStream(filePath, FileMode.Create);
+                        await category.ImageUpload.CopyToAsync(fs);
+                        fs.Close();
+                    }
+
+                    category.Image = imageName;
 
                     await _unitOfWork.Category.Add(category);
                     await _unitOfWork.Save();

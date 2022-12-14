@@ -21,5 +21,18 @@ namespace Models
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
+ 
     }
+    public class ViewCategoryBranch
+    {     
+        public List<Category> Categories { get; set; }
+        public List<Branch> Branches { get; set; }
+        public ViewCategoryBranch()
+        {
+            this.Categories = new List<Category>();
+            this.Branches = new List<Branch>();
+        }        
+    }
+
 }
+

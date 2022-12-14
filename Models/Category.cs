@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Models
 {
@@ -16,12 +18,11 @@ namespace Models
         [StringLength(255)]
         public string? Slug { get; set; }
 
-        [StringLength(255)]
+        [FileExtension]
         public string? Image { get; set; }
-        public long UserId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
+        [NotMapped]
+        public IFormFile ImageUpload { get; set; } 
     }
 }

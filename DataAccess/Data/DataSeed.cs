@@ -33,10 +33,25 @@ namespace DataAccess.Data
 
             modelBuilder.Entity<SuperAdmin>().HasData(
                 new SuperAdmin()  { Id = 1, Name = "Super Admin", Email = "admin@gmail.com",Password = "123456",Phone =" 0123456789",Address=" 590 CMT8",Image="default.jpg", RoleId=1,Status=1, CreatedAt = DateTime.Now, UpdatedAt = null }                       
-                 );
+            );
+
             modelBuilder.Entity<User>().HasData(
                new User() { Id = 1, Name = "General Admin", Email = "g_admin@gmail.com", Password = "123456", Phone = " 0123456789", Address = " 590 CMT8", Image = "default.jpg", RoleId = 2, Status = 1, CreatedAt = DateTime.Now, UpdatedAt = null }
-                );         
+            );
+
+            modelBuilder.Entity<Branch>().HasData(
+                new Branch() { Id = 1, Name = "Hồ Chí Minh", Email = "hcm@gmail.com", Phone="0987654321" ,Address = "590 CMT8", TimeOpen = "01-01-2021", Facebook= "StarFb", Instagram= "StarIg", Twitter = "StarTw", Youtube = "StarYtb", CreatedAt = DateTime.Now, UpdatedAt = null }
+            );
+            modelBuilder.Entity<UserBranch>().HasData(
+                new UserBranch() { Id = 1, UserId = 1, BranchId = 1 }
+            );
+
+            modelBuilder.Entity<Category>().HasData(
+               new Category() { Id = 1, Name ="Security Service",Image = "default.jpg", Slug = "security-service",CreatedAt = DateTime.Now, UpdatedAt =null },
+               new Category() { Id = 2, Name = "Vacancy Service", Image = "default.jpg", Slug = "vacancy-service", CreatedAt = DateTime.Now, UpdatedAt = null },
+               new Category() { Id = 3, Name = "Cash Service", Image = "default.jpg", Slug = "cash-service", CreatedAt = DateTime.Now, UpdatedAt = null },
+               new Category() { Id = 4, Name = "Train Service", Image = "default.jpg", Slug = "train-service", CreatedAt = DateTime.Now, UpdatedAt = null }
+            );
         }
     }
 }
