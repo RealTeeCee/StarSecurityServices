@@ -47,8 +47,12 @@ namespace Services
 
         private void ClosingHtml(StringBuilder content)
         {
-            content.Append($"<li class='page-item'><a class='page-link' href='{PageTarget}/{PageCount}'>{PageLast}</a></li>");
-            content.Append(" </ul");
+            if(PageNumber != PageCount)
+            {
+                content.Append($"<li class='page-item'><a class='page-link' href='{PageTarget}?p={PageCount}'>{PageLast}</a></li>");
+                content.Append(" </ul");
+            }
+            
         }
 
         private void PageNumberUpperPageRange(StringBuilder content)
@@ -60,7 +64,7 @@ namespace Services
                     continue;
                 }
                 var active = currentPage == PageNumber ? "active" : "";
-                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}/{currentPage}'>{currentPage}</a></li>");
+                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}?p={currentPage}'>{currentPage}</a></li>");
             }
         }
 
@@ -73,7 +77,7 @@ namespace Services
                     continue;
                 }
                 var active = currentPage == PageNumber ? "active" : "";
-                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}/{currentPage}'>{currentPage}</a></li>");
+                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}?p={currentPage}'>{currentPage}</a></li>");
             }
         }
 
@@ -86,7 +90,7 @@ namespace Services
                     continue;
                 }
                 var active = currentPage == PageNumber ? "active" : "";
-                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}/{currentPage}'>{currentPage}</a></li>");
+                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}?p={currentPage}'>{currentPage}</a></li>");
             }
         }
 
@@ -95,7 +99,7 @@ namespace Services
             content.Append(" <ul class='pagination'>");
             if(PageNumber != 1)
             {
-                content.Append($"<li class='page-item'><a class='page-link' href='{PageTarget}/1'>{PageFirst}</a></li>");
+                content.Append($"<li class='page-item'><a class='page-link' href='{PageTarget}'>{PageFirst}</a></li>");
             }
             
         }

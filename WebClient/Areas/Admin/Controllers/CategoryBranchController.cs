@@ -2,7 +2,9 @@
 using DataAccess.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Models;
+using System.Linq;
 
 namespace WebClient.Areas.Admin.Controllers
 {
@@ -17,20 +19,37 @@ namespace WebClient.Areas.Admin.Controllers
             _context = context;
             _unitOfWork = unitOfWork;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int p =1)
         {
-            return View();
+            try
+            {
+                var model = await _unitOfWork.CategoryBranch.GetAll(includeProperties:"Branch,Category");
+                int pageSize = 6;
+                ViewBag.PageNumber = p;
+                ViewBag.PageRange = pageSize;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.CategoryBranches.Count() / pageSize);
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
         }
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> OnChangeCategoryBranch()
         {           
             try
             {
-                //ViewBag.Branch = new SelectList(_context.Branches.ToList(), "Id", "Name");                 
-                var category = await _unitOfWork.Category.GetAll();
+
+                //var branch = await _unitOfWork.Branch.GetAll();
+                //var category = await _unitOfWork.Category.GetAll();
+                //ViewBag.Category = category;
+                //ViewBag.Branch = branch;
+
 
                 ViewCategoryBranch viewCategoryBranch = new ViewCategoryBranch();
-                viewCategoryBranch.Branches =  _context.Branches.ToList();
-                viewCategoryBranch.Categories =  _context.Categories.ToList();
+                viewCategoryBranch.Branches = _context.Branches.ToList();
+                viewCategoryBranch.Categories = _context.Categories.ToList();
 
 
                 return View(viewCategoryBranch);
@@ -41,14 +60,47 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
+
+        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CategoryBranch categoryBranch, string[] test)
-        {
+        public async Task<IActionResult> OnChangeCategoryBranch(ViewCategoryBranch model)
+        {                                 
             try
-            {     
-                
-                return View();
+            {
+                if (model.BranchId == 0)
+                {
+                    TempData["msg"] = "Please choose Branch.";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("OnChangeCategoryBranch");
+                }
+
+                // Edit, branch co san, them category vao branch
+                if (model.CategoryId == null)
+                {
+                    TempData["msg"] = "Please choose Category.";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("OnChangeCategoryBranch");
+                }
+                foreach (var item in model.CategoryId)
+                {
+                    var categoryBranchDb = await _unitOfWork.CategoryBranch.GetFirstOrDefault(x => x.BranchId == model.BranchId && x.CategoryId == item);
+                    if (categoryBranchDb == null)
+                    {
+                        var categoryBranch = new CategoryBranch();
+                        categoryBranch.BranchId = model.BranchId;
+                        categoryBranch.CategoryId = item;
+
+                        await _unitOfWork.CategoryBranch.Add(categoryBranch);
+                        await _unitOfWork.Save();
+                    }
+               
+                }
+
+                TempData["msg"] = "Updated Category in Branch success.";
+                TempData["msg_type"] = "success";
+                return RedirectToAction("Index");
             }
             catch (Exception)
             {

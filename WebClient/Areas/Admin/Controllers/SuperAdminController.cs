@@ -21,10 +21,24 @@ namespace WebClient.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int p =1)
         {
+            try
+            {
+                var model = await _unitOfWork.User.GetAll(includeProperties: "Role");
 
-            return View(await _unitOfWork.User.GetAll(includeProperties: "Role"));
+                int pageSize = 6;
+                ViewBag.PageNumber = p;
+                ViewBag.PageRange = pageSize;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
+
+                return View(model);
+            }
+            catch (Exception)
+            {   
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
+            //return View(await _unitOfWork.User.GetAll(includeProperties: "Role"));
         }
      
 
@@ -169,6 +183,12 @@ namespace WebClient.Areas.Admin.Controllers
             try
             {
                 var model = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == id);
+                if (model == null)
+                {
+                    TempData["msg"] = "User does not exists.";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index");
+                }
 
                 _unitOfWork.User.Remove(model);
                 await _unitOfWork.Save();

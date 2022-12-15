@@ -18,9 +18,24 @@ namespace WebClient.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int p =1)
         {
-            return View(await _unitOfWork.User.GetAll(x=>x.Role.Id != 1 && x.Role.Id != 2 ,includeProperties: "Role"));
+            try
+            {
+                var model = await _unitOfWork.User.GetAll(x => x.Role.Id != 1 && x.Role.Id != 2, includeProperties: "Role");
+
+                int pageSize = 6;
+                ViewBag.PageNumber = p;
+                ViewBag.PageRange = pageSize;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
+            //return View(await _unitOfWork.User.GetAll(x=>x.Role.Id != 1 && x.Role.Id != 2 ,includeProperties: "Role"));
         }
         public async Task<IActionResult> Create()
         {
@@ -111,8 +126,7 @@ namespace WebClient.Areas.Admin.Controllers
                 model.Email = user.Email;
                 model.Password = user.Password;
                 model.Phone = user.Phone;
-                model.Address = user.Address;
-                model.Image = user.Image;
+                model.Address = user.Address;                
                 model.RoleId = user.RoleId;
                 model.Status = user.Status;
             
@@ -180,6 +194,13 @@ namespace WebClient.Areas.Admin.Controllers
             try
             {
                 var model = await _unitOfWork.User.GetFirstOrDefault(x => x.Id == id);
+
+                if (model == null)
+                {
+                    TempData["msg"] = "User does not exists.";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index");
+                }
 
                 _unitOfWork.User.Remove(model);
                 await _unitOfWork.Save();

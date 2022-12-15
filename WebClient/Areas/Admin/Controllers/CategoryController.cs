@@ -28,14 +28,14 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {                
-                var category = await _unitOfWork.Category.GetAll();
+                var model = await _unitOfWork.Category.GetAll();
 
                 int pageSize = 6;
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = pageSize;
                 ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
 
-                return View(category);
+                return View(model);
             }
             catch (Exception)
             {
@@ -75,7 +75,7 @@ namespace WebClient.Areas.Admin.Controllers
                     string imageName = "default.jpg";
                     if(category.ImageUpload != null)
                     {
-                        string uploadDir = Path.Combine(env.WebRootPath, "media/categoies");
+                        string uploadDir = Path.Combine(env.WebRootPath, "media/categories");
                         imageName = Guid.NewGuid().ToString() + "_" + category.ImageUpload.FileName;
                         string filePath = Path.Combine(uploadDir, imageName);
                         FileStream fs = new FileStream(filePath, FileMode.Create);
@@ -87,7 +87,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                     await _unitOfWork.Category.Add(category);
                     await _unitOfWork.Save();
-                    TempData["msg"] = "User has been Created.";
+                    TempData["msg"] = "Category has been Created.";
                     TempData["msg_type"] = "success";
 
                 }
@@ -99,75 +99,122 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
-        public async Task<IActionResult> Update(int id, string? msg)
+        public async Task<IActionResult> Details(int id)
         {
+            Category category = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             try
             {
-                if (msg != null)
+                if (category == null)
                 {
-                    ViewBag.msg = msg;
+                    return RedirectToAction("Index", "Error", new { area = "Admin" });
                 }
-                var data = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
-                return View(data);
+                return View(category);
+
             }
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+
+            }
+        }
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var category = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id); //var model = User user             
+
+                return View(category);
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
 
             }
 
         }
         [HttpPost]
-        public async Task<IActionResult> Update(Category category)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Category model)
         {
             try
             {
-                var cate = await _unitOfWork.Category.GetAll(x => x.Id != category.Id);
-                if (cate.Count() == 0)
-                {
-                    var temp = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == category.Id);
-                    category.Image = temp.Image;
-                    category.UpdatedAt = DateTime.Now;
-                    _unitOfWork.Category.Update(category);
-                    await _unitOfWork.Save();
-                    return RedirectToAction("Update", new { msg = "Categories has been Updated." });
 
+                if (model != null)
+                {
+                    var category = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == model.Id); //var model = User user             
+
+                    if (category != null)
+                    {
+                        category.Name = model.Name;
+                        category.Slug = model.Slug;                        
+                        if (model.ImageUpload != null)
+                        { 
+                            string uploadDir = Path.Combine(env.WebRootPath, "media/categories");
+                            if(!string.Equals(category.Image, "default.jpg")){
+                                string oldImagePath = Path.Combine(uploadDir, category.Image);
+                                if (System.IO.File.Exists(oldImagePath))
+                                {
+                                    System.IO.File.Delete(oldImagePath);
+                                }
+                            }
+                            string imageName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
+                            string filePath = Path.Combine(uploadDir, imageName);
+                            FileStream fs = new FileStream(filePath, FileMode.Create);
+                            await model.ImageUpload.CopyToAsync(fs);
+                            fs.Close();
+                            category.Image = imageName;
+                        }                        
+                        category.UpdatedAt = DateTime.Now;
+                        _context.Categories.Update(category);
+                        await _unitOfWork.Save();
+
+                        TempData["msg"] = "Category has been Updated.";
+                        TempData["msg_type"] = "success";
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var model = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
+                if (model == null)
+                {
+                    TempData["msg"] = "Category does not exists.";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    foreach (var item in cate)
+                    if (!string.Equals(model.Image, "default.jpg"))
                     {
-                        var temp = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == category.Id);
-                        category.Image = temp.Image;
-                        category.UpdatedAt = DateTime.Now;
-                        _unitOfWork.Category.Update(category);
-                        await _unitOfWork.Save();
-                        return RedirectToAction("Update", new { msg = "Categories has been Updated." });
+                        string uploadDir = Path.Combine(env.WebRootPath, "media/categories");
+                        string oldImagePath = Path.Combine(uploadDir, model.Image);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
                     }
-                }
-                return null;
+                    _unitOfWork.Category.Remove(model);
+                    await _unitOfWork.Save();
+                    TempData["msg"] = "Category has been Deleted.";
+                    TempData["msg_type"] = "success";
+                    return RedirectToAction("Index");
+                }              
             }
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
-            }
-        }
-        public async Task<IActionResult> DeleteCategory(int id)
-        {
-            try
-            {
-                var data = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
-
-                _unitOfWork.Category.Remove(data);
-                await _unitOfWork.Save();
-                return Json(new { success = true });
-            }
-            catch (Exception)
-            {
-
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
 
             }
 

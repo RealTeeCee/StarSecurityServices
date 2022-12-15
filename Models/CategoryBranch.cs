@@ -27,6 +27,8 @@ namespace Models
     {     
         public List<Category> Categories { get; set; }
         public List<Branch> Branches { get; set; }
+        public long[] CategoryId { get; set; }
+        public long BranchId { get; set; }
         public ViewCategoryBranch()
         {
             this.Categories = new List<Category>();

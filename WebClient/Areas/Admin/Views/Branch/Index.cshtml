@@ -92,11 +92,12 @@
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new {  id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new {  id = item.Id }) |
+                <a class="confirmDeletion" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<pagination page-count="@ViewBag.TotalPages" page-target="/admin/category" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
