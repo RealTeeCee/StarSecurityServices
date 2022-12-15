@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/css/Minty.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebClient.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/animate/animate.min.css">
+    <link rel="stylesheet" href="~/lib/owlcarousel/assets/owl.carousel.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/lib/lightbox/css/lightbox.min.css">
 </head>
 <body>
     <header>
@@ -41,6 +44,8 @@
                                 <a class="dropdown-item" href="#">Something else here</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Separated link</a>
+
+                                <a class="dropdown-item" href="@Url.ActionLink("Index", "Testimonial")">Testimonial</a>
                             </div>
                         </li>
                     </ul>
@@ -66,6 +71,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/wow/wow.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

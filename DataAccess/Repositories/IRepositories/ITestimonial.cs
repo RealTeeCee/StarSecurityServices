@@ -11,5 +11,6 @@ namespace DataAccess.Repositories.IRepositories
     public interface ITestimonial : IRepository<Testimonial>
     {
         void Update(Testimonial obj);
+        List<Testimonial> GetAll();
     }
 }

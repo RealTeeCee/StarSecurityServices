@@ -18,9 +18,21 @@ namespace DataAccess.Services
             this._context = context;
         }
 
-        public void Update(Testimonial obj)
+        public List<Testimonial> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+        public void Update(Testimonial obj)
+        {
+            var objFromDb = _context.Testimonials.FirstOrDefault(x => x.Id == obj.Id);
+            if (objFromDb != null)
+            {
+
+                objFromDb.CreatedAt = obj.CreatedAt;
+                objFromDb.UpdatedAt = obj.UpdatedAt;
+                _context.Testimonials.Update(objFromDb);
+            }
         }
     }
 }
