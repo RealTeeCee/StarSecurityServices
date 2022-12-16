@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Models.Module>
+
+@{
+    ViewData["Title"] = "Permission";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+h1>Create</h1>
+
+<h4>CategoryBranch</h4>
+<hr />
+
+<table class="table">
+    <form asp-action="Permission">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>        
+        <thead>
+            <tr>
+                <th>
+                    Module
+                </th>
+                <th>
+                   Permissions
+                </th>                     
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>                    
+                     <td>
+                        @item.Title
+                    </td>                    
+                   
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="View_@item.Name" name="name">View
+                        </div>
+                         <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="Add_@item.Name" name="name">Add
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="Edit_@item.Name" name="name">Edit
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="Delete_@item.Name" name="name">Delete
+                        </div>
+                    </td>
+                </tr>
+            }              
+        </tbody>
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-primary" />
+    </div>
+    </form>
+</table>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
