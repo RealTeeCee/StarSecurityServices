@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{4E478D45-7720-4DB7-80F0-E3DCDC68ED44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Service\Services.csproj", "{D3D39794-C1BB-4C5C-A956-09F1C2038325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Service\Services.csproj", "{D3D39794-C1BB-4C5C-A956-09F1C2038325}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

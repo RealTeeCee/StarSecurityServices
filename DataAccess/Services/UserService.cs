@@ -23,13 +23,13 @@ namespace DataAccess.Services
             var user = _context.Users.FirstOrDefault(x => x.Id == model.Id);
             if (user != null)
             {
-                user.Name = model.Name;
+                //user.Name = model.Name;
                 user.Email = model.Email;
-                user.Password = model.Password;
+                //user.Password = model.Password;
                 user.Phone = model.Phone;
                 user.Address = model.Address;
                 user.Image = model.Image;
-                user.RoleId = model.RoleId;
+                //user.RoleId = model.RoleId;
                 user.Status = model.Status;
                 user.UpdatedAt = DateTime.Now;
                 _context.Users.Update(user);

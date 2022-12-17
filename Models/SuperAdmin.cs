@@ -32,9 +32,9 @@ namespace Models
         
         public string Image { get; set; } = "default.jpg";
 
-        public long RoleId { get; set; }
-        [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
+        //public long RoleId { get; set; }
+        //[ForeignKey("RoleId")]
+        //public virtual Role Role { get; set; }
 
         [DefaultValue(1)]
         public byte Status { get; set; } = 1;

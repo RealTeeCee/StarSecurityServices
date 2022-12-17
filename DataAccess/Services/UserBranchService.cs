@@ -23,7 +23,7 @@ namespace DataAccess.Services
             var userBranch =  _context.UserBranchs.FirstOrDefault(x => x.Id == model.Id);
             if(userBranch != null)
             {
-                userBranch.UserId = model.Id;
+                //userBranch.UserId = model.Id;
                 userBranch.BranchId = model.BranchId;
                 _context.UserBranchs.Update(userBranch);
             }                      

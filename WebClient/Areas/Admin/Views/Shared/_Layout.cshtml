@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<User> signInManager;
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,6 +33,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if(signInManager.IsSignedIn(User)){
+                            <li class="nav-item">
+                                <form method="post" asp-controller="account" asp-action="logout">
+                                    <button type="submit">Logout @User.Identity.Name</button>
+                                </form>
+                            </li>
+                        }else{
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="account" asp-action="register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="account" asp-action="login">Login</a>
+                            </li>
+                        }
+                       
                     </ul>                    
 
                 </div>
@@ -47,7 +67,9 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>    
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>    <!-- jquery validate se xu ly validate hien ra ngay sau khi type ma ko can submit (with ajax) -->
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>      
     <script src="~/lib/ckeditor/ckeditor.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -14,9 +14,9 @@ namespace Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
        
-        public long UserId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        //public long UserId { get; set; }
+        //[ForeignKey("UserId")]
+        //public virtual User User { get; set; }
 
         public long BranchId { get; set; }
         [ForeignKey("BranchId")]

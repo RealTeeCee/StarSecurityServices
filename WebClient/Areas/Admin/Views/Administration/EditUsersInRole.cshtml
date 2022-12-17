@@ -1,0 +1,37 @@
+﻿@model List<Models.ViewModel.UserRoleViewModel>
+
+@{
+    ViewData["Title"] = "Edit Users In Role";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var roleId = ViewBag.roleId;
+}
+
+<h1>EditUsersInRole</h1>
+
+
+<hr />
+
+<form asp-action="EditUsersInRole">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card-header">
+       <h2>Add or remove users from this role</h2>
+    </div>
+    <div class="card-body">
+        @for(int i = 0; i < Model.Count; i++){
+            <input type="hidden" asp-for="@Model[i].UserId" />
+            <input type="hidden" asp-for="@Model[i].UserName" />            
+            <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+            <label class="form-check-label" asp-for="@Model[i].IsSelected"> <!-- Now when click on label it checked status toggle as expected -->
+                @Model[i].UserName
+            </label>
+        }
+    </div>
+    <div class="card-footer">
+        <input type="submit" value="Update" style="width:auto" class="btn btn-primary" />
+        <a asp-action="EditRole" asp-route-id="@roleId" value="Update" style="width:auto" class="btn btn-primary" />Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -19,6 +19,9 @@ namespace Models
         [Column(TypeName = "text")]
         [StringLength(400)]
         public string Description { get; set; }
+
+        [StringLength(255)]
+        public string? Slug { get; set; }
         [StringLength(15)]
         public string Phone { get; set; }
         public long UserId { get; set; }

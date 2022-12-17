@@ -50,38 +50,38 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> Permission(int id , string[] name)
-        {
-            try
-            {
-                var role = await _unitOfWork.Role.GetFirstOrDefault(x => x.Id == id);
+        //[HttpPost]
+        //public async Task<IActionResult> Permission(int id , string[] name)
+        //{
+        //    try
+        //    {
+        //        var role = await _unitOfWork.Role.GetFirstOrDefault(x => x.Id == id);
 
-                foreach (var item in name)
-                {
-                    if (item.EndsWith("security"))
-                    {
-                        if (item.StartsWith("View"){
+        //        foreach (var item in name)
+        //        {
+        //            if (item.EndsWith("security"))
+        //            {
+        //                if (item.StartsWith("View"){
 
-                        }
-                        if (item.StartsWith("View"){
+        //                }
+        //                if (item.StartsWith("View"){
 
-                        }
-                        if (item.StartsWith("View"){
+        //                }
+        //                if (item.StartsWith("View"){
 
-                        }
-                        if (item.StartsWith("View"){
+        //                }
+        //                if (item.StartsWith("View"){
 
-                        }
-                    }
-                }
-                return RedirectToAction("Permission");
-            }
-            catch (Exception)
-            {
+        //                }
+        //            }
+        //        }
+        //        return RedirectToAction("Permission");
+        //    }
+        //    catch (Exception)
+        //    {
 
-                return RedirectToAction("Index", "Error", new { area = "Admin" });
-            }
-        }
+        //        return RedirectToAction("Index", "Error", new { area = "Admin" });
+        //    }
+        //}
     }
 }

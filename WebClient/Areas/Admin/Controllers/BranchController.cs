@@ -62,23 +62,23 @@ namespace WebClient.Areas.Admin.Controllers
 
                     // Get ra toan bo General Admin trong bang User
                     // List
-                    List<User> generalAdmins = _context.Users.Where(x => x.RoleId == 2).ToList();
-                    if(generalAdmins.Count > 0)
-                    {
-                        foreach (var item in generalAdmins)
-                        {
-                            var userBranch = await _unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == item.Id);
-                            if (userBranch != null)
-                            {
-                                UserBranch newBranch = new UserBranch();
-                                newBranch.UserId = item.Id;
-                                newBranch.BranchId = model.Id;
-                                await _unitOfWork.UserBranch.Add(newBranch);
-                                await _unitOfWork.Save();
-                            }
+                    //List<User> generalAdmins = _context.Users.Where(x => x.RoleId == 2).ToList();
+                    //if(generalAdmins.Count > 0)
+                    //{
+                    //    foreach (var item in generalAdmins)
+                    //    {
+                    //        var userBranch = await _unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == item.Id);
+                    //        if (userBranch != null)
+                    //        {
+                    //            UserBranch newBranch = new UserBranch();
+                    //            newBranch.UserId = item.Id;
+                    //            newBranch.BranchId = model.Id;
+                    //            await _unitOfWork.UserBranch.Add(newBranch);
+                    //            await _unitOfWork.Save();
+                    //        }
 
-                        }
-                    }
+                    //    }
+                    //}
 
                     TempData["msg"] = "Branch has been Created.";
                     TempData["msg_type"] = "success";
