@@ -38,7 +38,7 @@ namespace WebClient.Areas.Admin.Controllers
         public async Task<IActionResult> Permission()
         {
             try
-            {                
+            {
                 var module = _context.Modules.ToList();
 
 
@@ -51,7 +51,7 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Permission(int id , string[] name)
+        public async Task<IActionResult> Permission(int id, string[] name)
         {
             try
             {
@@ -61,16 +61,20 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     if (item.EndsWith("security"))
                     {
-                        if (item.StartsWith("View"){
+                        if (item.StartsWith("View"))
+                        {
 
                         }
-                        if (item.StartsWith("View"){
+                        if (item.StartsWith("View"))
+                        {
 
                         }
-                        if (item.StartsWith("View"){
+                        if (item.StartsWith("View"))
+                        {
 
                         }
-                        if (item.StartsWith("View"){
+                        if (item.StartsWith("View"))
+                        {
 
                         }
                     }

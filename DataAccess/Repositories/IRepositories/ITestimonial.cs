@@ -10,7 +10,12 @@ namespace DataAccess.Repositories.IRepositories
 {
     public interface ITestimonial : IRepository<Testimonial>
     {
-        void Update(Testimonial obj);
+        void Update(long id, Testimonial obj);
+        bool Create(Testimonial obj);
+        bool Delete(long id);
+
+        Testimonial? Detail(long id);
+
         List<Testimonial> GetAll();
     }
 }
