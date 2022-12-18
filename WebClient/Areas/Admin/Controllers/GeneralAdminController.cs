@@ -87,7 +87,7 @@ namespace WebClient.Areas.Admin.Controllers
                     TempData["msg_type"] = "success";
 
                 }
-                return View();
+                return RedirectToAction("Create");
             }
             catch (Exception)
             {

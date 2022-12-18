@@ -35,9 +35,7 @@ namespace DataAccess.Data
 
         public DbSet<SuperAdmin> SuperAdmin { get; set; }
 
-
-
-
+        public DbSet<Vacancy> Vacancies { get; set; }
 
     }
 }

@@ -140,7 +140,6 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-
                 if (model != null)
                 {
                     var category = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == model.Id); //var model = User user             
@@ -213,11 +212,8 @@ namespace WebClient.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
-
             }
-
         }
     }
 }

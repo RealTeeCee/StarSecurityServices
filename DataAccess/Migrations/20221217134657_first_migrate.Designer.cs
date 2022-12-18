@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(StarSecurityDbContext))]
-    [Migration("20221214075118_change-category")]
-    partial class changecategory
+    [Migration("20221217134657_first_migrate")]
+    partial class first_migrate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,7 +83,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1L,
                             Address = "590 CMT8",
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5134),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8059),
                             Email = "hcm@gmail.com",
                             Facebook = "StarFb",
                             Instagram = "StarIg",
@@ -107,8 +107,7 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Image")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
@@ -129,7 +128,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5147),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8078),
                             Image = "default.jpg",
                             Name = "Security Service",
                             Slug = "security-service"
@@ -137,7 +136,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5149),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8080),
                             Image = "default.jpg",
                             Name = "Vacancy Service",
                             Slug = "vacancy-service"
@@ -145,7 +144,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5151),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8081),
                             Image = "default.jpg",
                             Name = "Cash Service",
                             Slug = "cash-service"
@@ -153,7 +152,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5152),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8083),
                             Image = "default.jpg",
                             Name = "Train Service",
                             Slug = "train-service"
@@ -219,49 +218,49 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5072),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8003),
                             Name = "security",
                             Title = "Security Manager"
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5074),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8005),
                             Name = "vacancy",
                             Title = "Vacancy Manager"
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5075),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8006),
                             Name = "device",
                             Title = "Device Manager"
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5077),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8007),
                             Name = "train",
                             Title = "Train Manager"
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5078),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8008),
                             Name = "role",
                             Title = "Role Manager"
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5079),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8009),
                             Name = "branch",
                             Title = "Branch Manager"
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5080),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8010),
                             Name = "user",
                             Title = "User Manager"
                         });
@@ -297,28 +296,28 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(4966),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(7914),
                             Name = "Super Administrator",
                             Permissions = "{{\"security\":[\"read\",\"add\",\"edit\",\"delete\"], \"device\":[\"read\",\"add\",\"edit\",\"delete\"], \"role\":[\"read\",\"add\",\"edit\",\"delete\",\"permission\"],\"post\":[\"read\",\"add\",\"edit\",\"delete\"],\"user\":[\"read\",\"add\",\"edit\",\"delete\"],\"branch\":[\"read\",\"add\",\"edit\",\"delete\"],\"vacancy\":[\"read\",\"add\",\"edit\",\"delete\"],\"train\":[\"read\",\"add\",\"edit\",\"delete\"]}}"
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(4968),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(7916),
                             Name = "General Administrator",
                             Permissions = "{}"
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(4969),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(7917),
                             Name = "Administrator",
                             Permissions = "{}"
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(4970),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(7918),
                             Name = "Employee",
                             Permissions = "{}"
                         });
@@ -424,8 +423,8 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -457,7 +456,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1L,
                             Address = " 590 CMT8",
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5099),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8025),
                             Email = "admin@gmail.com",
                             Image = "default.jpg",
                             Name = "Super Admin",
@@ -558,7 +557,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1L,
                             Address = " 590 CMT8",
-                            CreatedAt = new DateTime(2022, 12, 14, 14, 51, 18, 372, DateTimeKind.Local).AddTicks(5115),
+                            CreatedAt = new DateTime(2022, 12, 17, 20, 46, 57, 16, DateTimeKind.Local).AddTicks(8042),
                             Email = "g_admin@gmail.com",
                             Image = "default.jpg",
                             Name = "General Admin",
@@ -590,6 +589,14 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserBranchs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            BranchId = 1L,
+                            UserId = 1L
+                        });
                 });
 
             modelBuilder.Entity("Models.UserDetail", b =>
@@ -635,6 +642,66 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserDetails");
+                });
+
+            modelBuilder.Entity("Models.Vacancy", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("BranchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("text");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Noted")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Vacancies");
                 });
 
             modelBuilder.Entity("Models.CategoryBranch", b =>
@@ -726,6 +793,33 @@ namespace DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Models.Vacancy", b =>
+                {
+                    b.HasOne("Models.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Category");
 
                     b.Navigation("User");
                 });
