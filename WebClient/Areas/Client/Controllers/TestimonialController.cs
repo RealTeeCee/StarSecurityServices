@@ -1,6 +1,5 @@
 ﻿using DataAccess.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 
 namespace WebClient.Areas.Client.Controllers
 {
@@ -17,11 +16,6 @@ namespace WebClient.Areas.Client.Controllers
         public IActionResult Index()
         {
             return View();
-        }
-
-        public IActionResult Edit(Testimonial model)
-        {
-            return View(model);
         }
     }
 }

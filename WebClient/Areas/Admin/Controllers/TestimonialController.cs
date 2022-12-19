@@ -20,9 +20,23 @@ namespace WebClient.Areas.Admin.Controllers
             this._env = env;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int p = 1)
         {
-            return View();
+            try
+            {
+                var model = await _unitOfWork.Testimonial.GetAll();
+
+                int pageSize = 6;
+                ViewBag.PageNumber = p;
+                ViewBag.PageRange = pageSize;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
         }
 
         public async Task<IActionResult> Create()
@@ -115,6 +129,30 @@ namespace WebClient.Areas.Admin.Controllers
             catch (Exception)
             {
 
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var model = await _unitOfWork.Testimonial.GetFirstOrDefault(x => x.Id == id);
+                if (model == null)
+                {
+                    TempData["msg"] = "Testimonial does not exists.";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("Index");
+                }
+
+                _unitOfWork.Testimonial.Remove(model);
+                await _unitOfWork.Save();
+                TempData["msg"] = "Testimonial has been Deleted.";
+                TempData["msg_type"] = "success";
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
