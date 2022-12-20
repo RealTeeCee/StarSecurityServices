@@ -29,7 +29,7 @@ namespace WebClient.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int p = 1)
         {
             try
-            {                
+            {                               
                 var model = await _unitOfWork.Category.GetAll();
 
                 int pageSize = 6;

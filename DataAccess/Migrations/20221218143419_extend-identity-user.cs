@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class extend_identity_user : Migration
+    public partial class extendidentityuser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -367,13 +367,13 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "Title", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4573), "security", "Security Manager", null },
-                    { 2L, new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4575), "vacancy", "Vacancy Manager", null },
-                    { 3L, new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4576), "device", "Device Manager", null },
-                    { 4L, new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4578), "train", "Train Manager", null },
-                    { 5L, new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4579), "role", "Role Manager", null },
-                    { 6L, new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4580), "branch", "Branch Manager", null },
-                    { 7L, new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4581), "user", "User Manager", null }
+                    { 1L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8990), "security", "Security Manager", null },
+                    { 2L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8993), "vacancy", "Vacancy Manager", null },
+                    { 3L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8995), "device", "Device Manager", null },
+                    { 4L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8997), "train", "Train Manager", null },
+                    { 5L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8999), "role", "Role Manager", null },
+                    { 6L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(9000), "branch", "Branch Manager", null },
+                    { 7L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(9002), "user", "User Manager", null }
                 });
 
             migrationBuilder.CreateIndex(

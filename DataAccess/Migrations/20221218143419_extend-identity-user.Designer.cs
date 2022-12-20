@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(StarSecurityDbContext))]
-    [Migration("20221217115602_extend_identity_user")]
-    partial class extend_identity_user
+    [Migration("20221218143419_extend-identity-user")]
+    partial class extendidentityuser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -372,49 +372,49 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4573),
+                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8990),
                             Name = "security",
                             Title = "Security Manager"
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4575),
+                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8993),
                             Name = "vacancy",
                             Title = "Vacancy Manager"
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4576),
+                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8995),
                             Name = "device",
                             Title = "Device Manager"
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4578),
+                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8997),
                             Name = "train",
                             Title = "Train Manager"
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4579),
+                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8999),
                             Name = "role",
                             Title = "Role Manager"
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4580),
+                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(9000),
                             Name = "branch",
                             Title = "Branch Manager"
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2022, 12, 17, 18, 56, 2, 445, DateTimeKind.Local).AddTicks(4581),
+                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(9002),
                             Name = "user",
                             Title = "User Manager"
                         });

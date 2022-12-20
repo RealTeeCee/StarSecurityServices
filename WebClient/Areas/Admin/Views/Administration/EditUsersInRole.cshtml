@@ -1,29 +1,40 @@
-﻿@model List<Models.ViewModel.UserRoleViewModel>
+﻿@model List<Models.ViewModel.RoleUsersViewModel>
 
 @{
     ViewData["Title"] = "Edit Users In Role";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var roleId = ViewBag.roleId;
+    
 }
 
-<h1>EditUsersInRole</h1>
+<h1>Edit Users In Role</h1>
 
 
 <hr />
 
-<form asp-action="EditUsersInRole">
+<form method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="card-header">
        <h2>Add or remove users from this role</h2>
     </div>
     <div class="card-body">
-        @for(int i = 0; i < Model.Count; i++){
+        @for(int i = 0; i < Model.Count; i++)
+        {
+            @if (Model[i].UserName == "superadmin@starsec.com")
+            {
+                continue;
+            }
             <input type="hidden" asp-for="@Model[i].UserId" />
-            <input type="hidden" asp-for="@Model[i].UserName" />            
-            <input class="form-check-input" asp-for="@Model[i].IsSelected" />
-            <label class="form-check-label" asp-for="@Model[i].IsSelected"> <!-- Now when click on label it checked status toggle as expected -->
-                @Model[i].UserName
-            </label>
+            <input type="hidden" asp-for="@Model[i].UserName" />
+            <div class="form-check m-1">
+                
+                    <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                    <label class="form-check-label" asp-for="@Model[i].IsSelected"> 
+                        <!-- Now when click on label it checked status toggle as expected -->
+                    @Model[i].UserName
+                </label>
+                
+            </div>
         }
     </div>
     <div class="card-footer">

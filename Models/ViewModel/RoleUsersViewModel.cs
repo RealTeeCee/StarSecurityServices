@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.ViewModel
 {
-    public class UserRoleViewModel
+    public class RoleUsersViewModel
     {
         public string UserId { get; set; }
         //public string RoleId { get; set; } comment reason: in order to not duplicate role Id for every user that add or remove from this role 

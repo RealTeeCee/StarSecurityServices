@@ -51,10 +51,30 @@
             }
         </div>
         <div class="card-footer">
-            <a asp-action="#" class="btn btn-primary" style="width:auto">Add Users</a>
-            <a asp-action="#" class="btn btn-primary" style="width:auto">Remove Users</a>
+            <a  asp-route-roleId="@Model.Id" asp-action="EditUsersInRole" class="btn btn-primary" style="width:auto">Add Or Remove Users</a>
         </div>
     </div>
+   @* <div class="card mt-3">
+        <div class="card-header">
+            <h3>Mange Role Claims</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Claims.Any())
+            {
+                @foreach (var claim in Model.Claims)
+                {
+                    <h5 class="card-title">@claim</h5>
+                }
+            }
+            else
+            {
+                <h5 class="card-title">None at the moment</h5>
+            }
+        </div>
+        <div class="card-footer">
+            <a asp-route-roleId="@Model.Id" asp-action="ManageUserClaims" class="btn btn-primary" style="width:auto">Manage Role Claims</a>
+        </div>
+    </div>*@
 
 </form>
     

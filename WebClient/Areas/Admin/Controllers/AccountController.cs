@@ -1,26 +1,41 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Models;
 using Models.ViewModel;
+using NuGet.Common;
+using Services;
+using System.Text;
 
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    //[Authorize(Roles = "SuperAdmin, Admin, Employee")]
     public class AccountController : Controller
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly ILogger<User> logger;
+        private readonly IEmailSender emailSender;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<User> logger, IEmailSender emailSender)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.logger = logger;
+            this.emailSender = emailSender;
         }
+
+        //[Authorize(Policy = ("CreatePolicy"))]
         public IActionResult Register()
         {
             return View();
         }      
+
         [HttpPost]
+        //[Authorize(Policy = ("CreatePolicy"))]        
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if(ModelState.IsValid)
@@ -34,7 +49,12 @@ namespace WebClient.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
-                    signInManager.SignInAsync(user, isPersistent: false); //isPersistent: false -> luu webcookie vao session cookie (out ra mat cookie). true -> luu webcookie vao persistent                                                          cookie
+                    if(signInManager.IsSignedIn(User) && User.IsInRole("SuperAdmin"))
+                    {
+                        return RedirectToAction("ListUsers", "Administration");
+                    }
+                    //Login
+                    //signInManager.SignInAsync(user, isPersistent: false); //isPersistent: false -> luu webcookie vao session cookie (out ra mat cookie). true -> luu webcookie vao persistent                                                          cookie
                     return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in result.Errors) //result.Errors chua cac dk truyen qua Data Annotation truyen vao <asp-validate-summary> trong view
@@ -45,8 +65,9 @@ namespace WebClient.Areas.Admin.Controllers
 
             return View();
         } 
+
         [AcceptVerbs("Get","Post")] //if we type email to Email field,the client-side issues and get request to server 
-        [HttpPost]
+        
         public async Task<IActionResult> IsEmailInUse(string email) //call by jquery-validate method => issues an ajax call => expect a JSON  response return from this method
         {
             var user = await userManager.FindByEmailAsync(email);
@@ -61,17 +82,19 @@ namespace WebClient.Areas.Admin.Controllers
 
             return View();
         }
-        
+
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
-        [HttpPost]        
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)//AuthorizationPolicyBuilder.RequireAuthenticatedUser se add 1 returnUrl param vao khi Login
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)//AuthorizationPolicyBuilder.RequireAuthenticatedUser se add 1 returnUrl param vao khi Login
         {
             if (ModelState.IsValid)
             {                
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);//tham so rememberMe = isPersistent(rememberMe.value)
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password,model.RememberMe, true);//tham so rememberMe = isPersistent(rememberMe.value)
 
                 if (result.Succeeded)
                 {
@@ -82,8 +105,13 @@ namespace WebClient.Areas.Admin.Controllers
                     else
                     {
                         return RedirectToAction("Index", "Home");
-                    }
-                    
+                    }                    
+                }
+
+                if (result.IsLockedOut)
+                {
+                    ViewBag.userEmail = model.Email;
+                    return View("AccountLocked");
                 }
                
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt") ;
@@ -94,10 +122,166 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                string[] strings = model.Email.Split('@');
+                var gmailDomain = strings[0] + "@gmail.com";
+                
+                
+                if(user != null )
+                {
+
+                    // Phát sinh Token để reset password
+                    // Token sẽ được kèm vào link trong email,
+                    // link dẫn đến trang /Account/ResetPassword để kiểm tra và đặt lại mật khẩu
+                    var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+                    var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = model.Email, token = token }, Request.Scheme);
+
+                    // Gửi email
+                    await emailSender.SendEmailAsync(
+                        gmailDomain,
+                        "Reset password",
+                        $"To reset your password please <a href='{passwordResetLink}'>Click here</a>.");
+
+                    // Chuyển đến trang thông báo đã gửi mail để reset password
+                    return View("ForgotPasswordConfirmation");
+
+                    
+                    //var token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+                    //var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = model.Email, token = token }, Request.Scheme);
+
+                    //logger.Log(LogLevel.Warning, passwordResetLink);
+
+                    //return View("ForgotPasswordConfirmation");
+                }
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(string token, string email)
+        {
+            if(token == null || email == null)
+            {
+                ModelState.AddModelError("", "Invalid password reset token");
+            }
+
+            // Giải mã lại code từ code trong url (do mã này khi gửi mail
+            // đã thực hiện Encode bằng WebEncoders.Base64UrlEncode)
+            var encodeToken = new ResetPasswordViewModel
+            {
+                Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token))
+            };
+
+            return View(); 
+        }
+        
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model) 
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await userManager.ResetPasswordAsync(user,model.Token,model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        return View("ResetPasswordConfirmation");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View(model);
+                }
+                return View("ResetPasswordConfirmation");
+            }
+            return View();
+        }
+
+        
+        public async Task<IActionResult> ChangePassword()
+        {
+
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.GetUserAsync(User);
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+
+                var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View();
+                }
+
+                await signInManager.RefreshSignInAsync(user);
+                return View("ChangePasswordConfirmation");
+            }
+
+            return View(model);
+
+
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccountLocked()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await userManager.GetUserAsync(User);
+            return View(user);
         }
     }
 }

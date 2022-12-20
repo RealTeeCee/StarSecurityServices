@@ -14,7 +14,7 @@ namespace Models.ViewModel
         [Required]
         [EmailAddress]
         [Remote(action: "IsEmailInUse", controller:"Account")] //the model in this RegisterViewModel and the Email UI is bound to this Email property
-        [ValidEmailDomain(allowedDomain: "starsecurity.com", ErrorMessage = "Email domain must be security.com")] //Custom validate 
+        [ValidEmailDomain(allowedDomain: "starsec.com", ErrorMessage = "Email domain must be starsec.com")] //Custom validate 
         public string Email { get; set; } 
         [Required]
         [DataType(DataType.Password)]

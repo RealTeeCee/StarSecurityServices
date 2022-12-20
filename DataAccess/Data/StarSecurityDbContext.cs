@@ -13,6 +13,10 @@ namespace DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e=>e.GetForeignKeys()))
+            //{
+            //    foreignKey.DeleteBehavior = DeleteBehavior.Restrict; //Bat buoc delete subTable item truoc parentTable item (ON DELETE NO ACTION)
+            //}
             modelBuilder.Seed();            
         }
         public DbSet<Branch> Branches { get; set; }

@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<IdentityRole>
 
+@using Microsoft.AspNetCore.Authorization
+
+@*  if need this service in multiple views. Considered importing it in _ViewImport file   *@
+@inject IAuthorizationService authorizationService 
+
+
 @{
     ViewData["Title"] = "All Roles";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -9,21 +15,33 @@
 
 @if(Model.Any()){
     <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="CreateRole">
-        Add New Role</a>
+        Add New Role
+    </a>    
     foreach (var role in Model)
     {
-        <div class="card mb-3">
-            <div class="card-header">
-                Role Id : @role.Id
+        if(role.Name != "SuperAdmin" ){
+            <div class="card mb-3">
+                <div class="card-header">
+                    Role Id : @role.Id
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@role.Name</h5>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="DeleteRole" asp-route-id="@role.Id">
+
+                        @*@if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)*@
+                        @if (role.Name != "SuperAdmin" && role.Id != @ViewBag.UserId)
+                        {
+                            <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">
+                                Edit
+                            </a>
+                        }
+                        <button type="submit" class="btn btn-danger">Detete</button>
+                    </form>
+                </div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">@role.Name</h5>
-            </div>
-            <div class="card-footer">
-                <a  class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">Edit</a>
-                <a  class="btn btn-danger">Detete</a>
-            </div>
-        </div>
+        }        
     }    
 }
 else{
