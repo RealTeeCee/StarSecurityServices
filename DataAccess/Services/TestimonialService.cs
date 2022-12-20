@@ -18,33 +18,9 @@ namespace DataAccess.Services
             this._context = context;
         }
 
-        public bool Delete(long id)
+        public void Update(Testimonial obj)
         {
-            var objFromDb = _context.Testimonials.FirstOrDefault(x => x.Id == id);
-            
-            if (objFromDb == null) return false;
-
-            _context.Testimonials.Remove(objFromDb);
-
-            int count = _context.SaveChanges();
-            return (count > 0);
-        }
-
-        public Testimonial? Detail(long id)
-        {
-            var objFromDb = _context.Testimonials.FirstOrDefault(x => x.Id == id);
-
-            return objFromDb;
-        }
-
-        public List<Testimonial> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(long id, Testimonial obj)
-        {
-            var objFromDb = _context.Testimonials.FirstOrDefault(x => x.Id == id);
+            var objFromDb = _context.Testimonials.FirstOrDefault(x => x.Id == obj.Id);
             if (objFromDb != null)
             {
 
@@ -52,18 +28,6 @@ namespace DataAccess.Services
                 objFromDb.UpdatedAt = obj.UpdatedAt;
                 _context.Testimonials.Update(objFromDb);
             }
-        }
-
-        public bool Create(Testimonial obj)
-        {
-            if (string.IsNullOrEmpty(obj.Name)
-                || string.IsNullOrEmpty(obj.Title)
-                || string.IsNullOrEmpty(obj.Description)) return false;
-
-            _context.Testimonials.Add(obj);
-
-            int count = _context.SaveChanges();
-            return (count > 0);
         }
     }
 }
