@@ -34,7 +34,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequiredUniqueChars = 3; // Số ký tự riêng biệt
 
     // Cấu hình Lockout - khóa user
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2); // Khóa 5 phút
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2); // Khóa 2 phút
     options.Lockout.MaxFailedAccessAttempts = 3; // Thất bại 5 lầ thì khóa
     //options.Lockout.AllowedForNewUsers = true;
 
@@ -44,7 +44,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;  // Email là duy nhất
 
     // Cấu hình đăng nhập.
-    //options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
+    //options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)    
     options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
 
     
@@ -84,21 +84,30 @@ builder.Services.AddAuthorization(options =>
 
     //Custom policy using func: Must have role Admin AND have edit role claim with claim value of true OR have role SuperAdmin (Different to Normal Policy: Can use && || operator)
     options.AddPolicy("CreatePolicy", policy => policy.RequireAssertion(
-                                                context => context.User.IsInRole("Admin") && 
+                                                context => context.User.IsInRole("GeneralAdmin") ||
+                                                context.User.IsInRole("Admin") && 
                                                 context.User.HasClaim(claim => claim.Type == "Create"  && claim.Value == "true") ||
+                                                context.User.IsInRole("Admin") &&
+                                                context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "true") ||
                                                 context.User.IsInRole("SuperAdmin") 
                                                 ));
 
     options.AddPolicy("EditPolicy", policy => policy.RequireAssertion(
-                                               context => context.User.IsInRole("Admin") &&
-                                               context.User.HasClaim(claim => claim.Type == "Edit" && claim.Value == "true") ||
-                                               context.User.IsInRole("SuperAdmin")
+                                                context => context.User.IsInRole("GeneralAdmin") ||
+                                                context.User.IsInRole("Admin") &&
+                                                context.User.HasClaim(claim => claim.Type == "Edit" && claim.Value == "true") ||
+                                                context.User.IsInRole("Admin") &&
+                                                context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "true") ||
+                                                context.User.IsInRole("SuperAdmin")
                                                ));
 
     options.AddPolicy("DeletePolicy", policy => policy.RequireAssertion(
-                                           context => context.User.IsInRole("Admin") &&
-                                           context.User.HasClaim(claim => claim.Type == "Delete" && claim.Value == "true") ||
-                                           context.User.IsInRole("SuperAdmin")
+                                           context => context.User.IsInRole("GeneralAdmin") ||
+                                            context.User.IsInRole("Admin") &&
+                                            context.User.HasClaim(claim => claim.Type == "Delete" && claim.Value == "true") ||
+                                            context.User.IsInRole("Admin") &&
+                                            context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "true") ||
+                                            context.User.IsInRole("SuperAdmin")
                                            ));
 
 });       

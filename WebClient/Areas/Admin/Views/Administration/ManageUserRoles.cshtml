@@ -1,10 +1,13 @@
-﻿@model List<Models.ViewModel.UserRolesViewModel>
+﻿@using System.Security.Claims
+@model List<Models.ViewModel.UserRolesViewModel>
+@inject UserManager<User> userManager;
 
 @{
     ViewData["Title"] = "Edit User In Roles";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var userId = ViewBag.userId;
-
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var currentRolesName = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
 }
 
 <h1>Edit Role In Users</h1>
@@ -19,20 +22,30 @@
     </div>
     <div class="card-body">
         @for (int i = 0; i < Model.Count; i++)
-        { 
-                @if(Model[i].RoleName != "SuperAdmin"){
-                    continue;
-                }
+        {
+            var check = false;
 
-                <input type="hidden" asp-for="@Model[i].RoleId" />
-                <input type="hidden" asp-for="@Model[i].RoleName" />
-                <div class="form-check m-1">                    
-                    <input class="form-check-input" asp-for="@Model[i].IsSelected" />
-                    <label class="form-check-label" asp-for="@Model[i].IsSelected">
-                        <!-- Now when click on label it checked status toggle as expected -->
-                        @Model[i].RoleName
-                    </label>                    
-                </div>                       
+            foreach(var currentRoleName in currentRolesName){
+                @if( (currentRoleName == "GeneralAdmin" && currentRoleName == Model[i].RoleName)   || Model[i].RoleName == "SuperAdmin")
+                {
+                    check = true;
+                }
+            }
+
+            if(check == true){
+                continue;
+            }
+
+            <input type="hidden" asp-for="@Model[i].RoleId" />
+            <input type="hidden" asp-for="@Model[i].RoleName" />
+            <div class="form-check m-1">
+                <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                    <!-- Now when click on label it checked status toggle as expected -->
+                    @Model[i].RoleName
+                </label>
+            </div>
+
         }
     </div>
     <div class="card-footer">

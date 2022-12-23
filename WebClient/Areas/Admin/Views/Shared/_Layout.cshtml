@@ -1,6 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims
 @inject SignInManager<User> signInManager;
+@inject UserManager<User> userManager;
 
+@{
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    
+}
     
 
 <!DOCTYPE html>
@@ -39,23 +45,26 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="nav-link text-dark" asp-area="Admin" asp-controller="Administration" asp-action="ListUsers">Manage Users</a>
                                     <a class="nav-link text-dark" asp-area="Admin" asp-controller="Administration" asp-action="ListRoles">Manage Roles</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Branch" asp-action="Index">Manage Branch</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Category" asp-action="Index">Manage Category</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="CategoryBranch" asp-action="Index">Manage CategoriesBranch</a>  
                                 </div>
                             </li>
-                            
-                        }
-                        @if(signInManager.IsSignedIn(User)){
+                                                   
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-hashpopup="true" aria-expanded="false">
-                                    @User.Identity.Name
+                                     @User.Identity.Name
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a asp-area="Admin" asp-controller="Account" asp-action="Profile" class="nav-link text-dark">Profile</a>
+                                    <a asp-area="Admin" asp-controller="Account" asp-action="Profile" asp-route-id="@currentUserId" class="nav-link text-dark">Profile</a>
                                     <form method="post" asp-controller="account" asp-action="logout">
                                         <button class="nav-link text-dark" type="submit">Logout </button>
                                     </form>
                                 </div>
                             </li>                            
-                        }else{                           
+                        }
+                        else
+                        {                           
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="account" asp-action="login">Login</a>
                             </li>

@@ -47,6 +47,15 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "e8cfeeb0-7386-4d72-8632-633c9a90c838",
+                            ConcurrencyStamp = "591a38b3-6aae-474a-a740-6fc1c29b47d5",
+                            Name = "SuperAdmin",
+                            NormalizedName = "SUPERADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -205,6 +214,13 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8a5821c7-2940-48d7-aae3-e39a4d849869",
+                            RoleId = "e8cfeeb0-7386-4d72-8632-633c9a90c838"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -279,6 +295,22 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Branches");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Address = "590 CMT8",
+                            CreatedAt = new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7849),
+                            Email = "hcm@gmail.com",
+                            Facebook = "StarFb",
+                            Instagram = "StarIg",
+                            Name = "Hồ Chí Minh",
+                            Phone = "0987654321",
+                            TimeOpen = "01-01-2021",
+                            Twitter = "StarTw",
+                            Youtube = "StarYtb"
+                        });
                 });
 
             modelBuilder.Entity("Models.Category", b =>
@@ -309,6 +341,40 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreatedAt = new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7995),
+                            Image = "default.jpg",
+                            Name = "Security Service",
+                            Slug = "security-service"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreatedAt = new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7997),
+                            Image = "default.jpg",
+                            Name = "Vacancy Service",
+                            Slug = "vacancy-service"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreatedAt = new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7998),
+                            Image = "default.jpg",
+                            Name = "Cash Service",
+                            Slug = "cash-service"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            CreatedAt = new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7999),
+                            Image = "default.jpg",
+                            Name = "Train Service",
+                            Slug = "train-service"
+                        });
                 });
 
             modelBuilder.Entity("Models.CategoryBranch", b =>
@@ -338,84 +404,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("CategoryBranches");
-                });
-
-            modelBuilder.Entity("Models.Module", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Modules");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8990),
-                            Name = "security",
-                            Title = "Security Manager"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8993),
-                            Name = "vacancy",
-                            Title = "Vacancy Manager"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8995),
-                            Name = "device",
-                            Title = "Device Manager"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8997),
-                            Name = "train",
-                            Title = "Train Manager"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8999),
-                            Name = "role",
-                            Title = "Role Manager"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(9000),
-                            Name = "branch",
-                            Title = "Branch Manager"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            CreatedAt = new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(9002),
-                            Name = "user",
-                            Title = "User Manager"
-                        });
                 });
 
             modelBuilder.Entity("Models.Service", b =>
@@ -486,57 +474,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Sessions");
                 });
 
-            modelBuilder.Entity("Models.SuperAdmin", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SuperAdmin");
-                });
-
             modelBuilder.Entity("Models.Testimonial", b =>
                 {
                     b.Property<long>("Id")
@@ -579,11 +516,25 @@ namespace DataAccess.Migrations
                     b.Property<long>("BranchId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserBranchs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            BranchId = 1L,
+                            UserId = "8a5821c7-2940-48d7-aae3-e39a4d849869"
+                        });
                 });
 
             modelBuilder.Entity("Models.UserDetail", b =>
@@ -621,9 +572,74 @@ namespace DataAccess.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserDetails");
+                });
+
+            modelBuilder.Entity("Models.Vacancy", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("BranchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("text");
+
+                    b.Property<string>("Noted")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Vacancies");
                 });
 
             modelBuilder.Entity("Models.User", b =>
@@ -642,7 +658,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte>("Status")
@@ -652,6 +667,28 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasDiscriminator().HasValue("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8a5821c7-2940-48d7-aae3-e39a4d849869",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "543c068a-17d1-4577-8160-89570ab8a0ad",
+                            Email = "nguyenngocnguyen.rtc@starsec.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
+                            NormalizedUserName = "NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAVhnYZEwU6qLKFlI02Y8mcW5cl7/wICrlnPlvOuWHh1WC7OSYrFbHn+URCbyQDAaQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "47d20468-d8f4-4bc3-a1a3-da21c3dcfd37",
+                            TwoFactorEnabled = false,
+                            UserName = "nguyenngocnguyen.rtc@starsec.com",
+                            Address = "Some Address",
+                            CreatedAt = new DateTime(2022, 12, 21, 22, 11, 55, 326, DateTimeKind.Local).AddTicks(1727),
+                            Image = "default.jpg",
+                            Status = (byte)1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -743,7 +780,53 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Branch");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Models.UserDetail", b =>
+                {
+                    b.HasOne("Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Models.Vacancy", b =>
+                {
+                    b.HasOne("Models.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

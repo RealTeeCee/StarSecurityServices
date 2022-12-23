@@ -14,18 +14,10 @@ namespace DataAccess.Services
         public IBranch Branch { get; private set; }   
         public ICategory Category { get; private set; }
 
-        public ICategoryBranch CategoryBranch { get; private set; }
-
-     
-
-        public IModule Module { get; private set; }
-
-        public IRole Role { get; private set; }
+        public ICategoryBranch CategoryBranch { get; private set; }     
 
         public IService Service { get; private set; }
-
       
-
         public ISession Session { get; private set; }
 
         public ITestimonial Testimonial { get; private set; }
@@ -47,12 +39,8 @@ namespace DataAccess.Services
             _context = context;
             Branch = new BranchService(_context);
             Category = new CategoryService(_context);
-            CategoryBranch = new CategoryBranchService(_context);
-   
-            Module = new ModuleService(_context);
-            Role = new RoleService(_context);
-            Service = new ServicesService(_context);
-            
+            CategoryBranch = new CategoryBranchService(_context);              
+            Service = new ServicesService(_context);            
             Session = new SessionService(_context);
             Testimonial = new TestimonialService(_context);
             User = new UserService(_context);

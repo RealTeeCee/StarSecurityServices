@@ -1,10 +1,13 @@
-﻿@model List<Models.ViewModel.RoleUsersViewModel>
+﻿@using System.Security.Claims
+@model List<Models.ViewModel.RoleUsersViewModel>
+@inject UserManager<User> userManager;
 
 @{
     ViewData["Title"] = "Edit Users In Role";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var roleId = ViewBag.roleId;
-    
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);    
+    var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
 }
 
 <h1>Edit Users In Role</h1>
@@ -20,22 +23,40 @@
     <div class="card-body">
         @for(int i = 0; i < Model.Count; i++)
         {
-            @if (Model[i].UserName == "superadmin@starsec.com")
+            @for (int j = 0; j < currentRoleNames.Count; j++)
             {
-                continue;
-            }
-            <input type="hidden" asp-for="@Model[i].UserId" />
-            <input type="hidden" asp-for="@Model[i].UserName" />
-            <div class="form-check m-1">
-                
-                    <input class="form-check-input" asp-for="@Model[i].IsSelected" />
-                    <label class="form-check-label" asp-for="@Model[i].IsSelected"> 
+                var check = false;
+                foreach (var roleName in Model[i].RolesName)
+                {
+                    
+                    if ((currentRoleNames[j] == "GeneralAdmin" && currentRoleNames[j] == roleName) || roleName == "SuperAdmin")
+                    {
+                        check = true;
+                    }
+
+                    @* if ((currentRoleNames[j] == "GeneralAdmin" && currentRoleNames[j] == Model[i].RolesName) || Model[i].RoleName == "SuperAdmin")
+                    {
+                        continue;
+                    }*@
+
+                }
+                if(check == true){
+                    continue;
+                }
+              
+                <input type="hidden" asp-for="@Model[i].UserId" />
+                <input type="hidden" asp-for="@Model[i].UserName" />
+                <div class="form-check m-1" >
+                    @*style="display:@(Model[i].UserName == "nguyenngocnguyen.rtc@starsec.com"  ? "none" : "block")"*@
+                <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                <label class="form-check-label" asp-for="@Model[i].IsSelected">
                         <!-- Now when click on label it checked status toggle as expected -->
-                    @Model[i].UserName
-                </label>
-                
-            </div>
+                @Model[i].UserName
+                    </label>
+                </div>
+            }                       
         }
+
     </div>
     <div class="card-footer">
         <input type="submit" value="Update" style="width:auto" class="btn btn-primary" />

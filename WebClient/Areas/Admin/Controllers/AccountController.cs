@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DataAccess.Data;
+using DataAccess.Repositories.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.ViewModel;
 using NuGet.Common;
@@ -12,30 +15,36 @@ using System.Text;
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "SuperAdmin, Admin, Employee")]
+    [Authorize(Roles = "SuperAdmin, GeneralAdmin,  Admin, Employee")]
     public class AccountController : Controller
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly ILogger<User> logger;
         private readonly IEmailSender emailSender;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly StarSecurityDbContext context;
+        private readonly IWebHostEnvironment env;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<User> logger, IEmailSender emailSender)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<User> logger, IEmailSender emailSender, IUnitOfWork unitOfWork, StarSecurityDbContext context, IWebHostEnvironment env)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.emailSender = emailSender;
+            this.unitOfWork = unitOfWork;
+            this.context = context;
+            this.env = env;
         }
 
-        //[Authorize(Policy = ("CreatePolicy"))]
+        [Authorize(Policy = ("CreatePolicy"))]
         public IActionResult Register()
         {
             return View();
         }      
 
         [HttpPost]
-        //[Authorize(Policy = ("CreatePolicy"))]        
+        [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if(ModelState.IsValid)
@@ -49,8 +58,11 @@ namespace WebClient.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
-                    if(signInManager.IsSignedIn(User) && User.IsInRole("SuperAdmin"))
+                    if(signInManager.IsSignedIn(User))
                     {
+                        TempData["msg"] = "Create new User Successfully.";
+                        TempData["msg_type"] = "success";
+                        return RedirectToAction("Index", "Home");
                         return RedirectToAction("ListUsers", "Administration");
                     }
                     //Login
@@ -104,6 +116,8 @@ namespace WebClient.Areas.Admin.Controllers
                     }
                     else
                     {
+                        TempData["msg"] = "Login Successfully.";
+                        TempData["msg_type"] = "success";
                         return RedirectToAction("Index", "Home");
                     }                    
                 }
@@ -257,6 +271,9 @@ namespace WebClient.Areas.Admin.Controllers
                 }
 
                 await signInManager.RefreshSignInAsync(user);
+                TempData["msg"] = "Change password Successfully.";
+                TempData["msg_type"] = "success";
+                return RedirectToAction("Index", "Home");
                 return View("ChangePasswordConfirmation");
             }
 
@@ -278,10 +295,62 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> Profile(string id)
         {
             var user = await userManager.GetUserAsync(User);
             return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> EditProfile(User model)
+        {
+            try
+            {
+
+                if (model != null)
+                {
+                    var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == model.Id); //var model = User user             
+
+                    if (user != null)
+                    {
+                        user.UserName = model.UserName;
+                        user.Address = model.Address;
+                        user.Phone = model.Phone;
+                        if (model.ImageUpload != null)
+                        {
+                            string uploadDir = Path.Combine(env.WebRootPath, "media/profiles");
+                            if (!string.Equals(user.Image, "default.jpg"))
+                            {
+                                string oldImagePath = Path.Combine(uploadDir, user.Image);
+                                if (System.IO.File.Exists(oldImagePath))
+                                {
+                                    System.IO.File.Delete(oldImagePath);
+                                }
+                            }
+                            string imageName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
+                            string filePath = Path.Combine(uploadDir, imageName);
+                            FileStream fs = new FileStream(filePath, FileMode.Create);
+                            await model.ImageUpload.CopyToAsync(fs);
+                            fs.Close();
+                            user.Image = imageName;
+                        }
+                        user.UpdatedAt = DateTime.Now;
+                        context.Users.Update(user);
+                        await unitOfWork.Save();
+
+                        TempData["msg"] = "User Profile has been Updated.";
+                        TempData["msg_type"] = "success";
+                    }
+                }
+                return RedirectToAction("Index","Home");
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
         }
     }
 }

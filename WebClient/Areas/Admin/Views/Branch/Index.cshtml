@@ -49,7 +49,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.UpdatedAt)
             </th>
-            <th></th>
+            <th>Manage</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -92,12 +93,18 @@
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
+                    <a class="btn btn-primary" asp-action="EditUsersToBranch" asp-route-id="@item.Id">Add Users</a>
+            </td>
+            <td>
                 @Html.ActionLink("Edit", "Edit", new {  id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new {  id = item.Id }) |
-                <a class="confirmDeletion" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="confirmDeletion" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                
             </td>
         </tr>
 }
     </tbody>
 </table>
-<pagination page-count="@ViewBag.TotalPages" page-target="/admin/branch" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+<div class="d-flex w-100 justify-content-center">
+    <pagination page-count="@ViewBag.TotalPages" page-target="/admin/branch" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+</div>

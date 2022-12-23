@@ -1,0 +1,50 @@
+﻿@model List<Models.ViewModel.BranchUsersViewModel>
+
+@{
+    ViewData["Title"] = "Add Manager";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var userId = ViewBag.userId;
+}
+
+<h1>Edit Users In Branch</h1>
+
+
+<hr />
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card-header">
+        <h2>Add or remove Users from this Branch</h2>
+    </div>
+    <div class="card-body">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            @if (Model[i].RoleName == "SuperAdmin" || Model[i].RoleName == "GeneralAdmin")
+        {  
+                continue;
+            }
+            <input type="hidden" asp-for="@Model[i].UserId" />
+            <input type="hidden" asp-for="@Model[i].UserName" />
+            <div class="form-check m-1">
+
+                <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                    <!-- Now when click on label it checked status toggle as expected -->
+                @Model[i].UserName
+                </label>
+
+            </div>
+        }
+    </div>
+    <div class="card-footer">
+        <input type="submit" value="Update" style="width:auto" class="btn btn-primary" />
+        <a asp-action="Index" asp-route-id="@userId" value="Add" style="width:auto" class="btn btn-primary" />Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+

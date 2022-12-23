@@ -14,9 +14,7 @@ namespace DataAccess.Repositories.IRepositories
         IContact Contact { get; }
         IUserBranch UserBranch { get; }
         ICategory Category { get; }
-        ICategoryBranch CategoryBranch { get; }       
-        IModule Module { get; }
-        IRole Role { get; }
+        ICategoryBranch CategoryBranch { get; }               
         IService Service { get; }        
         ISession Session { get; }
         ITestimonial Testimonial { get; }

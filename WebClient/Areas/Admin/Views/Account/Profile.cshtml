@@ -8,31 +8,71 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>User Profile</h1>
+<h1 class="text-center">User Profile</h1>
 
-<div>    
-    <hr />
-    <dl class="row">      
-        <dt class="col-sm-2">
-            Avatar
-        </dt>
-        <dd class="col-sm-10">
-            <img src="~/media/profiles/@Model.Image" width="200" alt="" />
-        </dd>
-        
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-    </dl>
-</div>
-<br />
-<br />
-<br />
 <div>
-    <a asp-action="ChangePassword" asp-controller="Account" asp-route-id="@Model.Id">Change Password</a>
+    <a class="btn btn-primary btn-lg" asp-action="ChangePassword" asp-controller="Account" asp-route-id="@Model.Id">Change Password</a>
+</div>
+<hr />
+<div class="row">
+    <form asp-action="EditProfile" enctype="multipart/form-data">
+        <div class="container">
+            <div class = row>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label">Current Avarta</label>
+                        <img src="~/media/profiles/@Model.Image" width="300" alt="" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label">New Category Image</label>
+                        <input asp-for="ImageUpload" class="form-control"/>
+                        <img src="" id="imgUpload" alt="" />
+                        <span asp-validation-for="ImageUpload" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-8">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Image" />
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone" class="control-label"></label>
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>            
+         
+                
+            </div>
+           
+        </div>
+    
+        <div class="form-group d-flex w-100 justify-content-center">
+            <input type="submit" value="Save" class="btn btn-primary btn-lg" />
+        </div>
+    </form>
 </div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+        <script>
+            $("#ImageUpload").change(function () {
+                readUrl(this);
+            });
+        </script>
+}

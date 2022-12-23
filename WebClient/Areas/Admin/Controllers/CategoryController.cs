@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.ViewModel;
 using Services;
+using System.Linq;
 
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin, Employee")]
     public class CategoryController : Controller
     {
         private readonly StarSecurityDbContext _context;
@@ -31,19 +32,23 @@ namespace WebClient.Areas.Admin.Controllers
             try
             {                               
                 var model = await _unitOfWork.Category.GetAll();
+                
 
                 int pageSize = 6;
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = pageSize;
                 ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
 
-                return View(model);
+                model.Skip((p - 1) * pageSize).Take(pageSize);
+
+                return View(model.Skip((p - 1) * pageSize).Take(pageSize));
             }
             catch (Exception)
             {
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }            
         }
+        [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Create()
         {
             
@@ -56,6 +61,7 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
+        [Authorize(Policy = ("CreatePolicy"))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
@@ -120,6 +126,7 @@ namespace WebClient.Areas.Admin.Controllers
 
             }
         }
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> Edit(int id)
         {
             try
@@ -138,6 +145,7 @@ namespace WebClient.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> Edit(Category model)
         {
             try
@@ -184,6 +192,7 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
+        [Authorize(Policy = ("DeletePolicy"))]
         public async Task<IActionResult> Delete(int id)
         {
             try

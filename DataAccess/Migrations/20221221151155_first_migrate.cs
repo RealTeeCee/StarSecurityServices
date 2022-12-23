@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class extendidentityuser : Migration
+    public partial class first_migrate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -96,22 +96,6 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Modules",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Modules", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sessions",
                 columns: table => new
                 {
@@ -124,27 +108,6 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sessions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SuperAdmin",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Status = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SuperAdmin", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -162,25 +125,6 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Testimonials", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserDetails",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Education = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Department = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Grade = table.Column<byte>(type: "tinyint", nullable: true),
-                    Client = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Award = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserDetails", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -290,16 +234,49 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserDetails",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Education = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Department = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Grade = table.Column<byte>(type: "tinyint", nullable: true),
+                    Client = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Award = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserDetails_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserBranchs",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BranchId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserBranchs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserBranchs_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserBranchs_Branches_BranchId",
                         column: x => x.BranchId,
@@ -362,19 +339,81 @@ namespace DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Vacancies",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "text", maxLength: 400, nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    BranchId = table.Column<long>(type: "bigint", nullable: false),
+                    Noted = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vacancies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Vacancies_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Vacancies_Branches_BranchId",
+                        column: x => x.BranchId,
+                        principalTable: "Branches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Vacancies_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
-                table: "Modules",
-                columns: new[] { "Id", "CreatedAt", "Name", "Title", "UpdatedAt" },
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "e8cfeeb0-7386-4d72-8632-633c9a90c838", "591a38b3-6aae-474a-a740-6fc1c29b47d5", "SuperAdmin", "SUPERADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Discriminator", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UpdatedAt", "UserName" },
+                values: new object[] { "8a5821c7-2940-48d7-aae3-e39a4d849869", 0, "Some Address", "543c068a-17d1-4577-8160-89570ab8a0ad", new DateTime(2022, 12, 21, 22, 11, 55, 326, DateTimeKind.Local).AddTicks(1727), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "AQAAAAEAACcQAAAAEAVhnYZEwU6qLKFlI02Y8mcW5cl7/wICrlnPlvOuWHh1WC7OSYrFbHn+URCbyQDAaQ==", null, null, false, "47d20468-d8f4-4bc3-a1a3-da21c3dcfd37", (byte)1, false, null, "nguyenngocnguyen.rtc@starsec.com" });
+
+            migrationBuilder.InsertData(
+                table: "Branches",
+                columns: new[] { "Id", "Address", "CreatedAt", "Email", "Facebook", "Instagram", "Name", "Phone", "TimeOpen", "Twitter", "UpdatedAt", "Youtube" },
+                values: new object[] { 1L, "590 CMT8", new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7849), "hcm@gmail.com", "StarFb", "StarIg", "Hồ Chí Minh", "0987654321", "01-01-2021", "StarTw", null, "StarYtb" });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CreatedAt", "Image", "Name", "Slug", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8990), "security", "Security Manager", null },
-                    { 2L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8993), "vacancy", "Vacancy Manager", null },
-                    { 3L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8995), "device", "Device Manager", null },
-                    { 4L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8997), "train", "Train Manager", null },
-                    { 5L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(8999), "role", "Role Manager", null },
-                    { 6L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(9000), "branch", "Branch Manager", null },
-                    { 7L, new DateTime(2022, 12, 18, 21, 34, 19, 611, DateTimeKind.Local).AddTicks(9002), "user", "User Manager", null }
+                    { 1L, new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7995), "default.jpg", "Security Service", "security-service", null },
+                    { 2L, new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7997), "default.jpg", "Vacancy Service", "vacancy-service", null },
+                    { 3L, new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7998), "default.jpg", "Cash Service", "cash-service", null },
+                    { 4L, new DateTime(2022, 12, 21, 22, 11, 55, 333, DateTimeKind.Local).AddTicks(7999), "default.jpg", "Train Service", "train-service", null }
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "e8cfeeb0-7386-4d72-8632-633c9a90c838", "8a5821c7-2940-48d7-aae3-e39a4d849869" });
+
+            migrationBuilder.InsertData(
+                table: "UserBranchs",
+                columns: new[] { "Id", "BranchId", "UserId" },
+                values: new object[] { 1L, 1L, "8a5821c7-2940-48d7-aae3-e39a4d849869" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -434,6 +473,31 @@ namespace DataAccess.Migrations
                 name: "IX_UserBranchs_BranchId",
                 table: "UserBranchs",
                 column: "BranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserBranchs_UserId",
+                table: "UserBranchs",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDetails_UserId",
+                table: "UserDetails",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vacancies_BranchId",
+                table: "Vacancies",
+                column: "BranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vacancies_CategoryId",
+                table: "Vacancies",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vacancies_UserId",
+                table: "Vacancies",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -457,16 +521,10 @@ namespace DataAccess.Migrations
                 name: "CategoryBranches");
 
             migrationBuilder.DropTable(
-                name: "Modules");
-
-            migrationBuilder.DropTable(
                 name: "Services");
 
             migrationBuilder.DropTable(
                 name: "Sessions");
-
-            migrationBuilder.DropTable(
-                name: "SuperAdmin");
 
             migrationBuilder.DropTable(
                 name: "Testimonials");
@@ -478,16 +536,19 @@ namespace DataAccess.Migrations
                 name: "UserDetails");
 
             migrationBuilder.DropTable(
+                name: "Vacancies");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Branches");
 
             migrationBuilder.DropTable(
-                name: "Branches");
+                name: "Categories");
         }
     }
 }

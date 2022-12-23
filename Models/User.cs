@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,19 +21,18 @@ namespace Models
         //[StringLength(255)]
         //public string Password { get; set; }
         //[StringLength(20)]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         [StringLength(255)]
         [Column(TypeName = "nvarchar")]
-        public string? Address { get; set; }
+        public string? Address { get; set; } = "Some Address";
 
-        [StringLength(255)]
+        [FileExtension]
         public string? Image { get; set; } = "default.jpg";
-        //[Range(1, int.MaxValue, ErrorMessage = "You must choose a role")]
-        //public long RoleId { get; set; }
-        //[ForeignKey("RoleId")]
-        //public virtual Role Role { get; set; }
-     
+                
+        [NotMapped]
+        public IFormFile ImageUpload { get; set; }
+
         [DefaultValue(1)]
         public byte Status { get; set; } = 1;
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
@@ -54,10 +54,10 @@ namespace Models
 
         
         public string? Image { get; set; } = "default.jpg";
-        [Range(1, long.MaxValue, ErrorMessage = "You must choose a role")]
-        public long RoleId { get; set; }
-        [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
+        //[Range(1, long.MaxValue, ErrorMessage = "You must choose a role")]
+        //public long RoleId { get; set; }
+        //[ForeignKey("RoleId")]
+        //public virtual Role Role { get; set; }
         [Range(1, long.MaxValue, ErrorMessage ="You must choose a branch")]
         public long BranchId { get; set; }
         [ForeignKey("BranchId")]

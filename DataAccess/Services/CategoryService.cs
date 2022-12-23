@@ -20,7 +20,7 @@ namespace DataAccess.Services
 
         public void Update(Category obj)
         {
-            var objFromDb = _context.Categories.FirstOrDefault(x => x.Id == obj.Id);
+            var objFromDb = _context.Categories.FirstOrDefault(x => x.Id == obj.Id);            
             if (objFromDb != null)
             {
 

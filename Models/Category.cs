@@ -20,9 +20,10 @@ namespace Models
 
         [FileExtension]
         public string? Image { get; set; }
+        [NotMapped]
+        public IFormFile ImageUpload { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
-        [NotMapped]
-        public IFormFile ImageUpload { get; set; } 
+       
     }
 }

@@ -20,9 +20,9 @@ namespace DataAccess.Data
             modelBuilder.Seed();            
         }
         public DbSet<Branch> Branches { get; set; }
-        //public DbSet<Role> Roles { get; set; }
-        public DbSet<Module> Modules { get; set; }
+                
         public DbSet<Testimonial> Testimonials { get; set; }
+        public DbSet<Vacancy> Vacancies { get; set; }
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserBranch> UserBranchs { get; set; }
@@ -37,7 +37,7 @@ namespace DataAccess.Data
 
         public DbSet<Session> Sessions { get; set; }
 
-        public DbSet<SuperAdmin> SuperAdmin { get; set; }
+        //public DbSet<SuperAdmin> SuperAdmin { get; set; }
 
 
 

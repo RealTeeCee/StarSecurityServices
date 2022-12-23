@@ -24,7 +24,7 @@ namespace Models
         public string? Slug { get; set; }
         [StringLength(15)]
         public string Phone { get; set; }
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
         public long CategoryId { get; set; }

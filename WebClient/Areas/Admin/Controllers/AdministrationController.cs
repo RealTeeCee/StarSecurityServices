@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DataAccess.Data;
+using DataAccess.Repositories.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.ViewModel;
 using System.Security.Claims;
@@ -9,31 +12,36 @@ using System.Security.Claims;
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "SuperAdmin ,Admin, Employee")]
+    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin, Employee")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<User> userManager;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly StarSecurityDbContext context;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUnitOfWork unitOfWork, StarSecurityDbContext context)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.unitOfWork = unitOfWork;
+            this.context = context;
         }
         //--------------------------------- USER ---------------------------------
         //Create User is Register
 
         
-        public async Task<IActionResult> ListUsers()
+        public async Task<IActionResult> ListUsers(int p = 1)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             ViewBag.UserId = claims.Value;
             var users = userManager.Users; //List of Users
+
             return View(users);
 
         }
-        [Authorize(Roles = "SuperAdmin, Admin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -62,7 +70,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         }
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
             var user = await userManager.FindByIdAsync(model.Id);
@@ -82,6 +90,9 @@ namespace WebClient.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
+                    TempData["msg"] = "Update User Infomation Successfully.";
+                    TempData["msg_type"] = "success";
+                    return RedirectToAction("Index", "Home");
                     return RedirectToAction("ListUsers");
                 }
 
@@ -94,8 +105,8 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
-        //[Authorize(Policy = "EditRolePolicy")]
-        [Authorize(Roles = "SuperAdmin")]
+
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -128,6 +139,7 @@ namespace WebClient.Areas.Admin.Controllers
                     userRolesViewModel.IsSelected = false;
                 }
                 model.Add(userRolesViewModel);
+
             }
 
             return View(model);
@@ -135,8 +147,8 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy ="EditRolePolicy")]
-        [Authorize(Roles = "SuperAdmin")]
+        
+        //[Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -146,6 +158,18 @@ namespace WebClient.Areas.Admin.Controllers
                 ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
                 return RedirectToAction("NotFound", "Error");
             }
+
+            //var check = model.Where(x => x.IsSelected).Select(y => y.RoleName);
+
+            //foreach (var item in check)
+            //{
+            //    if(item == "GeneralAdmin" && await roleManager.RoleExistsAsync("GeneralAdmin"))
+            //    {
+            //        TempData["msg"] = "In Star Security System only have one General Admin";
+            //        TempData["msg_type"] = "danger";
+            //        return RedirectToAction("EditUser");
+            //    }
+            //}
 
             var roles = await userManager.GetRolesAsync(user); //lay tat ca Roles thuoc User nay
             var result = await userManager.RemoveFromRolesAsync(user, roles); //xoa tat ca roles trong user
@@ -158,18 +182,39 @@ namespace WebClient.Areas.Admin.Controllers
 
             result = await userManager.AddToRolesAsync(user, model.Where(x => x.IsSelected).Select(y => y.RoleName));
                                                             //Get List of Selected roles -> select RoleName -> Add selected RoleNames to User
-
+            
             if (!result.Succeeded)//neu xay ra loi khi add selected Roles to User
             {
                 ModelState.AddModelError("", "cannot add selected roles to user");
                 return View(model);
-            } 
+            }
 
+            
+            // Get All trong Branch
+            var branchs = await unitOfWork.Branch.GetAll();
+            foreach (var branch in branchs)
+            {
+                // Check Branch trong UserBranch isExist ?
+                var userBranch = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.BranchId == branch.Id && x.UserId == user.Id);
+                // If not exist => created
+                if (userBranch == null)
+                {
+                    var newUserBranch = new UserBranch();
+                    newUserBranch.BranchId = branch.Id;
+                    newUserBranch.UserId = user.Id;
+                    await unitOfWork.UserBranch.Add(newUserBranch);
+                    await unitOfWork.Save();
+                }
+            }
+
+            TempData["msg"] = "Edit User 's Roles Successfully.";
+            TempData["msg_type"] = "success";
+            return RedirectToAction("Index", "Home");
             return RedirectToAction("EditUser", new { Id = userId });
 
         }
 
-        [Authorize(Roles = "SuperAdmin, Admin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> ManageUserClaims(string userId)
         {                        
             var user = await userManager.FindByIdAsync(userId);
@@ -196,7 +241,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                 //If the user has the claim, set IsSelected property to true, so the check box next to the claim is checked on the UI
 
-                if (existingUserClaims.Any(c => c.Type == claim.Type && c.Value == "true")) //Checking if existingUserClaims existing user Claims (existingUserClaims contains all the user claims)
+                if (existingUserClaims.Any(c => c.Type == claim.Type && c.Value == "True")) //Checking if existingUserClaims existing user Claims (existingUserClaims contains all the user claims)
                 //To determine the value for IsSelected Property we need to know whether if the user that we are currently editing has this claim that we iterating over 
                 {
                     userClaim.IsSelected = true; //populating its Selected property 
@@ -210,7 +255,7 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> ManageUserClaims(UserClaimsViewModel model) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
         {
             var user = await userManager.FindByIdAsync(model.UserId);
@@ -230,7 +275,7 @@ namespace WebClient.Areas.Admin.Controllers
                 return View(model);
             }
 
-            result = await userManager.AddClaimsAsync(user, model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")));//If the Claim selected on UI -> store it with true otherwise false
+            result = await userManager.AddClaimsAsync(user, model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "True" : "False")));//If the Claim selected on UI -> store it with true otherwise false
             //Get List of Selected roles -> select RoleName -> Add selected RoleNames to User
 
             if (!result.Succeeded)//neu xay ra loi khi add selected Claims to User
@@ -239,6 +284,9 @@ namespace WebClient.Areas.Admin.Controllers
                 return View(model);
             }
 
+            TempData["msg"] = "Edit User 's Claims Successfully.";
+            TempData["msg_type"] = "success";
+            return RedirectToAction("Index", "Home");
             return RedirectToAction("EditUser", new { Id = model.UserId });
 
         }
@@ -337,6 +385,9 @@ namespace WebClient.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
+                    TempData["msg"] = "Delete User Successfully.";
+                    TempData["msg_type"] = "success";
+                    return RedirectToAction("Index", "Home");
                     return RedirectToAction("ListUsers");
                 }
 
@@ -350,14 +401,14 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         //--------------------------------- ROLE ---------------------------------
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public IActionResult CreateRole()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -367,15 +418,20 @@ namespace WebClient.Areas.Admin.Controllers
                     Name = model.RoleName
                 };
 
+                if (identityRole.Name != "Admin" && identityRole.Name != "GeneralAdmin" && identityRole.Name != "SuperAdmin" && identityRole.Name != "Employee")
+                {
+                    TempData["msg"] = "Failed to create Role! This Role is not in Star Security System.";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("ListRoles", "Administration");
+                }
+
                 IdentityResult result = await roleManager.CreateAsync(identityRole);
 
                 if (result.Succeeded)
                 {
-                    if(identityRole.Name != "Admin" || identityRole.Name != "SuperAdmin" || identityRole.Name != "Employee")
-                    {
-                        TempData["msg"] = "Warning! This Role is not in Star Security System. Any action with this role has no effect";
-                        return RedirectToAction("ListRoles", "Administration");
-                    }                    
+                    TempData["msg"] = "Delete Role Successfully.";
+                    TempData["msg_type"] = "success";
+                    return RedirectToAction("Index", "Home");
                     return RedirectToAction("ListRoles", "Administration");
                 }
 
@@ -399,7 +455,7 @@ namespace WebClient.Areas.Admin.Controllers
             return View(roles);
 
         }
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -427,7 +483,7 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);
@@ -440,10 +496,21 @@ namespace WebClient.Areas.Admin.Controllers
             else
             {
                 role.Name = model.RoleName;
+
+                if (role.Name != "Admin" && role.Name != "GeneralAdmin" && role.Name != "SuperAdmin" && role.Name != "Employee")
+                {
+                    TempData["msg"] = "Failed to Edit Role! This Role is not in Star Security System.";
+                    TempData["msg_type"] = "danger";
+                    return RedirectToAction("ListRoles", "Administration");
+                }
+
                 var result = await roleManager.UpdateAsync(role);
 
                 if (result.Succeeded)
                 {
+                    TempData["msg"] = "Update Successfully.";
+                    TempData["msg_type"] = "success";
+                    return RedirectToAction("Index", "Home");
                     return RedirectToAction("ListRoles", "Administration");
                 }
 
@@ -461,7 +528,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewBag.roleId = roleId;
@@ -478,13 +545,19 @@ namespace WebClient.Areas.Admin.Controllers
              
 
             foreach (var user in userManager.Users)
-            {               
+            {
+                var rolesName = userManager.GetRolesAsync(user).Result;
+
+                //foreach (var roleName in roleNames)
+                //{
+
                 var roleUsersViewModel = new RoleUsersViewModel
                 {
                     UserId = user.Id,
-                    UserName = user.UserName
+                    UserName = user.UserName,
+                    RolesName = rolesName                    
                 };
-                if(await userManager.IsInRoleAsync(user, role.Name))
+                if (await userManager.IsInRoleAsync(user, role.Name))
                 {
                     roleUsersViewModel.IsSelected = true;
                 }
@@ -492,15 +565,18 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     roleUsersViewModel.IsSelected = false;
                 }
-                model.Add(roleUsersViewModel);                
-            }
 
+
+
+                model.Add(roleUsersViewModel);
+                //}                    
+            }
             return View(model);
 
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> EditUsersInRole(List<RoleUsersViewModel> model, string roleId) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
         {
             var role = await roleManager.FindByIdAsync(roleId);
@@ -519,25 +595,49 @@ namespace WebClient.Areas.Admin.Controllers
                 if (model[i].IsSelected && !await userManager.IsInRoleAsync(user, role.Name))
                 {
                     result = await userManager.AddToRoleAsync(user, role.Name);
+                    if(result.Succeeded)
+                    {
+                        // Get All trong Branch
+                        var branchs = await unitOfWork.Branch.GetAll();
+                        foreach (var branch in branchs)
+                        {
+                            // Check Branch trong UserBranch isExist ?
+                            var userBranch = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.BranchId == branch.Id && x.UserId == user.Id);
+                            // If not exist => created
+                            if (userBranch == null)
+                            {
+                                var newUserBranch = new UserBranch();
+                                newUserBranch.BranchId = branch.Id;
+                                newUserBranch.UserId = user.Id;
+                                await unitOfWork.UserBranch.Add(newUserBranch);
+                                await unitOfWork.Save();
+                            }
+                        }
+                    }
                 }
 
                 else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
                 {
                     result = await userManager.RemoveFromRoleAsync(user, role.Name);
                 }
+
                 else
                 {
                     continue;
                 }
 
                 if (result.Succeeded)
-                {
+                {                                     
+                    
                     if (i < model.Count - 1)
                     {
                         continue;
                     }
                     else
                     {
+                        TempData["msg"] = "Edit Users in Role Successfully.";
+                        TempData["msg_type"] = "success";
+                        return RedirectToAction("Index", "Home");
                         return RedirectToAction("EditRole", new { Id = roleId });
                     }
                 }
@@ -547,7 +647,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> DeleteRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -563,6 +663,9 @@ namespace WebClient.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
+                    TempData["msg"] = "Delete Role Successfully.";
+                    TempData["msg_type"] = "success";
+                    return RedirectToAction("Index", "Home");
                     return RedirectToAction("ListRoles");
                 }
 

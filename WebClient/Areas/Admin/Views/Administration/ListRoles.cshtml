@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<IdentityRole>
 
 @using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@inject UserManager<User> userManager;
 
 @*  if need this service in multiple views. Considered importing it in _ViewImport file   *@
 @inject IAuthorizationService authorizationService 
@@ -9,6 +11,8 @@
 @{
     ViewData["Title"] = "All Roles";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var currentRolesName = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
 }
 
 <h1>All Roles</h1>
@@ -16,10 +20,19 @@
 @if(Model.Any()){
     <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="CreateRole">
         Add New Role
-    </a>    
+    </a>
     foreach (var role in Model)
     {
-        if(role.Name != "SuperAdmin" ){
+        foreach (var currentRoleName in currentRolesName)
+        {
+
+            if ( (!currentRoleName.Equals("GeneralAdmin") && !currentRoleName.Equals("SuperAdmin") && role.Name == "GeneralAdmin") || 
+                 (currentRoleName.Equals("GeneralAdmin") && currentRoleName.Equals(role.Name)) || 
+                 role.Name == "SuperAdmin")
+            {
+                continue;
+            }
+
             <div class="card mb-3">
                 <div class="card-header">
                     Role Id : @role.Id
@@ -29,20 +42,18 @@
                 </div>
                 <div class="card-footer">
                     <form asp-action="DeleteRole" asp-route-id="@role.Id">
-
-                        @*@if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)*@
-                        @if (role.Name != "SuperAdmin" && role.Id != @ViewBag.UserId)
-                        {
-                            <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">
-                                Edit
-                            </a>
-                        }
-                        <button type="submit" class="btn btn-danger">Detete</button>
+                        @*  KHÔNG BỎ COMMENT NÀY DÒNG NÀY GIỮ ĐỂ THAM KHẢO CODE THÔI @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)*@
+                      
+                        <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">
+                            Edit
+                        </a>
+                        <button type="submit" class="btn btn-danger confirmDeletion">Detete</button>
                     </form>
                 </div>
             </div>
-        }        
-    }    
+        }
+               
+    } 
 }
 else{
     <div class="card">
