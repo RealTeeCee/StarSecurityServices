@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /DataAccess/Migrations/20221219193322_Initial_Local_Database.cs
 /DataAccess/Migrations/20221219193322_Initial_Local_Database.Designer.cs
 /DataAccess/Migrations/StarSecurityDbContextModelSnapshot.cs
+/DataAccess/Migrations
