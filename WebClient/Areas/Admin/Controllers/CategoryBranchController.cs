@@ -32,7 +32,9 @@ namespace WebClient.Areas.Admin.Controllers
                 ViewBag.PageRange = pageSize;
                 ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.CategoryBranches.Count() / pageSize);
 
-                
+                ViewBag.List = "List CategoriesBranch";
+                ViewBag.Controller = "CategoryBranch";
+                ViewBag.AspAction = "Index";
 
                 return View(model.Skip((p - 1) * pageSize).Take(pageSize));
             }
@@ -57,6 +59,11 @@ namespace WebClient.Areas.Admin.Controllers
                 viewCategoryBranch.Branches = _context.Branches.ToList();
                 viewCategoryBranch.Categories = _context.Categories.ToList();
 
+                ViewBag.List = "List CategoriesBranch";
+                ViewBag.Controller = "CategoryBranch";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "OnChangeCategoryBranch";
+                ViewBag.Action = "On Change Categories In Branch";
 
                 return View(viewCategoryBranch);
             }

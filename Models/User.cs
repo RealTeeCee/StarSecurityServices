@@ -23,6 +23,10 @@ namespace Models
         //[StringLength(20)]
         public string? Phone { get; set; }
 
+        [Column(TypeName = "nvarchar")]
+        [StringLength(255)]
+        public string Name { get; set; }
+
         [StringLength(255)]
         [Column(TypeName = "nvarchar")]
         public string? Address { get; set; } = "Some Address";

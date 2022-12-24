@@ -50,9 +50,10 @@ namespace WebClient.Areas.Admin.Controllers
             if(ModelState.IsValid)
             {
                 var user = new User {
-                    UserName = model.Email,
+                    UserName = model.UserName,
                     Email = model.Email ,
-                    Address = model.Address
+                    Address = model.Address,
+                    Name = model.Name
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
 
@@ -61,8 +62,7 @@ namespace WebClient.Areas.Admin.Controllers
                     if(signInManager.IsSignedIn(User))
                     {
                         TempData["msg"] = "Create new User Successfully.";
-                        TempData["msg_type"] = "success";
-                        return RedirectToAction("Index", "Home");
+                        TempData["msg_type"] = "success";                        
                         return RedirectToAction("ListUsers", "Administration");
                     }
                     //Login
@@ -106,9 +106,18 @@ namespace WebClient.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {                
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password,model.RememberMe, true);//tham so rememberMe = isPersistent(rememberMe.value)
+                var result = await signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password,model.RememberMe, true);//tham so rememberMe = isPersistent(rememberMe.value)                               
 
-                if (result.Succeeded)
+                if (!result.Succeeded)
+                {
+                    var user = await userManager.FindByEmailAsync(model.UserNameOrEmail);
+                    if (user != null)
+                    {
+                        result = await signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, true);//tham so rememberMe = isPersistent(rememberMe.value)                               
+                    }
+                }
+
+                    if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
@@ -124,7 +133,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                 if (result.IsLockedOut)
                 {
-                    ViewBag.userEmail = model.Email;
+                    ViewBag.userEmail = model.UserNameOrEmail;
                     return View("AccountLocked");
                 }
                
@@ -240,7 +249,7 @@ namespace WebClient.Areas.Admin.Controllers
             return View();
         }
 
-        
+        [AllowAnonymous]
         public async Task<IActionResult> ChangePassword()
         {
 
@@ -248,6 +257,7 @@ namespace WebClient.Areas.Admin.Controllers
         }
         
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -273,12 +283,11 @@ namespace WebClient.Areas.Admin.Controllers
                 await signInManager.RefreshSignInAsync(user);
                 TempData["msg"] = "Change password Successfully.";
                 TempData["msg_type"] = "success";
-                return RedirectToAction("Index", "Home");
+                
                 return View("ChangePasswordConfirmation");
             }
 
             return View(model);
-
 
         }
 
@@ -297,27 +306,52 @@ namespace WebClient.Areas.Admin.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Profile(string id)
         {
-            var user = await userManager.GetUserAsync(User);
-            return View(user);
+            var user = await unitOfWork.User.GetFirstOrDefault(x=>x.Id == id);
+            var model = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == id, includeProperties: "User");
+            if (model == null)
+            {
+
+                UserDetailViewModel userDetails = new UserDetailViewModel();
+                userDetails.UserId = id;
+                userDetails.Email = user.Email;
+                userDetails.Address = user.Address;
+                userDetails.UserName = user.UserName;
+                userDetails.Name = user.Name;
+                userDetails.Image = user.Image;
+                userDetails.ImageUpload = user.ImageUpload;
+                userDetails.Phone = user.Phone;                
+
+                ViewBag.List = "Your Profile";
+                ViewBag.Controller = "Account";
+                ViewBag.AspAction = "Profile";
+
+                return View(userDetails);
+            }
+
+            ViewBag.List = "Your Profile";
+            ViewBag.Controller = "Account";
+            ViewBag.AspAction = "Profile";
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> EditProfile(User model)
+        public async Task<IActionResult> UpdateProfile(UserDetailViewModel model)
         {
             try
             {
 
                 if (model != null)
                 {
-                    var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == model.Id); //var model = User user             
-
-                    if (user != null)
-                    {
-                        user.UserName = model.UserName;
+                    var userDetails = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == model.UserId,includeProperties:"User"); //var model = User user             
+                    
+                        var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == model.UserId);
+                        user.Name = model.Name;
                         user.Address = model.Address;
-                        user.Phone = model.Phone;
+                        user.Phone = model.Phone;                        
+
                         if (model.ImageUpload != null)
                         {
                             string uploadDir = Path.Combine(env.WebRootPath, "media/profiles");
@@ -336,14 +370,43 @@ namespace WebClient.Areas.Admin.Controllers
                             fs.Close();
                             user.Image = imageName;
                         }
-                        user.UpdatedAt = DateTime.Now;
                         context.Users.Update(user);
-                        await unitOfWork.Save();
+                        await unitOfWork.Save();                        
+                        
+
+                        if(userDetails != null)
+                        {
+                            userDetails.Award = model.Award;
+                            userDetails.UserCode = model.UserCode;
+                            userDetails.Client = model.Client;
+                            userDetails.Department = model.Department;
+                            userDetails.Education = model.Education;
+                            userDetails.Grade = model.Grade;
+                            userDetails.UpdatedAt = DateTime.Now;
+
+                            context.UserDetails.Update(userDetails);
+                            await unitOfWork.Save();
+                        }
+                        else
+                        {
+                            var newUserDetails = new UserDetail();
+                            newUserDetails.UserId = model.UserId;
+                            newUserDetails.Award = model.Award;
+                            newUserDetails.UserCode = model.UserCode;
+                            newUserDetails.Client = model.Client;
+                            newUserDetails.Department = model.Department;
+                            newUserDetails.Education = model.Education;
+                            newUserDetails.Grade = model.Grade;
+                            newUserDetails.UpdatedAt = DateTime.Now;
+                            context.UserDetails.Add(userDetails);
+                            await unitOfWork.Save();
+                        }                       
 
                         TempData["msg"] = "User Profile has been Updated.";
                         TempData["msg_type"] = "success";
-                    }
+
                 }
+                
                 return RedirectToAction("Index","Home");
             }
             catch (Exception)
@@ -352,5 +415,6 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
+
     }
 }

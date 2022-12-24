@@ -10,7 +10,7 @@ namespace WebClient.Security
         //implement handle requirement async method of base AuthorizationHandler
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageAdminRolesAndClaimsRequirement requirement)
         {
-            //Resource property is return the IActionResult that we are protecting as AuthorizationFilterContext 
+            //Resource property is return the IActionResult that we are protecting as AuthorizationFilterContext  
             var authFilterContext = context.Resource as AuthorizationFilterContext; //context.Resource return type of Object so cast to type AuthorizationFilterContext
             if (authFilterContext == null)
             {

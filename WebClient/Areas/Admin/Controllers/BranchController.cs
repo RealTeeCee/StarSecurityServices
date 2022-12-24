@@ -38,6 +38,10 @@ namespace WebClient.Areas.Admin.Controllers
                 ViewBag.PageRange = pageSize;
                 ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
 
+                ViewBag.List = "List Branches";
+                ViewBag.Controller = "Branch";
+                ViewBag.AspAction = "Index";
+
                 return View(model.Skip((p - 1) * pageSize).Take(pageSize));
             }
             catch (Exception)
@@ -102,6 +106,13 @@ namespace WebClient.Areas.Admin.Controllers
                         }
 
                     }
+
+                    ViewBag.List = "List Branches";
+                    ViewBag.Controller = "Branch";
+                    ViewBag.AspAction = "Index";
+                    ViewBag.AspSubAction = "EditUsersToBranch";
+                    ViewBag.Action = "Edit Users To Branch";
+
                     return View(model);
             }
             catch (Exception)
@@ -158,6 +169,11 @@ namespace WebClient.Areas.Admin.Controllers
             //ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id == 2), "Id", "Name");
             try
             {
+                ViewBag.List = "List Branches";
+                ViewBag.Controller = "Branch";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Create";
+                ViewBag.Action = "Create Branch";
                 return View();
             }
             catch (Exception)
@@ -236,6 +252,11 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     return RedirectToAction("Index", "Error", new { area = "Admin" });
                 }
+                ViewBag.List = "List Branches";
+                ViewBag.Controller = "Branch";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Details";
+                ViewBag.Action = "Branch Details";
                 return View(branch);
 
             }
@@ -253,7 +274,12 @@ namespace WebClient.Areas.Admin.Controllers
             try
             {                
                 var branch = await _unitOfWork.Branch.GetFirstOrDefault(x => x.Id == id); //var model = User user             
-            
+
+                ViewBag.List = "List Branches";
+                ViewBag.Controller = "Branch";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Edit";
+                ViewBag.Action = "Edit Branch ";
                 return View(branch);
             }
             catch (Exception)

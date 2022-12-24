@@ -4,12 +4,15 @@
 @inject UserManager<User> userManager;
 
 @{
-    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);     
+    var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
+    var currentUser = await userManager.GetUserAsync(User);
+    var currentImage = currentUser.Image;
+
 }
     
 
-<!DOCTYPE html>
+@*<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -95,7 +98,276 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>      
     <script src="~/lib/ckeditor/ckeditor.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/admin/assets/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+*@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Flat Able - Premium Admin Template by Phoenixcoded</title>
+    <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 11]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="">
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->    
+    <link rel="icon" href="~/admin/assets/images/favicon.ico" type="image/x-icon"/>
+    <!-- vendor css -->
+
+    <link href="~/admin/assets/css/style.css" rel="stylesheet" />
+
+    <style>
+        .img-avatar {
+                object-fit: cover;
+    max-width: 30px;
+    max-height: 30px;
+        }
+    </style>
+</head>
+<body class="">
+     
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+    <!-- [ Pre-loader ] End -->
+    <!-- [ navigation menu ] start -->
+    <nav class="pcoded-navbar  ">
+        <div class="navbar-wrapper  ">
+            <div class="navbar-content scroll-div ">
+                @if(signInManager.IsSignedIn(User)){
+                        <div class="">
+                            <div class="main-menu-header">
+                            <img class="img-radius img-avatar" src="~/media/profiles/@currentImage" alt="User-Profile-Image">
+                                <div class="user-details">
+                                    <span>@User.Identity.Name</span>
+                                    <div id="more-details">@currentRoleNames[0]<i class="fa fa-chevron-down m-l-5"></i></div>
+                                </div>
+                            </div>
+                            <div class="collapse" id="nav-user-link">
+                                <ul class="list-unstyled">
+                                <li class="list-group-item"><a asp-controller="account" asp-action="profile" asp-route-id=@currentUserId><i class="feather icon-user m-r-5"></i>View Profile</a></li>
+                                     <form method="post" asp-controller="account" asp-action="logout">
+                                        <li class="list-group-item"><button style="background:#2c3e50; color:#d0dcda; border: none;" type="submit"><i class="feather icon-log-out m-r-5"></i>Logout</button></li>
+                                    </form>
+                                </ul>
+                            </div>
+                        </div>
+                }
+                
+
+                <ul class="nav pcoded-inner-navbar ">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Navigation</label>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                    </li>
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-share-2"></i></span><span class="pcoded-mtext">Branch Management</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a asp-controller="Branch" asp-action="Index" asp-area="Admin">List Branches</a></li>                            
+                        </ul>
+                    </li>
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-list"></i></span><span class="pcoded-mtext">Category Management</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a asp-controller="Category" asp-action="Index" asp-area="Admin">List Categories</a></li>
+                        </ul>
+                        <ul class="pcoded-submenu">
+                            <li><a asp-controller="CategoryBranch" asp-action="Index" asp-area="Admin">List Categories Branch</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users Management</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a asp-controller="Administration" asp-action="listusers" asp-area="Admin">List Users</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user-check"></i></span><span class="pcoded-mtext">Roles Management</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a asp-controller="Administration" asp-action="listroles" asp-area="Admin">List Roles</a></li>
+                        </ul>
+                    </li>
+                </ul>              
+            </div>
+        </div>
+    </nav>
+    <!-- [ navigation menu ] end -->
+    <!-- [ Header ] start -->
+    <header class="navbar pcoded-header navbar-expand-lg navbar-light header-dark">
+
+
+        <div class="m-header">
+            <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+            <a href="#!" class="b-brand">
+                <!-- ========   change your logo hear   ============ -->
+                <img src="~/admin/assets/images/logo.png" alt="" class="logo">
+                <img src="~/admin/assets/images/logo-icon.png" alt="" class="logo-thumb">
+            </a>
+            <a href="#!" class="mob-toggler">
+                <i class="feather icon-more-vertical"></i>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            @if(!signInManager.IsSignedIn(User))
+            {
+                <ul class="navbar-nav mr-auto">
+                    <li><a asp-area="Admin" asp-controller="account" asp-action="login">Login <i class="feather icon-log-in"></i> </a></li>
+                </ul>
+            }          
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            <i class="icon feather icon-bell"></i>
+                            <span class="badge badge-pill badge-danger">5</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right notification">
+                            <div class="noti-head">
+                                <h6 class="d-inline-block m-b-0">Notifications</h6>
+                                <div class="float-right">
+                                    <a href="#!" class="m-r-10">mark as read</a>
+                                    <a href="#!">clear all</a>
+                                </div>
+                            </div>
+                            <ul class="noti-body">
+                                <li class="n-title">
+                                    <p class="m-b-0">NEW</p>
+                                </li>
+                                <li class="notification">
+                                    <div class="media">
+                                        <img class="img-radius img-avatar" src="~/media/profiles/@currentImage" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <p><strong>@User.Identity.Name</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
+                                            <p>Chỉnh sửa User Name</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="n-title">
+                                    <p class="m-b-0">EARLIER</p>
+                                </li>
+                                <li class="notification">
+                                    <div class="media">
+                                        <img class="img-radius" src="~/admin/assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <p><strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>10 min</span></p>
+                                            <p>Prchace New Theme and make payment</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="notification">
+                                    <div class="media">
+                                        <img class="img-radius" src="~/admin/assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <p><strong>Sara Soudein</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>12 min</span></p>
+                                            <p>currently login</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="notification">
+                                    <div class="media">
+                                        <img class="img-radius" src="~/admin/assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <p><strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                                            <p>Prchace New Theme and make payment</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="noti-footer">
+                                <a href="#!">show all</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                @if(signInManager.IsSignedIn(User))
+                {
+                    <li>
+                    <div class="dropdown drp-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="feather icon-user"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-notification">
+                            <form method="post" asp-controller="account" asp-action="logout">
+                                <div class="pro-head">
+                                    <img src="~/media/profiles/@currentImage" class="img-radius" alt="User-Profile-Image">
+                                    <span>@User.Identity.Name</span>
+                                 
+                                        <button style="background: #2c3e50; color:#d0dcda;border: none;" type="submit" class="dud-logout" title="Logout">
+                                   
+                                        <i class="feather icon-log-out"></i>
+                                    </button>
+                                </div>
+                             </form>
+                            <ul class="pro-body">
+                                    <li><a asp-controller="account" asp-action="Profile" asp-route-id=@currentUserId class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                }                    
+            </ul>
+        </div>
+
+
+    </header>
+    <!-- [ Header ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                       <partial name="_BreadCrumb" />
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <partial name="_NotificationPartial" />
+                    @RenderBody()   
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+    <!-- Required Js -->
+    
+    <script src="~/admin/assets/js/vendor-all.min.js"></script>
+  
+    <script src="~/admin/assets/js/plugins/bootstrap.min.js"></script>
+
+    <script src="~/admin/assets/js/pcoded.min.js"></script>
+
+    <!-- Apex Chart -->    
+    <script src="~/admin/assets/js/plugins/apexcharts.min.js"></script>
+    <!-- custom-chart js -->
+    
+    <script src="~/admin/assets/js/pages/dashboard-main.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    
+
+
+</body>
+
+</html>
+

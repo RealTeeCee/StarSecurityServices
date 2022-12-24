@@ -38,6 +38,10 @@ namespace WebClient.Areas.Admin.Controllers
             ViewBag.UserId = claims.Value;
             var users = userManager.Users; //List of Users
 
+            ViewBag.List = "List Users";
+            ViewBag.Controller = "Administration";
+            ViewBag.AspAction = "ListUsers";
+
             return View(users);
 
         }
@@ -61,10 +65,17 @@ namespace WebClient.Areas.Admin.Controllers
                 Id = user.Id,
                 Email = user.Email,
                 UserName = user.UserName,
+                Name = user.Name,
                 Address = user.Address,
                 Claims = userClaims.Select(c => c.Type + " : " + c.Value).ToList(),
                 Roles = userRoles                
-            };                       
+            };
+
+            ViewBag.List = "List Users";
+            ViewBag.Controller = "Administration";
+            ViewBag.AspAction = "ListUsers";
+            ViewBag.AspSubAction = "EditUser";
+            ViewBag.Action = "Edit User";
 
             return View(model);
 
@@ -84,6 +95,7 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 user.Email = model.Email;
                 user.UserName = model.UserName;
+                user.Name = model.Name;
                 user.Address = model.Address;
 
                 var result = await userManager.UpdateAsync(user);
@@ -101,118 +113,123 @@ namespace WebClient.Areas.Admin.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
 
-                return View(model);
+                return RedirectToAction("ListUsers");
             }
         }
 
 
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
-        public async Task<IActionResult> ManageUserRoles(string userId)
-        {
-            ViewBag.userId = userId;
+        //[Authorize(Roles = "SuperAdmin, GeneralAdmin")]
+        //public async Task<IActionResult> ManageUserRoles(string userId)
+        //{
+        //    ViewBag.userId = userId;
 
-            var user = await userManager.FindByIdAsync(userId);
+        //    var user = await userManager.FindByIdAsync(userId);
 
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
-                return RedirectToAction("NotFound", "Error");
-            }
+        //    if (user == null)
+        //    {
+        //        ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+        //        return RedirectToAction("NotFound", "Error");
+        //    }
 
-            var model = new List<UserRolesViewModel>();
+        //    var model = new List<UserRolesViewModel>();
 
 
-            foreach (var role in roleManager.Roles)
-            {
-                var userRolesViewModel = new UserRolesViewModel
-                {
-                    RoleId = role.Id,
-                    RoleName = role.Name
-                };
+        //    foreach (var role in roleManager.Roles)
+        //    {
+        //        var userRolesViewModel = new UserRolesViewModel
+        //        {
+        //            RoleId = role.Id,
+        //            RoleName = role.Name
+        //        };
 
-                if (await userManager.IsInRoleAsync(user, role.Name))
-                {
-                    userRolesViewModel.IsSelected = true;
-                }
-                else
-                {
-                    userRolesViewModel.IsSelected = false;
-                }
-                model.Add(userRolesViewModel);
+        //        if (await userManager.IsInRoleAsync(user, role.Name))
+        //        {
+        //            userRolesViewModel.IsSelected = true;
+        //        }
+        //        else
+        //        {
+        //            userRolesViewModel.IsSelected = false;
+        //        }
+        //        model.Add(userRolesViewModel);
 
-            }
+        //    }
 
-            return View(model);
+        //    ViewBag.List = "List Users";
+        //    ViewBag.Controller = "Administration";
+        //    ViewBag.AspAction = "ListUsers";
+        //    ViewBag.AspSubAction = "ManageUserRoles";
+        //    ViewBag.Action = "Manage Change Roles In User";
 
-        }
+        //    return View(model);
 
-        [HttpPost]
+        //}
+
+        //[HttpPost]
         
-        //[Authorize(Roles = "SuperAdmin")]
-        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
-        {
-            var user = await userManager.FindByIdAsync(userId);
+        ////[Authorize(Roles = "SuperAdmin")]
+        //public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
+        //{
+        //    var user = await userManager.FindByIdAsync(userId);
 
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
-                return RedirectToAction("NotFound", "Error");
-            }
+        //    if (user == null)
+        //    {
+        //        ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+        //        return RedirectToAction("NotFound", "Error");
+        //    }
 
-            //var check = model.Where(x => x.IsSelected).Select(y => y.RoleName);
+        //    //var check = model.Where(x => x.IsSelected).Select(y => y.RoleName);
 
-            //foreach (var item in check)
-            //{
-            //    if(item == "GeneralAdmin" && await roleManager.RoleExistsAsync("GeneralAdmin"))
-            //    {
-            //        TempData["msg"] = "In Star Security System only have one General Admin";
-            //        TempData["msg_type"] = "danger";
-            //        return RedirectToAction("EditUser");
-            //    }
-            //}
+        //    //foreach (var item in check)
+        //    //{
+        //    //    if(item == "GeneralAdmin" && await roleManager.RoleExistsAsync("GeneralAdmin"))
+        //    //    {
+        //    //        TempData["msg"] = "In Star Security System only have one General Admin";
+        //    //        TempData["msg_type"] = "danger";
+        //    //        return RedirectToAction("EditUser");
+        //    //    }
+        //    //}
 
-            var roles = await userManager.GetRolesAsync(user); //lay tat ca Roles thuoc User nay
-            var result = await userManager.RemoveFromRolesAsync(user, roles); //xoa tat ca roles trong user
+        //    var roles = await userManager.GetRolesAsync(user); //lay tat ca Roles thuoc User nay
+        //    var result = await userManager.RemoveFromRolesAsync(user, roles); //xoa tat ca roles trong user
 
-            if (!result.Succeeded)//Neu ko xoa dc User nay
-            {
-                ModelState.AddModelError("", "cannot remove user existing roles");//Khong the xoa cac roles dang ton tai trong user
-                return View(model);
-            }
+        //    if (!result.Succeeded)//Neu ko xoa dc User nay
+        //    {
+        //        ModelState.AddModelError("", "cannot remove user existing roles");//Khong the xoa cac roles dang ton tai trong user
+        //        return View(model);
+        //    }
 
-            result = await userManager.AddToRolesAsync(user, model.Where(x => x.IsSelected).Select(y => y.RoleName));
-                                                            //Get List of Selected roles -> select RoleName -> Add selected RoleNames to User
+        //    result = await userManager.AddToRolesAsync(user, model.Where(x => x.IsSelected).Select(y => y.RoleName));
+        //                                                    //Get List of Selected roles -> select RoleName -> Add selected RoleNames to User
             
-            if (!result.Succeeded)//neu xay ra loi khi add selected Roles to User
-            {
-                ModelState.AddModelError("", "cannot add selected roles to user");
-                return View(model);
-            }
+        //    if (!result.Succeeded)//neu xay ra loi khi add selected Roles to User
+        //    {
+        //        ModelState.AddModelError("", "cannot add selected roles to user");
+        //        return View(model);
+        //    }
 
             
-            // Get All trong Branch
-            var branchs = await unitOfWork.Branch.GetAll();
-            foreach (var branch in branchs)
-            {
-                // Check Branch trong UserBranch isExist ?
-                var userBranch = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.BranchId == branch.Id && x.UserId == user.Id);
-                // If not exist => created
-                if (userBranch == null)
-                {
-                    var newUserBranch = new UserBranch();
-                    newUserBranch.BranchId = branch.Id;
-                    newUserBranch.UserId = user.Id;
-                    await unitOfWork.UserBranch.Add(newUserBranch);
-                    await unitOfWork.Save();
-                }
-            }
+        //    // Get All trong Branch
+        //    var branchs = await unitOfWork.Branch.GetAll();
+        //    foreach (var branch in branchs)
+        //    {
+        //        // Check Branch trong UserBranch isExist ?
+        //        var userBranch = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.BranchId == branch.Id && x.UserId == user.Id);
+        //        // If not exist => created
+        //        if (userBranch == null)
+        //        {
+        //            var newUserBranch = new UserBranch();
+        //            newUserBranch.BranchId = branch.Id;
+        //            newUserBranch.UserId = user.Id;
+        //            await unitOfWork.UserBranch.Add(newUserBranch);
+        //            await unitOfWork.Save();
+        //        }
+        //    }
 
-            TempData["msg"] = "Edit User 's Roles Successfully.";
-            TempData["msg_type"] = "success";
-            return RedirectToAction("Index", "Home");
-            return RedirectToAction("EditUser", new { Id = userId });
+        //    TempData["msg"] = "Edit User 's Roles Successfully.";
+        //    TempData["msg_type"] = "success";            
+        //    return RedirectToAction("EditUser", new { Id = userId });
 
-        }
+        //}
 
         [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public async Task<IActionResult> ManageUserClaims(string userId)
@@ -250,6 +267,12 @@ namespace WebClient.Areas.Admin.Controllers
                 model.Claims.Add(userClaim);
             }
 
+            ViewBag.List = "List Users";
+            ViewBag.Controller = "Administration";
+            ViewBag.AspAction = "ListUsers";
+            ViewBag.AspSubAction = "ManageUserClaims";
+            ViewBag.Action = "Manage Change Claims In User";
+
             return View(model);
 
         }
@@ -286,7 +309,7 @@ namespace WebClient.Areas.Admin.Controllers
 
             TempData["msg"] = "Edit User 's Claims Successfully.";
             TempData["msg_type"] = "success";
-            return RedirectToAction("Index", "Home");
+            
             return RedirectToAction("EditUser", new { Id = model.UserId });
 
         }
@@ -396,7 +419,7 @@ namespace WebClient.Areas.Admin.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
 
-                return View("ListUsers");
+                return RedirectToAction("ListRoles");
             }
         }
 
@@ -404,6 +427,13 @@ namespace WebClient.Areas.Admin.Controllers
         [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
         public IActionResult CreateRole()
         {
+
+            ViewBag.List = "List Roles";
+            ViewBag.Controller = "Administration";
+            ViewBag.AspAction = "ListRoles";
+            ViewBag.AspSubAction = "CreateRole";
+            ViewBag.Action = "Create Role";
+
             return View();
         }
 
@@ -431,7 +461,7 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     TempData["msg"] = "Delete Role Successfully.";
                     TempData["msg_type"] = "success";
-                    return RedirectToAction("Index", "Home");
+                    
                     return RedirectToAction("ListRoles", "Administration");
                 }
 
@@ -452,6 +482,11 @@ namespace WebClient.Areas.Admin.Controllers
             ViewBag.UserId = claims.Value;
 
             var roles = roleManager.Roles; //List of Roles
+
+            ViewBag.List = "List Roles";
+            ViewBag.Controller = "Administration";
+            ViewBag.AspAction = "ListRoles";
+
             return View(roles);
 
         }
@@ -478,6 +513,13 @@ namespace WebClient.Areas.Admin.Controllers
                     model.Users.Add(user.UserName);
                 }
             }
+
+
+            ViewBag.List = "List Roles";
+            ViewBag.Controller = "Administration";
+            ViewBag.AspAction = "ListRoles";
+            ViewBag.AspSubAction = "EditRole";
+            ViewBag.Action = "Edit Role";            
 
             return View(model);
         }
@@ -510,7 +552,7 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     TempData["msg"] = "Update Successfully.";
                     TempData["msg_type"] = "success";
-                    return RedirectToAction("Index", "Home");
+                    
                     return RedirectToAction("ListRoles", "Administration");
                 }
 
@@ -571,6 +613,13 @@ namespace WebClient.Areas.Admin.Controllers
                 model.Add(roleUsersViewModel);
                 //}                    
             }
+
+            ViewBag.List = "List Roles";
+            ViewBag.Controller = "Administration";
+            ViewBag.AspAction = "ListRoles";
+            ViewBag.AspSubAction = "EditUsersInRole";
+            ViewBag.Action = "Edit Users In Role";            
+
             return View(model);
 
         }
@@ -637,7 +686,7 @@ namespace WebClient.Areas.Admin.Controllers
                     {
                         TempData["msg"] = "Edit Users in Role Successfully.";
                         TempData["msg_type"] = "success";
-                        return RedirectToAction("Index", "Home");
+                        
                         return RedirectToAction("EditRole", new { Id = roleId });
                     }
                 }
@@ -665,7 +714,7 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     TempData["msg"] = "Delete Role Successfully.";
                     TempData["msg_type"] = "success";
-                    return RedirectToAction("Index", "Home");
+                    
                     return RedirectToAction("ListRoles");
                 }
 
@@ -674,7 +723,7 @@ namespace WebClient.Areas.Admin.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
 
-                return View("ListRoles");
+                return RedirectToAction("ListRoles");
             }
         }
     }

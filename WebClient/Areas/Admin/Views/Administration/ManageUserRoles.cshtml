@@ -39,7 +39,7 @@
             <input type="hidden" asp-for="@Model[i].RoleId" />
             <input type="hidden" asp-for="@Model[i].RoleName" />
             <div class="form-check m-1">
-                <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                <input class="form-radio-input" asp-for="@Model[i].IsSelected" />
                 <label class="form-check-label" asp-for="@Model[i].IsSelected">
                     <!-- Now when click on label it checked status toggle as expected -->
                     @Model[i].RoleName

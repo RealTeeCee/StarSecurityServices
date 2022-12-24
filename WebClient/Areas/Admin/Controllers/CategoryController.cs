@@ -37,9 +37,11 @@ namespace WebClient.Areas.Admin.Controllers
                 int pageSize = 6;
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = pageSize;
-                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);                
 
-                model.Skip((p - 1) * pageSize).Take(pageSize);
+                ViewBag.List = "List Categories";
+                ViewBag.Controller = "Category";
+                ViewBag.AspAction = "Index";
 
                 return View(model.Skip((p - 1) * pageSize).Take(pageSize));
             }
@@ -53,7 +55,13 @@ namespace WebClient.Areas.Admin.Controllers
         {
             
             try
-            {                                           
+            {
+                ViewBag.List = "List Categories";
+                ViewBag.Controller = "Category";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Create";
+                ViewBag.Action = "Create Category";
+
                 return View();
             }
             catch (Exception)
@@ -99,6 +107,7 @@ namespace WebClient.Areas.Admin.Controllers
                     TempData["msg_type"] = "success";
 
                 }
+           
                 return View();
             }
             catch (Exception)
@@ -116,6 +125,11 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     return RedirectToAction("Index", "Error", new { area = "Admin" });
                 }
+                ViewBag.List = "List Categories";
+                ViewBag.Controller = "Category";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Details";
+                ViewBag.Action = "Category Details";
                 return View(category);
 
             }
@@ -133,6 +147,11 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 var category = await _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id); //var model = User user             
 
+                ViewBag.List = "List Categories";
+                ViewBag.Controller = "Category";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Edit";
+                ViewBag.Action = "Edit Category";
                 return View(category);
             }
             catch (Exception)

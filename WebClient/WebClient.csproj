@@ -33,6 +33,56 @@
     <Folder Include="wwwroot\media\errors\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\admin\assets\fonts\fa-brands-400.svg" />
+    <None Include="wwwroot\admin\assets\fonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\fa-regular-400.svg" />
+    <None Include="wwwroot\admin\assets\fonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\fa-solid-900.svg" />
+    <None Include="wwwroot\admin\assets\fonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\feather.svg" />
+    <None Include="wwwroot\admin\assets\fonts\Flaticon.svg" />
+    <None Include="wwwroot\admin\assets\fonts\Flaticon.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOUehpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOVuhpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOX-hpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOXehpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOXOhpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOXuhpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFUZ0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFVp0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFVZ0b.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFW50bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFWJ0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFWp0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFWZ0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\pct.svg" />
+    <None Include="wwwroot\admin\assets\images\cd-arrow.svg" />
+    <None Include="wwwroot\admin\assets\images\hover-effect\triangle.svg" />
+    <None Include="wwwroot\admin\assets\images\hover-effect\triangle2.svg" />
+    <None Include="wwwroot\admin\assets\images\maintance\sark.svg" />
+    <None Include="wwwroot\admin\assets\images\maintance\ship.svg" />
+    <None Include="wwwroot\admin\assets\json\file-upload.php" />
+    <None Include="wwwroot\admin\assets\js\analytics.js" />
+    <None Include="wwwroot\admin\assets\js\analytics.min.js" />
+    <None Include="wwwroot\admin\assets\js\horizontal-menu.js" />
+    <None Include="wwwroot\admin\assets\js\pages\chart-apex.js" />
+    <None Include="wwwroot\admin\assets\js\pages\dashboard-main.js" />
+    <None Include="wwwroot\admin\assets\js\pages\google-maps.js" />
+    <None Include="wwwroot\admin\assets\js\pcoded.js" />
+    <None Include="wwwroot\admin\assets\js\pcoded.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\apexcharts.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\bootstrap.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\gmaps.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\jquery-ui.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\perfect-scrollbar.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\prism.js" />
+    <None Include="wwwroot\admin\assets\js\uikit.js" />
+    <None Include="wwwroot\admin\assets\js\uikit.min.js" />
+    <None Include="wwwroot\admin\assets\js\vendor-all.js" />
+    <None Include="wwwroot\admin\assets\js\vendor-all.min.js" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

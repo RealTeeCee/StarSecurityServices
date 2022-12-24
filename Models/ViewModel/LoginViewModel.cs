@@ -11,9 +11,9 @@ namespace Models.ViewModel
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-        [Required]
+        [Display(Name = "Username Or Email")]
+        public string UserNameOrEmail { get; set; }
+        [Required]        
         [DataType(DataType.Password)]
         public string Password { get; set; }
         

@@ -15,7 +15,12 @@ namespace Models.ViewModel
         [EmailAddress]
         [Remote(action: "IsEmailInUse", controller:"Account")] //the model in this RegisterViewModel and the Email UI is bound to this Email property
         [ValidEmailDomain(allowedDomain: "starsec.com", ErrorMessage = "Email domain must be starsec.com")] //Custom validate 
-        public string Email { get; set; } 
+        public string Email { get; set; }
+        [Required]
+        [RegularExpression(@"^[^\s\,]+$", ErrorMessage = "Username Cannot Have WhiteSpaces")]
+        public string UserName { get; set; }
+        [Required]
+        public string Name { get; set; }
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

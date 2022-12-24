@@ -28,10 +28,11 @@ namespace DataAccess.Data
             {
                 new User
                 {
-                    UserName = "nguyenngocnguyen.rtc@starsec.com",
+                    UserName = "TeeCee",
                     NormalizedUserName ="NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
                     Email = "nguyenngocnguyen.rtc@starsec.com",
-                    NormalizedEmail ="NGUYENNGOCNGUYEN.RTC@STARSEC.COM",                    
+                    NormalizedEmail ="NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
+                    Name = "Nguyễn Ngọc Nguyên"
                 }
             };
             
@@ -39,7 +40,7 @@ namespace DataAccess.Data
 
             //CREATE USER PASSWORD
             var passwordHasher = new PasswordHasher<User>();
-            users[0].PasswordHash = passwordHasher.HashPassword(users[0], "SuperAdmin@123");
+            users[0].PasswordHash = passwordHasher.HashPassword(users[0], "123456@");
 
             //ASSIGN ROLE TO USER
             List<IdentityUserRole<string>> userRoles = new List<IdentityUserRole<string>>();
