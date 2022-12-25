@@ -17,13 +17,35 @@ namespace WebClient.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {            
+
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
+
+        public IActionResult Project()
+        {
+            return View();
+        }
+
+        public IActionResult Feature()
+        {
+            return View();
+        }
+
+        public IActionResult FreeQuote()
+        {
+            return View();
+        }
+
+        public IActionResult OurTeam()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
