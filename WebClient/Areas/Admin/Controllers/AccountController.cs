@@ -40,7 +40,20 @@ namespace WebClient.Areas.Admin.Controllers
         [Authorize(Policy = ("CreatePolicy"))]
         public IActionResult Register()
         {
-            return View();
+            try
+            {
+                ViewBag.List = "List Users";
+                ViewBag.Controller = "Account";
+                ViewBag.AspAction = "Register";
+                ViewBag.AspSubAction = "CreateUser";
+                ViewBag.Action = "Create User";
+
+                return View();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }  
         }      
 
         [HttpPost]

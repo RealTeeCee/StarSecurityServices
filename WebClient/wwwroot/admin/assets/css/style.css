@@ -20922,7 +20922,6 @@ pre[class*=language-]:before {
 
 .pcoded-navbar .pcoded-submenu {
     background: #2c3e50;
-    padding: 15px 0;
 }
 
 .pcoded-navbar a {
@@ -24335,6 +24334,7 @@ body.box-layout .pcoded-navbar.theme-horizontal ~ .pcoded-header {
 .fixed-button.active {
     bottom: 50px;
     opacity: 1;
+    display:none;
 }
 
 .social-card {
