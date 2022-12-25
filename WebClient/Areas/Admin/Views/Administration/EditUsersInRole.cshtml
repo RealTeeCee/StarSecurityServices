@@ -13,18 +13,89 @@
     var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
 }
 
-<h1>Edit Users In Role</h1>
-
-
-<hr />
-
 <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card">
+        <div class="card-header">
+            <h2>Manage User In Role: <span class="text-danger">@(thisRoleName)</span></h2>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                bool check = false;
+
+
+                if (Model[i].RolesName.Count() > 0)
+                {
+                    @foreach (var roleName in Model[i].RolesName)
+                    {
+
+                        @if (roleName == "SuperAdmin" || (roleName == "GeneralAdmin" && currentRoleNames[0] == "GeneralAdmin") ||
+                       (roleName == "Admin" && currentRoleNames[0] == "Admin" && roleName == "GeneralAdmin") ||
+                       // neu no chay den generalAdmin VA no da co role VA dang EDIT role khac GeneralAdmin
+                       (thisRoleName != "GeneralAdmin" && roleName == "GeneralAdmin" && (roleManager.FindByIdAsync(Model[i].UserId) != null)) ||
+                       (thisRoleName != "Admin" && roleName == "Admin" && (roleManager.FindByIdAsync(Model[i].UserId) != null)) ||
+                       (thisRoleName != "Employee" && roleName == "Employee" && (roleManager.FindByIdAsync(Model[i].UserId) != null)))
+                        {
+                            <div style="display:none;">
+                                <input type="hidden" asp-for="@Model[i].UserId" />
+                                <input type="hidden" asp-for="@Model[i].UserName" />
+
+                                <div class="form-check m-1">
+                                    <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                                    <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                                        @Model[i].UserName
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <input type="hidden" asp-for="@Model[i].UserId" />
+                                <input type="hidden" asp-for="@Model[i].UserName" />
+
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" asp-for="@Model[i].IsSelected" />
+                                    <label class="custom-control-label" asp-for="@Model[i].IsSelected">
+                                        @Model[i].UserName
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <div>
+                        <input type="hidden" asp-for="@Model[i].UserId" />
+                        <input type="hidden" asp-for="@Model[i].UserName" />
+
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" asp-for="@Model[i].IsSelected" />
+                            <label class="custom-control-label" asp-for="@Model[i].IsSelected">
+                                @Model[i].UserName
+                            </label>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Update" style="width:auto" class="btn btn-primary" />
+            <a asp-action="EditRole" asp-route-id="@roleId" value="Update" style="width:auto" class="btn btn-outline-danger" />Cancel</a>
+        </div>
+    </div>
+</form>
+
+
+@*<form method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="card-header">
        <h2>Add or remove users from this role</h2>
     </div>
      @for(int i = 0; i < Model.Count; i++)
-        {
+    {
             bool check = false;
 
 
@@ -80,51 +151,13 @@
                         </label>
                     </div>
                 </div>
-            }
-
-@*
-            @if (Model[i].UserName == "TeeCee")    
-            {
-                <div style="display:none;">
-                    <input type="hidden" asp-for="@Model[i].UserId" />
-                    <input type="hidden" asp-for="@Model[i].UserName" />
-
-                    <div class="form-check m-1">
-                        <input class="form-check-input" asp-for="@Model[i].IsSelected" />
-                        <label class="form-check-label" asp-for="@Model[i].IsSelected">
-                            @Model[i].UserName
-                        </label>
-                    </div>
-                </div>
-            }
-            else 
-            {
-            <div>
-                <input type="hidden" asp-for="@Model[i].UserId" />
-                <input type="hidden" asp-for="@Model[i].UserName" />
-
-                <div class="form-check m-1">
-                    <input class="form-check-input" asp-for="@Model[i].IsSelected" />
-                    <label class="form-check-label" asp-for="@Model[i].IsSelected">
-                        @Model[i].UserName
-                    </label>
-                </div>
-            </div>
-            }*@
-
-        
-@*            if(check == true){
-                continue;
-            }
-*@
-          
-
-        }
+            }       
+    }
     <div class="card-footer">
         <input type="submit" value="Update" style="width:auto" class="btn btn-primary" />
         <a asp-action="EditRole" asp-route-id="@roleId" value="Update" style="width:auto" class="btn btn-primary" />Cancel</a>
     </div>
-</form>
+</form>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

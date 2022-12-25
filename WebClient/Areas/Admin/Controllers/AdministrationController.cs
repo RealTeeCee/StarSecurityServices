@@ -19,6 +19,7 @@ namespace WebClient.Areas.Admin.Controllers
         private readonly UserManager<User> userManager;
         private readonly IUnitOfWork unitOfWork;
         private readonly StarSecurityDbContext context;
+        private int pageSize = 6;
 
         public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUnitOfWork unitOfWork, StarSecurityDbContext context)
         {
@@ -33,16 +34,27 @@ namespace WebClient.Areas.Admin.Controllers
         
         public async Task<IActionResult> ListUsers(int p = 1)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            ViewBag.UserId = claims.Value;
-            var users = userManager.Users; //List of Users
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                ViewBag.UserId = claims.Value;
+                var users = userManager.Users; //List of Users
 
-            ViewBag.List = "List Users";
-            ViewBag.Controller = "Administration";
-            ViewBag.AspAction = "ListUsers";
+                ViewBag.PageNumber = p;
+                ViewBag.PageRange = this.pageSize;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)context.Categories.Count() / this.pageSize);
 
-            return View(users);
+                ViewBag.List = "List Users";
+                ViewBag.Controller = "Administration";
+                ViewBag.AspAction = "ListUsers";
+
+                return View(users.Skip((p - 1) * this.pageSize).Take(this.pageSize));
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
 
         }
         [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
@@ -67,7 +79,7 @@ namespace WebClient.Areas.Admin.Controllers
                 UserName = user.UserName,
                 Name = user.Name,
                 Address = user.Address,
-                Claims = userClaims.Select(c => c.Type + " : " + c.Value).ToList(),
+                Claims = userClaims.Select(c => c.Type + " : " + (c.Value == "True" ? "Allowed" : "Not Allow")).ToList(),
                 Roles = userRoles                
             };
 
@@ -104,7 +116,7 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     TempData["msg"] = "Update User Infomation Successfully.";
                     TempData["msg_type"] = "success";
-                    return RedirectToAction("Index", "Home");
+                    
                     return RedirectToAction("ListUsers");
                 }
 
@@ -271,7 +283,7 @@ namespace WebClient.Areas.Admin.Controllers
             ViewBag.Controller = "Administration";
             ViewBag.AspAction = "ListUsers";
             ViewBag.AspSubAction = "ManageUserClaims";
-            ViewBag.Action = "Manage Change Claims In User";
+            ViewBag.Action = "Manage User Permission";
 
             return View(model);
 
@@ -410,7 +422,7 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     TempData["msg"] = "Delete User Successfully.";
                     TempData["msg_type"] = "success";
-                    return RedirectToAction("Index", "Home");
+                    
                     return RedirectToAction("ListUsers");
                 }
 
@@ -475,19 +487,30 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         
-        public async Task<IActionResult> ListRoles()
+        public async Task<IActionResult> ListRoles(int p = 1)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            ViewBag.UserId = claims.Value;
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                ViewBag.UserId = claims.Value;
 
-            var roles = roleManager.Roles; //List of Roles
+                var roles = roleManager.Roles; //List of Roles
 
-            ViewBag.List = "List Roles";
-            ViewBag.Controller = "Administration";
-            ViewBag.AspAction = "ListRoles";
+                ViewBag.PageNumber = p;
+                ViewBag.PageRange = this.pageSize;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)context.Categories.Count() / this.pageSize);
 
-            return View(roles);
+                ViewBag.List = "List Roles";
+                ViewBag.Controller = "Administration";
+                ViewBag.AspAction = "ListRoles";
+
+                return View(roles.Skip((p - 1) * this.pageSize).Take(this.pageSize));
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
 
         }
         [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
@@ -629,7 +652,7 @@ namespace WebClient.Areas.Admin.Controllers
         public async Task<IActionResult> EditUsersInRole(List<RoleUsersViewModel> model, string roleId) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
         {
             //Tim role cua 
-            var role = await roleManager.FindByIdAsync(roleId);
+            var role = await roleManager.FindByIdAsync(roleId);            
 
             if (role == null)
             {
@@ -656,11 +679,15 @@ namespace WebClient.Areas.Admin.Controllers
                             // If not exist => created
                             if (userBranch == null)
                             {
-                                var newUserBranch = new UserBranch();
-                                newUserBranch.BranchId = branch.Id;
-                                newUserBranch.UserId = user.Id;
-                                await unitOfWork.UserBranch.Add(newUserBranch);
-                                await unitOfWork.Save();
+                                // Check If User == GeneralAdmin
+                                if(await userManager.IsInRoleAsync(user, "GeneralAdmin"))
+                                {
+                                    var newUserBranch = new UserBranch();
+                                    newUserBranch.BranchId = branch.Id;
+                                    newUserBranch.UserId = user.Id;
+                                    await unitOfWork.UserBranch.Add(newUserBranch);
+                                    await unitOfWork.Save();
+                                }
                             }
                         }
                     }
@@ -668,23 +695,26 @@ namespace WebClient.Areas.Admin.Controllers
 
                 else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
                 {
-                    result = await userManager.RemoveFromRoleAsync(user, role.Name);
-                    if (result.Succeeded)
+                    // Get All trong Branch
+                    var branchs = await unitOfWork.Branch.GetAll();
+                    foreach (var branch in branchs)
                     {
-                        // Get All trong Branch
-                        var branchs = await unitOfWork.Branch.GetAll();
-                        foreach (var branch in branchs)
+                        // Check Branch trong UserBranch isExist ?
+                        var userBranch = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.BranchId == branch.Id && x.UserId == user.Id);
+                        // If exist => deleted
+                        if (userBranch != null)
                         {
-                            // Check Branch trong UserBranch isExist ?
-                            var userBranch = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.BranchId == branch.Id && x.UserId == user.Id);
-                            // If exist => deleted
-                            if (userBranch != null)
-                            {                                
+                            // Check If User == GeneralAdmin
+                            if (await userManager.IsInRoleAsync(user, "GeneralAdmin"))
+                            {
                                 unitOfWork.UserBranch.Remove(userBranch);
                                 await unitOfWork.Save();
                             }
                         }
                     }
+
+                    result = await userManager.RemoveFromRoleAsync(user, role.Name);
+
                 }
 
                 else
