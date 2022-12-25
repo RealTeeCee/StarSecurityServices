@@ -303,14 +303,13 @@ namespace WebClient.Areas.Admin.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Profile(string id)
         {
             var user = await unitOfWork.User.GetFirstOrDefault(x=>x.Id == id);
             var model = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == id, includeProperties: "User");
             if (model == null)
             {
-
                 UserDetailViewModel userDetails = new UserDetailViewModel();
                 userDetails.UserId = id;
                 userDetails.Email = user.Email;
@@ -319,7 +318,7 @@ namespace WebClient.Areas.Admin.Controllers
                 userDetails.Name = user.Name;
                 userDetails.Image = user.Image;
                 userDetails.ImageUpload = user.ImageUpload;
-                userDetails.Phone = user.Phone;                
+                userDetails.Phone = user.Phone;
 
                 ViewBag.List = "Your Profile";
                 ViewBag.Controller = "Account";
@@ -327,12 +326,27 @@ namespace WebClient.Areas.Admin.Controllers
 
                 return View(userDetails);
             }
+            UserDetailViewModel userDetailsFetchData = new UserDetailViewModel();
+            userDetailsFetchData.UserId = id;
+            userDetailsFetchData.Email = user.Email;
+            userDetailsFetchData.Address = user.Address;
+            userDetailsFetchData.UserName = user.UserName;
+            userDetailsFetchData.Name = user.Name;
+            userDetailsFetchData.Image = user.Image;
+            userDetailsFetchData.ImageUpload = user.ImageUpload;
+            userDetailsFetchData.Phone = user.Phone;
+            userDetailsFetchData.UserCode = model.UserCode;
+            userDetailsFetchData.Award = model.Award;
+            userDetailsFetchData.Client = model.Client;
+            userDetailsFetchData.Department = model.Department;
+            userDetailsFetchData.Grade = model.Grade;
+            userDetailsFetchData.UpdatedAt = model.UpdatedAt;
 
             ViewBag.List = "Your Profile";
             ViewBag.Controller = "Account";
             ViewBag.AspAction = "Profile";
 
-            return View(model);
+            return View(userDetailsFetchData);
         }
 
         [HttpPost]
@@ -340,8 +354,8 @@ namespace WebClient.Areas.Admin.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> UpdateProfile(UserDetailViewModel model)
         {
-            try
-            {
+            //try
+            //{
 
                 if (model != null)
                 {
@@ -389,7 +403,7 @@ namespace WebClient.Areas.Admin.Controllers
                         }
                         else
                         {
-                            var newUserDetails = new UserDetail();
+                            UserDetail newUserDetails = new UserDetail();                            
                             newUserDetails.UserId = model.UserId;
                             newUserDetails.Award = model.Award;
                             newUserDetails.UserCode = model.UserCode;
@@ -398,7 +412,7 @@ namespace WebClient.Areas.Admin.Controllers
                             newUserDetails.Education = model.Education;
                             newUserDetails.Grade = model.Grade;
                             newUserDetails.UpdatedAt = DateTime.Now;
-                            context.UserDetails.Add(userDetails);
+                            await unitOfWork.UserDetail.Add(newUserDetails);
                             await unitOfWork.Save();
                         }                       
 
@@ -408,12 +422,12 @@ namespace WebClient.Areas.Admin.Controllers
                 }
                 
                 return RedirectToAction("Index","Home");
-            }
-            catch (Exception)
-            {
+            //}
+            //catch (Exception)
+            //{
 
-                return RedirectToAction("Index", "Error", new { area = "Admin" });
-            }
+            //    return RedirectToAction("Index", "Error", new { area = "Admin" });
+            //}
         }
 
     }

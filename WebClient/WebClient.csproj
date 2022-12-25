@@ -83,6 +83,13 @@
     <None Include="wwwroot\admin\assets\js\vendor-all.min.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\media\categories\default.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

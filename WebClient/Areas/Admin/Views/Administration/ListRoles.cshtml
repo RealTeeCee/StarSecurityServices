@@ -26,9 +26,9 @@
         foreach (var currentRoleName in currentRolesName)
         {
 
-            if ( (!currentRoleName.Equals("GeneralAdmin") && !currentRoleName.Equals("SuperAdmin") && role.Name == "GeneralAdmin") || 
-                 (currentRoleName.Equals("GeneralAdmin") && currentRoleName.Equals(role.Name)) || 
-                 role.Name == "SuperAdmin")
+            if ((currentRoleName.Equals("Admin") && (role.Name == "GeneralAdmin" || role.Name == "Admin")) ||            
+                 (currentRoleName.Equals("GeneralAdmin") && role.Name == "GeneralAdmin" || 
+                 role.Name == "SuperAdmin") )
             {
                 continue;
             }

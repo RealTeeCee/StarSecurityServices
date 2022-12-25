@@ -79,7 +79,7 @@ namespace WebClient.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnChangeCategoryBranch(ViewCategoryBranch model)
-        {                                 
+        {
             try
             {
                 if (model.BranchId == 0)
@@ -100,15 +100,28 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     var categoryBranchDb = await _unitOfWork.CategoryBranch.GetFirstOrDefault(x => x.BranchId == model.BranchId && x.CategoryId == item);
                     if (categoryBranchDb == null)
-                    {
+                    {  
                         var categoryBranch = new CategoryBranch();
                         categoryBranch.BranchId = model.BranchId;
                         categoryBranch.CategoryId = item;
-
+                        categoryBranch.UpdatedAt = DateTime.Now;
                         await _unitOfWork.CategoryBranch.Add(categoryBranch);
                         await _unitOfWork.Save();
                     }
-               
+                    else
+                    {
+                        var categoriesByBranch = await _context.CategoryBranches.Where(x => x.BranchId == model.BranchId).ToListAsync();
+                        _unitOfWork.CategoryBranch.RemoveRange(categoriesByBranch);
+                        foreach (var categoryId in model.CategoryId)
+                        {
+                            var categoryBranch = new CategoryBranch();
+                            categoryBranch.BranchId = model.BranchId;
+                            categoryBranch.CategoryId = categoryId;
+                            categoryBranch.UpdatedAt = DateTime.Now;
+                            await _unitOfWork.CategoryBranch.Add(categoryBranch);
+                            await _unitOfWork.Save();
+                        }
+                    }
                 }
 
                 TempData["msg"] = "Updated Category in Branch success.";

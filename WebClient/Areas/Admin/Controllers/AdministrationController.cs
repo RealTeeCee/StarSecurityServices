@@ -165,7 +165,7 @@ namespace WebClient.Areas.Admin.Controllers
         //}
 
         //[HttpPost]
-        
+
         ////[Authorize(Roles = "SuperAdmin")]
         //public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
         //{
@@ -199,15 +199,15 @@ namespace WebClient.Areas.Admin.Controllers
         //    }
 
         //    result = await userManager.AddToRolesAsync(user, model.Where(x => x.IsSelected).Select(y => y.RoleName));
-        //                                                    //Get List of Selected roles -> select RoleName -> Add selected RoleNames to User
-            
+        //    //Get List of Selected roles -> select RoleName -> Add selected RoleNames to User
+
         //    if (!result.Succeeded)//neu xay ra loi khi add selected Roles to User
         //    {
         //        ModelState.AddModelError("", "cannot add selected roles to user");
         //        return View(model);
         //    }
 
-            
+
         //    // Get All trong Branch
         //    var branchs = await unitOfWork.Branch.GetAll();
         //    foreach (var branch in branchs)
@@ -226,7 +226,7 @@ namespace WebClient.Areas.Admin.Controllers
         //    }
 
         //    TempData["msg"] = "Edit User 's Roles Successfully.";
-        //    TempData["msg_type"] = "success";            
+        //    TempData["msg_type"] = "success";
         //    return RedirectToAction("EditUser", new { Id = userId });
 
         //}
@@ -459,7 +459,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
-                    TempData["msg"] = "Delete Role Successfully.";
+                    TempData["msg"] = "Create Role Successfully.";
                     TempData["msg_type"] = "success";
                     
                     return RedirectToAction("ListRoles", "Administration");
@@ -490,7 +490,7 @@ namespace WebClient.Areas.Admin.Controllers
             return View(roles);
 
         }
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -525,7 +525,7 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);
@@ -570,13 +570,13 @@ namespace WebClient.Areas.Admin.Controllers
 
         }
 
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
-            ViewBag.roleId = roleId;
+            ViewBag.roleId = roleId;            
 
             var role = await roleManager.FindByIdAsync(roleId);
-
+            ViewBag.RoleName = role.Name;
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
@@ -625,9 +625,10 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
         public async Task<IActionResult> EditUsersInRole(List<RoleUsersViewModel> model, string roleId) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
         {
+            //Tim role cua 
             var role = await roleManager.FindByIdAsync(roleId);
 
             if (role == null)
@@ -668,6 +669,22 @@ namespace WebClient.Areas.Admin.Controllers
                 else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
                 {
                     result = await userManager.RemoveFromRoleAsync(user, role.Name);
+                    if (result.Succeeded)
+                    {
+                        // Get All trong Branch
+                        var branchs = await unitOfWork.Branch.GetAll();
+                        foreach (var branch in branchs)
+                        {
+                            // Check Branch trong UserBranch isExist ?
+                            var userBranch = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.BranchId == branch.Id && x.UserId == user.Id);
+                            // If exist => deleted
+                            if (userBranch != null)
+                            {                                
+                                unitOfWork.UserBranch.Remove(userBranch);
+                                await unitOfWork.Save();
+                            }
+                        }
+                    }
                 }
 
                 else

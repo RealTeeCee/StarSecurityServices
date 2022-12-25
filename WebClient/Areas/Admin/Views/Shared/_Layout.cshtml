@@ -155,7 +155,15 @@
                             <img class="img-radius img-avatar" src="~/media/profiles/@currentImage" alt="User-Profile-Image">
                                 <div class="user-details">
                                     <span>@User.Identity.Name</span>
-                                    <div id="more-details">@currentRoleNames[0]<i class="fa fa-chevron-down m-l-5"></i></div>
+
+                                <div id="more-details">
+                                    @(currentRoleNames.Count > 0 ? currentRoleNames[0] : "[Empty Role]")
+                                    
+                                    <i class="fa fa-chevron-down m-l-5"></i>
+                                </div>
+
+                                    
+                                    
                                 </div>
                             </div>
                             <div class="collapse" id="nav-user-link">
@@ -192,18 +200,24 @@
                             <li><a asp-controller="CategoryBranch" asp-action="Index" asp-area="Admin">List Categories Branch</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item pcoded-hasmenu">
-                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users Management</span></a>
-                        <ul class="pcoded-submenu">
-                            <li><a asp-controller="Administration" asp-action="listusers" asp-area="Admin">List Users</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item pcoded-hasmenu">
-                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user-check"></i></span><span class="pcoded-mtext">Roles Management</span></a>
-                        <ul class="pcoded-submenu">
-                            <li><a asp-controller="Administration" asp-action="listroles" asp-area="Admin">List Roles</a></li>
-                        </ul>
-                    </li>
+                    @if (currentRoleNames.Count > 0)
+                    {
+                        @if (currentRoleNames[0] != "Employee")
+                        {
+                            <li class="nav-item pcoded-hasmenu">
+                                <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users Management</span></a>
+                                <ul class="pcoded-submenu">
+                                    <li><a asp-controller="Administration" asp-action="listusers" asp-area="Admin">List Users</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item pcoded-hasmenu">
+                                <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user-check"></i></span><span class="pcoded-mtext">Roles Management</span></a>
+                                <ul class="pcoded-submenu">
+                                    <li><a asp-controller="Administration" asp-action="listroles" asp-area="Admin">List Roles</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
                 </ul>              
             </div>
         </div>
@@ -246,50 +260,53 @@
                                     <a href="#!">clear all</a>
                                 </div>
                             </div>
-                            <ul class="noti-body">
-                                <li class="n-title">
-                                    <p class="m-b-0">NEW</p>
-                                </li>
-                                <li class="notification">
-                                    <div class="media">
-                                        <img class="img-radius img-avatar" src="~/media/profiles/@currentImage" alt="Generic placeholder image">
-                                        <div class="media-body">
-                                            <p><strong>@User.Identity.Name</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
-                                            <p>Chỉnh sửa User Name</p>
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                                <ul class="noti-body">
+                                    <li class="n-title">
+                                        <p class="m-b-0">NEW</p>
+                                    </li>
+                                    <li class="notification">
+                                        <div class="media">
+                                            <img class="img-radius img-avatar" src="~/media/profiles/@currentImage" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <p><strong>Nguyên</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
+                                                <p>StarSecurity meeting at 1:30 PM</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="n-title">
-                                    <p class="m-b-0">EARLIER</p>
-                                </li>
-                                <li class="notification">
-                                    <div class="media">
-                                        <img class="img-radius" src="~/admin/assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
-                                        <div class="media-body">
-                                            <p><strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>10 min</span></p>
-                                            <p>Prchace New Theme and make payment</p>
+                                    </li>
+                                    <li class="n-title">
+                                        <p class="m-b-0">EARLIER</p>
+                                    </li>
+                                    <li class="notification">
+                                        <div class="media">
+                                            <img class="img-radius" src="~/admin/assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <p><strong>Thạch</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>10 min</span></p>
+                                                <p>Prchace New Theme and make payment</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="notification">
-                                    <div class="media">
-                                        <img class="img-radius" src="~/admin/assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
-                                        <div class="media-body">
-                                            <p><strong>Sara Soudein</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>12 min</span></p>
-                                            <p>currently login</p>
+                                    </li>
+                                    <li class="notification">
+                                        <div class="media">
+                                            <img class="img-radius" src="~/admin/assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <p><strong>Sara Soudein</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>12 min</span></p>
+                                                <p>currently login</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="notification">
-                                    <div class="media">
-                                        <img class="img-radius" src="~/admin/assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
-                                        <div class="media-body">
-                                            <p><strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
-                                            <p>Prchace New Theme and make payment</p>
+                                    </li>
+                                    <li class="notification">
+                                        <div class="media">
+                                            <img class="img-radius" src="~/admin/assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <p><strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                                                <p>Prchace New Theme and make payment</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            }
                             <div class="noti-footer">
                                 <a href="#!">show all</a>
                             </div>
@@ -306,7 +323,7 @@
                         <div class="dropdown-menu dropdown-menu-right profile-notification">
                             <form method="post" asp-controller="account" asp-action="logout">
                                 <div class="pro-head">
-                                    <img src="~/media/profiles/@currentImage" class="img-radius" alt="User-Profile-Image">
+                                    <img src="~/media/profiles/@currentImage" class="img-radius img-avatar" alt="User-Profile-Image">
                                     <span>@User.Identity.Name</span>
                                  
                                         <button style="background: #2c3e50; color:#d0dcda;border: none;" type="submit" class="dud-logout" title="Logout">

@@ -11,6 +11,13 @@ namespace Models.ViewModel
 {
     public class UserDetailViewModel
     {
+
+        public UserDetailViewModel()
+        {
+            this.User = new User();
+        }
+        
+        public  User User { get; set; }        
         public string UserId { get; set; }
         //Tạo phương thức ảo ràng buộc FK UserId vs Id cua Model User
         public string Email { get; set; }

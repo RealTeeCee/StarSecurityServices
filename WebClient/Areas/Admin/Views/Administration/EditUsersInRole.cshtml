@@ -1,11 +1,14 @@
 ﻿@using System.Security.Claims
 @model List<Models.ViewModel.RoleUsersViewModel>
 @inject UserManager<User> userManager;
+@inject RoleManager<IdentityRole> roleManager;
 
 @{
     ViewData["Title"] = "Edit Users In Role";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
     var roleId = ViewBag.roleId;
+    var thisRoleName = ViewBag.roleName;
     var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);    
     var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
 }
@@ -20,44 +23,103 @@
     <div class="card-header">
        <h2>Add or remove users from this role</h2>
     </div>
-    <div class="card-body">
-        @for(int i = 0; i < Model.Count; i++)
+     @for(int i = 0; i < Model.Count; i++)
         {
-            @for (int j = 0; j < currentRoleNames.Count; j++)
-            {
-                var check = false;
-                foreach (var roleName in Model[i].RolesName)
-                {
-                    
-                    if ((currentRoleNames[j] == "GeneralAdmin" && currentRoleNames[j] == roleName) || roleName == "SuperAdmin")
+            bool check = false;
+
+
+            if(Model[i].RolesName.Count()>0){
+                @foreach (var roleName in Model[i].RolesName)
+                {                
+                
+                    @if (roleName == "SuperAdmin" || (roleName == "GeneralAdmin" && currentRoleNames[0] == "GeneralAdmin") ||
+                       (roleName == "Admin" && currentRoleNames[0] == "Admin" && roleName == "GeneralAdmin") ||
+                       // neu no chay den generalAdmin VA no da co role VA dang EDIT role khac GeneralAdmin
+                       (thisRoleName != "GeneralAdmin" && roleName == "GeneralAdmin" && (roleManager.FindByIdAsync(Model[i].UserId) != null)) ||
+                       (thisRoleName != "Admin" && roleName == "Admin" && (roleManager.FindByIdAsync(Model[i].UserId) != null)) ||
+                       (thisRoleName != "Employee" && roleName == "Employee" && (roleManager.FindByIdAsync(Model[i].UserId) != null)) )
                     {
-                        check = true;
+                        <div style="display:none;">
+                            <input type="hidden" asp-for="@Model[i].UserId" />
+                            <input type="hidden" asp-for="@Model[i].UserName" />
+
+                            <div class="form-check m-1">
+                                <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                                <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                                    @Model[i].UserName
+                                </label>
+                            </div>
+                        </div>
                     }
-
-                    @* if ((currentRoleNames[j] == "GeneralAdmin" && currentRoleNames[j] == Model[i].RolesName) || Model[i].RoleName == "SuperAdmin")
+                    else
                     {
-                        continue;
-                    }*@
+                        <div>
+                            <input type="hidden" asp-for="@Model[i].UserId" />
+                            <input type="hidden" asp-for="@Model[i].UserName" />
 
+                            <div class="form-check m-1">
+                                <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                                <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                                    @Model[i].UserName
+                                </label>
+                            </div>
+                        </div>
+                    }
                 }
-                if(check == true){
-                    continue;
-                }
-              
+            }
+            else
+            {
+                <div>
+                    <input type="hidden" asp-for="@Model[i].UserId" />
+                    <input type="hidden" asp-for="@Model[i].UserName" />
+
+                    <div class="form-check m-1">
+                        <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                        <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                            @Model[i].UserName
+                        </label>
+                    </div>
+                </div>
+            }
+
+@*
+            @if (Model[i].UserName == "TeeCee")    
+            {
+                <div style="display:none;">
+                    <input type="hidden" asp-for="@Model[i].UserId" />
+                    <input type="hidden" asp-for="@Model[i].UserName" />
+
+                    <div class="form-check m-1">
+                        <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                        <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                            @Model[i].UserName
+                        </label>
+                    </div>
+                </div>
+            }
+            else 
+            {
+            <div>
                 <input type="hidden" asp-for="@Model[i].UserId" />
                 <input type="hidden" asp-for="@Model[i].UserName" />
-                <div class="form-check m-1" >
-                    @*style="display:@(Model[i].UserName == "nguyenngocnguyen.rtc@starsec.com"  ? "none" : "block")"*@
-                <input class="form-check-input" asp-for="@Model[i].IsSelected" />
-                <label class="form-check-label" asp-for="@Model[i].IsSelected">
-                        <!-- Now when click on label it checked status toggle as expected -->
-                @Model[i].UserName
+
+                <div class="form-check m-1">
+                    <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                    <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                        @Model[i].UserName
                     </label>
                 </div>
-            }                       
-        }
+            </div>
+            }*@
 
-    </div>
+        
+@*            if(check == true){
+                continue;
+            }
+*@
+          
+
+        }
     <div class="card-footer">
         <input type="submit" value="Update" style="width:auto" class="btn btn-primary" />
         <a asp-action="EditRole" asp-route-id="@roleId" value="Update" style="width:auto" class="btn btn-primary" />Cancel</a>

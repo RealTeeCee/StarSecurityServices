@@ -29,7 +29,7 @@ namespace DataAccess.Data
                 new User
                 {
                     UserName = "TeeCee",
-                    NormalizedUserName ="NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
+                    NormalizedUserName ="TEECEE",
                     Email = "nguyenngocnguyen.rtc@starsec.com",
                     NormalizedEmail ="NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
                     Name = "Nguyễn Ngọc Nguyên"

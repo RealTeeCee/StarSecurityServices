@@ -24,7 +24,7 @@ namespace Models
  
     }
     public class ViewCategoryBranch
-    {     
+    {             
         public List<Category> Categories { get; set; }
         public List<Branch> Branches { get; set; }
         public long[] CategoryId { get; set; }
