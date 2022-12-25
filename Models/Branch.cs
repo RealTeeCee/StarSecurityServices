@@ -15,7 +15,7 @@ namespace Models
         public long Id { get; set; }
         [Column(TypeName = "nvarchar")]
         [StringLength(255)]        
-        public string? Name { get; set; }
+        public string Name { get; set; }
         [Column(TypeName = "nvarchar")]
         [StringLength(255)]
         public string? Address { get; set; }
