@@ -26,6 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\lib\counterup\" />
+    <Folder Include="wwwroot\lib\easing\" />
     <Folder Include="wwwroot\media\errors\" />
   </ItemGroup>
 
