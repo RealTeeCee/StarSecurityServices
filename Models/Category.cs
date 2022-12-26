@@ -22,6 +22,10 @@ namespace Models
         public string? Image { get; set; }
         [NotMapped]
         public IFormFile ImageUpload { get; set; }
+
+        [StringLength(150)]
+        [Column(TypeName = "nvarchar")]
+        public string? ShortDescription { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
        

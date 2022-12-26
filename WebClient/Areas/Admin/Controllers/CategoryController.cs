@@ -78,7 +78,7 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 if (category != null)
                 {
-                    category.Slug = SlugService.Create(category.Name).ToLower();                    
+                    category.Slug = SlugService.Create(category.Name).ToLower();
 
                     //Kiểm tra slug exists trên db hay chưa
                     var slug = await _unitOfWork.Category.GetFirstOrDefault(c => c.Slug == category.Slug);
@@ -99,7 +99,7 @@ namespace WebClient.Areas.Admin.Controllers
                         fs.Close();
                     }
 
-                    category.Image = imageName;
+                    category.Image = imageName;                    
 
                     await _unitOfWork.Category.Add(category);
                     await _unitOfWork.Save();
@@ -176,8 +176,22 @@ namespace WebClient.Areas.Admin.Controllers
 
                     if (category != null)
                     {
-                        category.Name = model.Name;
-                        category.Slug = model.Slug;                        
+
+                        //Kiểm tra nếu Id là home, thì slug không được thay đổi, còn lại sẽ replace
+                        //page.Slug = page.Id == 1 ? "home" : page.Title.ToLower().Replace(" ", "-");
+                        category.Slug = SlugService.Create(category.Name).ToLower();
+      
+                        //Kiểm tra slug exists trên db hay chưa, nhưng phải khác Id hiện tại
+                        var slug = await _context.Categories.Where(c => c.Id != category.Id).FirstOrDefaultAsync(c => c.Slug == category.Slug);
+                        if (slug != null)
+                        {
+                            TempData["msg"] = "Slug has already existed!";
+                            TempData["msg_type"] = "danger";
+                            
+                            return View(category);
+                        }
+
+                                               
                         if (model.ImageUpload != null)
                         { 
                             string uploadDir = Path.Combine(env.WebRootPath, "media/categories");
@@ -194,7 +208,10 @@ namespace WebClient.Areas.Admin.Controllers
                             await model.ImageUpload.CopyToAsync(fs);
                             fs.Close();
                             category.Image = imageName;
-                        }                        
+                        }
+                        category.Slug = model.Slug;
+                        category.Name = model.Name;
+                        category.ShortDescription = model.ShortDescription;
                         category.UpdatedAt = DateTime.Now;
                         _context.Categories.Update(category);
                         await _unitOfWork.Save();

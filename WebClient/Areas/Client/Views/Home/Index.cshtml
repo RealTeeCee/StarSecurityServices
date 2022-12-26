@@ -174,11 +174,12 @@
                 @*delay + 0.2s*@
             @{
                 int i = 1;
-                int a = 1;
+                int serviceDivide = 1;
             }
-                @foreach(var category in @Model.Categories){                    
+                @foreach(var category in @Model.Categories)
+                {                    
                     <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.@(i)s">
-                        <div class="service-item border h-100 p-5 service-div@(a % 2 == 1 ? "1" : "2") ourservice-div">
+                        <div class="service-item border h-100 p-5 service-div@(serviceDivide % 2 == 1 ? "1" : "2") ourservice-div">
                             <!-- bỏ bg-light -->
                             <div class="btn-square  rounded-circle mb-4" style="width: 200px;height: 200px">
                                 <img class="img-fluid" src="~/media/categories/@category.Image">
@@ -186,17 +187,18 @@
                             <div>
 
                                 <h4 class="mb-3">@category.Name</h4>
-                                <p class="mb-4">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem</p>
+                                <p class="mb-4">@category.ShortDescription</p>
                             </div>
                             <div class="btn-position">
 
-                                <a class="btn" href=""><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
+                                <a class="btn" href="#"><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
                             </div>
                         </div>
-                </div>
-                i += 2;
-                a++;
-            }                              
+                    </div>
+                    
+                    i += 2;
+                    serviceDivide++;
+                }                              
             </div>
         </div>
     </div>

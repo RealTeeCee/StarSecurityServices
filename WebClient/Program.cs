@@ -161,6 +161,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{area=Client}/{controller=Home}/{action=Index}/{id?}");
 
+//app.MapControllerRoute(
+//    name: "demo",
+//    pattern: "admin/{action}/{id?}",
+//    defaults: new { controller = "User", action = "Login" });
 
 app.Run();
 
