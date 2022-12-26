@@ -1,5 +1,8 @@
 ﻿using DataAccess.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using Models.ViewModel;
+using System.Collections.Generic;
 
 namespace WebClient.Areas.Customer.Controllers
 {
@@ -16,22 +19,52 @@ namespace WebClient.Areas.Customer.Controllers
 
         //https://localhost:7273/client/category
         //trang này sd trang Our Team -> show 4 cards
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //Show toan bo cate, tra ve view Category
-            var model = unitOfWork.Category.GetAll();
+            CategoryViewModel model = new CategoryViewModel();
+            model.Categories = (List<Category>)await unitOfWork.Category.GetAll();
             return View(model);
         }
         // nút Readmore
         //https://localhost:7273/category/{categorySlug}
 
         [HttpGet("{categorySlug?}")]
-        public IActionResult Detail(string categorySlug)
+        public async Task<IActionResult> Detail(string categorySlug)
         {
+            var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
+            long categoryId = category.Id;
+
             //Show toan bo cate, tra ve view Category
+            ServiceViewModel model = new ServiceViewModel();
+            model.Services = (List<Service>)await unitOfWork.Service.GetAll(x=> x.CategoryId == categoryId, includeProperties:"Category");
             // Nhớ trả về View Detail trong folder Category
 
-            return View("");
+            
+            string categoryName = category.Name;
+            ViewBag.CategoryName = categoryName;
+            ViewBag.CategorySlug = categorySlug;
+
+            return View(model);
+        }
+
+        [HttpGet("{categorySlug?}/{serviceSlug?}")]
+        public async Task<IActionResult> DetailService(string categorySlug, string serviceSlug)
+        {
+            var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
+            string categoryName = category.Name;
+            ViewBag.CategoryName = categoryName;
+            
+
+            var service = await unitOfWork.Service.GetFirstOrDefault(x => x.Slug == serviceSlug);
+            string serviceName = service.Name;
+            ViewBag.ServiceName = serviceName;
+            
+
+            //Show toan bo cate, tra ve view Category            
+            // Nhớ trả về View Detail trong folder Category
+
+            return View(service);
         }
 
     }

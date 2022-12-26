@@ -30,4 +30,9 @@ namespace Models
         public DateTime? UpdatedAt { get; set; }
        
     }
+
+    public class CategoryViewModel
+    {
+        public List<Category> Categories { get; set; }
+    }
 }

@@ -98,7 +98,7 @@
                 <div class="navbar-nav ms-auto py-4 py-lg-0">
                     <a asp-area="client" asp-action="index" asp-controller="home" class="nav-item nav-link active">Home</a>
                     <a asp-area="client" asp-action="about" asp-controller="home" class="nav-item nav-link">About</a>
-                    <a asp-area="client" asp-action="index" asp-controller="service" class="nav-item nav-link">Service</a>
+                    <a asp-area="client" asp-action="index" asp-controller="category" class="nav-item nav-link">Services</a>
                     <a href="@Url.ActionLink("Project", "Home")" class="nav-item nav-link">Project</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -143,11 +143,12 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4">Services</h5>
-                    <a class="btn btn-link" href="">Business Security</a>
+                    @*<a class="btn btn-link" href="">Business Security</a>
                     <a class="btn btn-link" href="">Fire Detection</a>
                     <a class="btn btn-link" href="">Alarm Systems</a>
                     <a class="btn btn-link" href="">CCTV & Video</a>
-                    <a class="btn btn-link" href="">Smart Home</a>
+                    <a class="btn btn-link" href="">Smart Home</a>*@
+                    <partial name="_FooterServicePartial" />
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-light mb-4">Quick Links</h5>

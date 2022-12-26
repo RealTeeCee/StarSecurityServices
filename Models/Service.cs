@@ -28,4 +28,9 @@ namespace Models
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }
+
+    public class ServiceViewModel
+    {
+        public List<Service> Services { get; set; }
+    }
 }

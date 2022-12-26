@@ -134,6 +134,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, SendMailService>();
 builder.Services.AddScoped<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();//Register this handler 
 builder.Services.AddScoped<IAuthorizationHandler, SuperAdminHandler>();
+builder.Services.AddScoped<List<Category>>();
 
 
 
