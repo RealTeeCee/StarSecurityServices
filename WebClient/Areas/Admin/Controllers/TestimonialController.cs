@@ -51,7 +51,7 @@ namespace WebClient.Areas.Admin.Controllers
             try
             {
                 ViewBag.List = "List Testimonials";
-                ViewBag.Controller = "Testimonials";
+                ViewBag.Controller = "Testimonial";
                 ViewBag.AspAction = "Index";
                 ViewBag.AspSubAction = "Create";
                 ViewBag.Action = "Create Testimonial";
@@ -70,7 +70,6 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-
                 if (testimonial != null)
                 {
                     string imageName = "default.jpg";
@@ -110,7 +109,7 @@ namespace WebClient.Areas.Admin.Controllers
                 }
 
                 ViewBag.List = "List Testimonials";
-                ViewBag.Controller = "Testimonials";
+                ViewBag.Controller = "Testimonial";
                 ViewBag.AspAction = "Index";
                 ViewBag.AspSubAction = "Details";
                 ViewBag.Action = "Testimonial Details";
@@ -131,7 +130,7 @@ namespace WebClient.Areas.Admin.Controllers
                 var testimonial = await _unitOfWork.Testimonial.GetFirstOrDefault(x => x.Id == id);
 
                 ViewBag.List = "List Testimonials";
-                ViewBag.Controller = "Testimonials";
+                ViewBag.Controller = "Testimonial";
                 ViewBag.AspAction = "Index";
                 ViewBag.AspSubAction = "Edit";
                 ViewBag.Action = "Edit Testimonial";
@@ -150,7 +149,6 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-
                 if (model != null)
                 {
                     var testimonial = await _unitOfWork.Testimonial.GetFirstOrDefault(x => x.Id == model.Id);

@@ -108,7 +108,7 @@
 <html lang="en">
 
 <head>
-    <title>Flat Able - Premium Admin Template by Phoenixcoded</title>
+    <title>Star Security Service</title>
     <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 11]>
@@ -123,7 +123,7 @@
     <meta name="keywords" content="">
     <meta name="author" content="Phoenixcoded" />
     <!-- Favicon icon -->    
-    <link rel="icon" href="~/admin/assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="~/img/logo.png" type="image/x-icon" />
     <!-- vendor css -->
 
     <link href="~/admin/assets/css/style.css" rel="stylesheet" />
@@ -222,7 +222,14 @@
                     <li class="nav-item pcoded-hasmenu">
                         <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-list"></i></span><span class="pcoded-mtext">Manage Services</span></a>
                         <ul class="pcoded-submenu">
-                            <li><a asp-controller="Category" asp-action="Index" asp-area="Admin">List Services</a></li>
+                            <li><a asp-controller="Service" asp-action="Index" asp-area="Admin">List Services</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-list"></i></span><span class="pcoded-mtext">Manage Vacancies</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a asp-controller="Vacancy" asp-action="Index" asp-area="Admin">List Vacancies</a></li>
                         </ul>
                     </li>
 
@@ -231,7 +238,7 @@
 
 
                     <li class="nav-item pcoded-hasmenu">
-                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-message-circle"></i></span><span class="pcoded-mtext">Manage Testimonials </span></a>
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-message-circle"></i></span><span class="pcoded-mtext">Manage Testimonials</span></a>
                         <ul class="pcoded-submenu">
                             <li><a asp-controller="Testimonial" asp-action="Index" asp-area="Admin">List Testimonials</a></li>
                         </ul>
@@ -249,8 +256,8 @@
             <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
             <a href="#!" class="b-brand">
                 <!-- ========   change your logo hear   ============ -->
-                <img src="~/admin/assets/images/logo.png" alt="" class="logo">
-                <img src="~/admin/assets/images/logo-icon.png" alt="" class="logo-thumb">
+                <img src="~/img/logo.png" alt="Star Security Logo" style="width: 100px;" class="logo">
+                @*<img src="~/admin/assets/images/logo-icon.png" alt="" class="logo-thumb">*@
             </a>
             <a href="#!" class="mob-toggler">
                 <i class="feather icon-more-vertical"></i>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Services;
+using System.Drawing.Printing;
 
 namespace WebClient.Areas.Admin.Controllers
 {
@@ -33,7 +34,11 @@ namespace WebClient.Areas.Admin.Controllers
                 ViewBag.PageRange = this.pageSizes;
                 ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Vacancies.Count() / this.pageSizes);
 
-                return View(model);
+                ViewBag.List = "List Services";
+                ViewBag.Controller = "Service";
+                ViewBag.AspAction = "Index";
+
+                return View(model.Skip((p - 1) * this.pageSizes).Take(this.pageSizes));
             }
             catch (Exception)
             {
@@ -48,6 +53,12 @@ namespace WebClient.Areas.Admin.Controllers
 
             try
             {
+                ViewBag.List = "List Services";
+                ViewBag.Controller = "Service";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Create";
+                ViewBag.Action = "Create Service";
+
                 return View();
             }
             catch (Exception)
@@ -93,6 +104,7 @@ namespace WebClient.Areas.Admin.Controllers
                     service.Name = model.Name;
                     service.Slug = model.Slug;
                     service.Description = model.Description;
+                    service.ShortDescription = model.ShortDescription;
 
                     service.CategoryId = model.CategoryId;
                     service.Image = imageName;
@@ -120,6 +132,12 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 var service = await _unitOfWork.Service.GetFirstOrDefault(x => x.Id == id);
                 ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name", service.CategoryId);
+
+                ViewBag.List = "List Services";
+                ViewBag.Controller = "Service";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Edit";
+                ViewBag.Action = "Edit Service";
 
                 return View(service);
             }
@@ -181,6 +199,7 @@ namespace WebClient.Areas.Admin.Controllers
                         service.Name = model.Name;
                         service.ShortDescription = model.ShortDescription;
                         service.Description = model.Description;
+                        service.ShortDescription = model.ShortDescription;
 
                         // Phải thêm Edit bởi ai
                         //service.UserId = ;
@@ -248,6 +267,13 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     return RedirectToAction("Index", "Error", new { area = "Admin" });
                 }
+
+                ViewBag.List = "List Services";
+                ViewBag.Controller = "Service";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Details";
+                ViewBag.Action = "Service Details";
+
                 return View(service);
 
             }

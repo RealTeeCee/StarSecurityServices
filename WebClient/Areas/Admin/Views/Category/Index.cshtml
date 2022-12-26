@@ -11,7 +11,7 @@
         <div class="card-header">
             <h3>List Categories</h3>
             <span class="d-block m-t-5">
-                <a asp-action="Create">Create New</a>
+                <a asp-action="Create" class="btn btn-primary">Create New</a>
             </span>
         </div>
         <div class="card-body table-border-style">
@@ -36,8 +36,10 @@
                         {
                             <tr class="bg-dark">
                                 <td>@item.Id</td>
-                                <td>@item.Name</td>                                
-                                <td><img src="~/media/categories/@item.Image" width="200" alt="" /></td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <img src="~/media/categories/@item.Image" width="200" alt="" />
+                                </td>
                                 <td>@item.CreatedAt</td>
                                 <td>@item.UpdatedAt</td>                  
                                 <td>

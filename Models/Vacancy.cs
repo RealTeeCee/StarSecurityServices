@@ -48,6 +48,7 @@ namespace Models
         public virtual Branch Branch { get; set; }
 
         [Column(TypeName = "nvarchar")]
+        [StringLength(500)]
         public string? Noted { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }

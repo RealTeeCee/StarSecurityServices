@@ -9,6 +9,7 @@ using Services;
 
 namespace WebClient.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class VacancyController : Controller
     {
         private readonly StarSecurityDbContext _context;
@@ -27,13 +28,17 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-                var model = await _unitOfWork.Vacancy.GetAll(includeProperties: "User,Category,Branch");
+                var model = await _unitOfWork.Vacancy.GetAll(includeProperties: "Category,Branch");
 
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = this.pageSizes;
                 ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Vacancies.Count() / this.pageSizes);
 
-                return View(model);
+                ViewBag.List = "List Vacancies";
+                ViewBag.Controller = "Vacancy";
+                ViewBag.AspAction = "Index";
+
+                return View(model.Skip((p - 1) * this.pageSizes).Take(this.pageSizes));
             }
             catch (Exception)
             {
@@ -49,6 +54,12 @@ namespace WebClient.Areas.Admin.Controllers
 
             try
             {
+                ViewBag.List = "List Vacancies";
+                ViewBag.Controller = "Vacancy";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Create";
+                ViewBag.Action = "Create Vacancy";
+
                 return View();
             }
             catch (Exception)
@@ -130,6 +141,12 @@ namespace WebClient.Areas.Admin.Controllers
                 ViewBag.Branch = new SelectList(_context.Branches.ToList(), "Id", "Name", vacancy.BranchId);
                 ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", vacancy.CategoryId);
                 //ViewBag.User = new SelectList(_context.Users.ToList(), "Id", "Name", vacancy.UserId);
+
+                ViewBag.List = "List Vacancies";
+                ViewBag.Controller = "Vacancy";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Edit";
+                ViewBag.Action = "Edit Vacancy";
 
                 return View(vacancy);
             }
@@ -257,6 +274,13 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     return RedirectToAction("Index", "Error", new { area = "Admin" });
                 }
+
+                ViewBag.List = "List Vacancies";
+                ViewBag.Controller = "Vacancy";
+                ViewBag.AspAction = "Index";
+                ViewBag.AspSubAction = "Details";
+                ViewBag.Action = "Vacancy Details";
+
                 return View(vacancy);
 
             }
