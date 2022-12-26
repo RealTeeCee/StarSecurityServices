@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Models.Vacancy>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Branch
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    <img src="~/media/vacancies/@item.Image" width="200" alt="" />
+                </td>
+                <td>
+                    @item.Category.Name
+                </td>
+                <td>
+                    @item.Branch.Name
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id = item.Id }) |
+                    @Html.ActionLink("Details", "Details",new {  id = item.Id }) |
+                    @*@Html.ActionLink("Delete", "Delete", new {  id = item.Id })*@
+                    <a class="confirmDeletion" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<pagination page-count="@ViewBag.TotalPages" page-target="/admin/generaladmin" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>

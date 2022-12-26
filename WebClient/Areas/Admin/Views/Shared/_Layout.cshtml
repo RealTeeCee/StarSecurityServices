@@ -130,9 +130,9 @@
 
     <style>
         .img-avatar {
-                object-fit: cover;
-    max-width: 30px;
-    max-height: 30px;
+            object-fit: cover;
+            max-width: 30px;
+            max-height: 30px;
         }
     </style>
 </head>
@@ -149,21 +149,19 @@
     <nav class="pcoded-navbar  ">
         <div class="navbar-wrapper  ">
             <div class="navbar-content scroll-div ">
-                @if(signInManager.IsSignedIn(User)){
+                @if(signInManager.IsSignedIn(User))
+                {
                         <div class="">
                             <div class="main-menu-header">
                             <img class="img-radius img-avatar" src="~/media/profiles/@currentImage" alt="User-Profile-Image">
                                 <div class="user-details">
                                     <span>@User.Identity.Name</span>
 
-                                <div id="more-details">
-                                    @(currentRoleNames.Count > 0 ? currentRoleNames[0] : "[Empty Role]")
+                                    <div id="more-details">
+                                        @(currentRoleNames.Count > 0 ? currentRoleNames[0] : "[Empty Role]")
                                     
-                                    <i class="fa fa-chevron-down m-l-5"></i>
-                                </div>
-
-                                    
-                                    
+                                        <i class="fa fa-chevron-down m-l-5"></i>
+                                    </div>
                                 </div>
                             </div>
                             <div class="collapse" id="nav-user-link">
@@ -220,6 +218,17 @@
                             <li><a asp-controller="CategoryBranch" asp-action="Index" asp-area="Admin">List Categories Branch</a></li>
                         </ul>
                     </li>
+
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-list"></i></span><span class="pcoded-mtext">Manage Services</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a asp-controller="Category" asp-action="Index" asp-area="Admin">List Services</a></li>
+                        </ul>
+                    </li>
+
+
+
+
 
                     <li class="nav-item pcoded-hasmenu">
                         <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-message-circle"></i></span><span class="pcoded-mtext">Manage Testimonials </span></a>
@@ -369,8 +378,7 @@
             <!-- [ Main Content ] start -->
             <partial name="_NotificationPartial" />
             <div class="row">
-                
-                    @RenderBody()   
+                @RenderBody()   
             </div>
             <!-- [ Main Content ] end -->
         </div>

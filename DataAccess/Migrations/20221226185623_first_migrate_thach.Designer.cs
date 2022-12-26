@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(StarSecurityDbContext))]
-    [Migration("20221226111703_last-migration")]
-    partial class lastmigration
+    [Migration("20221226185623_first_migrate_thach")]
+    partial class first_migrate_thach
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -53,8 +53,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "377f254d-498e-4746-b4c3-0dbb2d352725",
-                            ConcurrencyStamp = "a5092c18-e5b6-492e-8724-77dd701e4b9b",
+                            Id = "0f3b8444-506a-484e-af79-999f8873ca24",
+                            ConcurrencyStamp = "cabd94b9-c049-4d5e-9b17-88f40006c1f1",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         });
@@ -220,8 +220,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "6c7470ff-78d2-4d67-b186-a42723a7fe37",
-                            RoleId = "377f254d-498e-4746-b4c3-0dbb2d352725"
+                            UserId = "7a02944f-6ab3-4e78-8b83-ca12da78c694",
+                            RoleId = "0f3b8444-506a-484e-af79-999f8873ca24"
                         });
                 });
 
@@ -304,7 +304,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1L,
                             Address = "590 CMT8",
-                            CreatedAt = new DateTime(2022, 12, 26, 18, 17, 3, 223, DateTimeKind.Local).AddTicks(4807),
+                            CreatedAt = new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2016),
                             Email = "hcm@gmail.com",
                             Facebook = "StarFb",
                             Instagram = "StarIg",
@@ -334,6 +334,10 @@ namespace DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("ShortDescription")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<string>("Slug")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -349,7 +353,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2022, 12, 26, 18, 17, 3, 223, DateTimeKind.Local).AddTicks(4905),
+                            CreatedAt = new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2114),
                             Image = "default.jpg",
                             Name = "Security Service",
                             Slug = "security-service"
@@ -357,7 +361,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2022, 12, 26, 18, 17, 3, 223, DateTimeKind.Local).AddTicks(4907),
+                            CreatedAt = new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2116),
                             Image = "default.jpg",
                             Name = "Vacancy Service",
                             Slug = "vacancy-service"
@@ -365,7 +369,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2022, 12, 26, 18, 17, 3, 223, DateTimeKind.Local).AddTicks(4909),
+                            CreatedAt = new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2117),
                             Image = "default.jpg",
                             Name = "Cash Service",
                             Slug = "cash-service"
@@ -373,7 +377,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2022, 12, 26, 18, 17, 3, 223, DateTimeKind.Local).AddTicks(4910),
+                            CreatedAt = new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2118),
                             Image = "default.jpg",
                             Name = "Train Service",
                             Slug = "train-service"
@@ -424,12 +428,11 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
+                        .HasColumnType("nvarchar");
 
                     b.Property<string>("Image")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
@@ -442,6 +445,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("Slug")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -539,7 +545,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1L,
                             BranchId = 1L,
-                            UserId = "6c7470ff-78d2-4d67-b186-a42723a7fe37"
+                            UserId = "7a02944f-6ab3-4e78-8b83-ca12da78c694"
                         });
                 });
 
@@ -608,13 +614,14 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(400)
                         .HasColumnType("text");
 
-                    b.Property<string>("Noted")
+                    b.Property<string>("Image")
                         .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Noted")
+                        .HasColumnType("nvarchar");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -625,6 +632,9 @@ namespace DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -633,17 +643,11 @@ namespace DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Vacancies");
                 });
@@ -681,21 +685,21 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6c7470ff-78d2-4d67-b186-a42723a7fe37",
+                            Id = "7a02944f-6ab3-4e78-8b83-ca12da78c694",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "55e47fb3-072b-447c-bfc3-b3087eec8efb",
+                            ConcurrencyStamp = "d7f33001-20ec-4ba9-8d33-398d9b4196fc",
                             Email = "nguyenngocnguyen.rtc@starsec.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
                             NormalizedUserName = "TEECEE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAeAOd8UBuB3s6RltZdf3o3+9Zhm4Ha1w1v35zlDzGbSKz2m4eo2I5kHTZIcSnKBkw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELZoHzv3qfMNbFlgQxV8+Sv+xfVRpHVgGHa7g2QMRQHLuDZd+j53pXSGrcktPynFSg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "120cb617-926a-4a9d-9db2-c3579a5f0395",
+                            SecurityStamp = "7f274625-c00b-44f4-ad9f-51900e3541dd",
                             TwoFactorEnabled = false,
                             UserName = "TeeCee",
                             Address = "Some Address",
-                            CreatedAt = new DateTime(2022, 12, 26, 18, 17, 3, 216, DateTimeKind.Local).AddTicks(5943),
+                            CreatedAt = new DateTime(2022, 12, 27, 1, 56, 23, 63, DateTimeKind.Local).AddTicks(7011),
                             Image = "default.jpg",
                             Name = "Nguyễn Ngọc Nguyên",
                             Status = (byte)1
@@ -827,17 +831,9 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Branch");
 
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
