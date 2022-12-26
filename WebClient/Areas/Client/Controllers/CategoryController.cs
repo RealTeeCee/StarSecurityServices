@@ -19,8 +19,8 @@ namespace WebClient.Areas.Customer.Controllers
         public IActionResult Index()
         {
             //Show toan bo cate, tra ve view Category
-           
-            return View();
+            var model = unitOfWork.Category.GetAll();
+            return View(model);
         }
         // nút Readmore
         //https://localhost:7273/category/{categorySlug}
