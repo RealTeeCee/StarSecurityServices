@@ -573,6 +573,7 @@ small{
 
 .testimonial-carousel .owl-dots .owl-dot.active::after {
     opacity: 1;
+    color: skyblue;
 }
 
 .testimonial-carousel .owl-dots .owl-dot img {

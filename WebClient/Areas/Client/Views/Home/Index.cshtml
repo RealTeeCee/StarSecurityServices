@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Home";
     Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
-    int i = 1;
+    
 }
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5 ">
@@ -172,26 +172,28 @@
             </div>
             <div class="row g-0 service-row">
                 @*delay + 0.2s*@
-
+                @{
+                    int i = 1;
+                }
                 @foreach(var category in @Model.Categories){                    
-                        <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.@(i)s">
-                            <div class="service-item border h-100 p-5 service-div1 ourservice-div">
-                                <!-- bỏ bg-light -->
-                                <div class="btn-square  rounded-circle mb-4" style="width: 64px; height: 64px;">
-                                    <img class="img-fluid" src="~/media/categories/@category.Image">
-                                </div>
-                                <div>
+                    <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.@(i)s">
+                        <div class="service-item border h-100 p-5 service-div1 ourservice-div">
+                            <!-- bỏ bg-light -->
+                            <div class="btn-square  rounded-circle mb-4" style="width: 64px; height: 64px;">
+                                <img class="img-fluid" src="~/media/categories/@category.Image">
+                            </div>
+                            <div>
 
-                                    <h4 class="mb-3">@category.Name</h4>
-                                    <p class="mb-4">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem</p>
-                                </div>
-                                <div class="btn-position">
+                                <h4 class="mb-3">@category.Name</h4>
+                                <p class="mb-4">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem</p>
+                            </div>
+                            <div class="btn-position">
 
-                                    <a class="btn" href=""><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
-                                </div>
+                                <a class="btn" href=""><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
                             </div>
                         </div>
-                    @(i+=2)                                   
+                    </div>
+                    i += 2;                                    
                 }                              
             </div>
         </div>

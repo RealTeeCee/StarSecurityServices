@@ -51,8 +51,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "36c3ba03-dcbb-4a8a-ab21-31aa5151a97f",
-                            ConcurrencyStamp = "6ac003bf-a8a2-45e5-ab71-76ae28dffec1",
+                            Id = "78452d98-ae31-445e-9b59-fbddb17d341d",
+                            ConcurrencyStamp = "850ddd33-2ae0-4cd0-855e-82024eff1d63",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         });
@@ -218,8 +218,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "a64138be-9916-46ba-ab69-adebe6950a7e",
-                            RoleId = "36c3ba03-dcbb-4a8a-ab21-31aa5151a97f"
+                            UserId = "4b7eada4-944e-4d3a-aada-7e9add225678",
+                            RoleId = "78452d98-ae31-445e-9b59-fbddb17d341d"
                         });
                 });
 
@@ -270,6 +270,7 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -301,7 +302,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1L,
                             Address = "590 CMT8",
-                            CreatedAt = new DateTime(2022, 12, 25, 20, 46, 46, 492, DateTimeKind.Local).AddTicks(7413),
+                            CreatedAt = new DateTime(2022, 12, 26, 15, 27, 17, 848, DateTimeKind.Local).AddTicks(8666),
                             Email = "hcm@gmail.com",
                             Facebook = "StarFb",
                             Instagram = "StarIg",
@@ -346,7 +347,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2022, 12, 25, 20, 46, 46, 492, DateTimeKind.Local).AddTicks(7601),
+                            CreatedAt = new DateTime(2022, 12, 26, 15, 27, 17, 848, DateTimeKind.Local).AddTicks(8765),
                             Image = "default.jpg",
                             Name = "Security Service",
                             Slug = "security-service"
@@ -354,7 +355,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2022, 12, 25, 20, 46, 46, 492, DateTimeKind.Local).AddTicks(7603),
+                            CreatedAt = new DateTime(2022, 12, 26, 15, 27, 17, 848, DateTimeKind.Local).AddTicks(8767),
                             Image = "default.jpg",
                             Name = "Vacancy Service",
                             Slug = "vacancy-service"
@@ -362,7 +363,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2022, 12, 25, 20, 46, 46, 492, DateTimeKind.Local).AddTicks(7604),
+                            CreatedAt = new DateTime(2022, 12, 26, 15, 27, 17, 848, DateTimeKind.Local).AddTicks(8768),
                             Image = "default.jpg",
                             Name = "Cash Service",
                             Slug = "cash-service"
@@ -370,7 +371,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2022, 12, 25, 20, 46, 46, 492, DateTimeKind.Local).AddTicks(7605),
+                            CreatedAt = new DateTime(2022, 12, 26, 15, 27, 17, 848, DateTimeKind.Local).AddTicks(8769),
                             Image = "default.jpg",
                             Name = "Train Service",
                             Slug = "train-service"
@@ -489,6 +490,9 @@ namespace DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("text");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -533,7 +537,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1L,
                             BranchId = 1L,
-                            UserId = "a64138be-9916-46ba-ab69-adebe6950a7e"
+                            UserId = "4b7eada4-944e-4d3a-aada-7e9add225678"
                         });
                 });
 
@@ -675,21 +679,21 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a64138be-9916-46ba-ab69-adebe6950a7e",
+                            Id = "4b7eada4-944e-4d3a-aada-7e9add225678",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d2c20ac6-0235-4a3b-876b-56373d92561e",
+                            ConcurrencyStamp = "6e6d34b9-c1ee-4594-920f-49330a1d9b9d",
                             Email = "nguyenngocnguyen.rtc@starsec.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
                             NormalizedUserName = "TEECEE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMFDjoCq2XjBFAF8kPREW2tt2anFnn3hs97cJnupCAOsfFC37uu+mWr8enzx4psz2Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMw4A3J6Eoh7itT0IdP7TyZgXyov8nTIntXtGZV3ueyrS2oyBc74u98nDcbV6x9/wg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "105269cf-6bdd-4e22-95ad-a29f3f286d9b",
+                            SecurityStamp = "875e19d6-7739-406d-8b77-fd2f7360f342",
                             TwoFactorEnabled = false,
                             UserName = "TeeCee",
                             Address = "Some Address",
-                            CreatedAt = new DateTime(2022, 12, 25, 20, 46, 46, 491, DateTimeKind.Local).AddTicks(2691),
+                            CreatedAt = new DateTime(2022, 12, 26, 15, 27, 17, 847, DateTimeKind.Local).AddTicks(3014),
                             Image = "default.jpg",
                             Name = "Nguyễn Ngọc Nguyên",
                             Status = (byte)1
