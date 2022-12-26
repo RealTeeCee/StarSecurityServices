@@ -36,7 +36,7 @@ namespace WebClient.Areas.Admin.Controllers
                 int pageSize = 6;
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = pageSize;
-                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Branches.Count() / pageSize);
 
                 ViewBag.List = "List Branches";
                 ViewBag.Controller = "Branch";

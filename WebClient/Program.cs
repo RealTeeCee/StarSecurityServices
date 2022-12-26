@@ -163,3 +163,8 @@ app.MapControllerRoute(
 
 
 app.Run();
+
+public class Programs
+{
+    public static string pathRoot =  "https://localhost:7273";
+}

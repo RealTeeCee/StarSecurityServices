@@ -1,9 +1,12 @@
-﻿@*
+﻿@model Models.ViewModel.HomeViewModel;
+
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     ViewData["Title"] = "Home";
     Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
+    int i = 1;
 }
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5 ">
@@ -168,74 +171,28 @@
                 <h1 class="display-5 mb-5">Our Services</h1>
             </div>
             <div class="row g-0 service-row">
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
-                    <div class="service-item border h-100 p-5 service-div1 ourservice-div">
-                        <!-- bỏ bg-light -->
-                        <div class="btn-square  rounded-circle mb-4" style="width: 64px; height: 64px;">
-                            <img class="img-fluid" src="~/img/icon/icon-6.png" alt="Icon">
-                        </div>
-                        <div>
+                @*delay + 0.2s*@
 
-                            <h4 class="mb-3">Commercial CCTV System</h4>
-                            <p class="mb-4">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem</p>
-                        </div>
-                        <div class="btn-position">
+                @foreach(var category in @Model.Categories){                    
+                        <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.@(i)s">
+                            <div class="service-item border h-100 p-5 service-div1 ourservice-div">
+                                <!-- bỏ bg-light -->
+                                <div class="btn-square  rounded-circle mb-4" style="width: 64px; height: 64px;">
+                                    <img class="img-fluid" src="~/media/categories/@category.Image">
+                                </div>
+                                <div>
 
-                            <a class="btn" href=""><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
-                    <div class="service-item border h-100 p-5 service-div2 ourservice-div">
-                        <!-- bỏ bg-light -->
-                        <div class="btn-square rounded-circle mb-4 " style="width: 64px; height: 64px;">
-                            <img class="img-fluid" src="~/img/icon/icon-8.png" alt="Icon">
-                        </div>
-                        <div>
+                                    <h4 class="mb-3">@category.Name</h4>
+                                    <p class="mb-4">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem</p>
+                                </div>
+                                <div class="btn-position">
 
-                            <h4 class="mb-3">Finger Print Access</h4>
-                            <p class="mb-4">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem</p>
+                                    <a class="btn" href=""><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="btn-position">
-                            <a class="btn" href=""><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
-                        </div>
-                        
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="service-item border h-100 p-5 service-div1 ourservice-div">
-                        <!-- bỏ bg-light -->
-                        <div class="btn-square rounded-circle mb-4" style="width: 64px; height: 64px;">
-                            <img class="img-fluid" src="~/img/icon/icon-9.png" alt="Icon">
-                        </div>
-                        <div>
-
-                            <h4 class="mb-3">Fire Detection And Safety</h4>
-                            <p class="mb-4">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem</p>
-                        </div>
-                        <div class="btn-position">
-
-                            <a class="btn" href=""><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.7s">
-                    <div class="service-item border h-100 p-5 service-div2 ourservice-div">
-                        <!-- bỏ bg-light -->
-                        <div class="btn-square rounded-circle mb-4" style="width: 64px; height: 64px;">
-                            <img class="img-fluid" src="~/img/icon/icon-3.png" alt="Icon">
-                        </div>
-                        <div>
-                            <h4 class="mb-3">Smart Home Security</h4>
-                            <p class="mb-4">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem</p>
-                        </div>
-                        
-                        <div class="btn-position">
-                            <a class="btn" href=""><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
-                        </div>
-                        
-                    </div>
-                </div>
+                    @(i+=2)                                   
+                }                              
             </div>
         </div>
     </div>

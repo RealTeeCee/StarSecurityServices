@@ -186,13 +186,33 @@
                         <a href="/admin" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
                     </li>
                     <li class="nav-item pcoded-hasmenu">
-                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-share-2"></i></span><span class="pcoded-mtext">Branch Management</span></a>
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-share-2"></i></span><span class="pcoded-mtext">Manage Branches</span></a>
                         <ul class="pcoded-submenu">
                             <li><a asp-controller="Branch" asp-action="Index" asp-area="Admin">List Branches</a></li>                            
                         </ul>
-                    </li>
+                    </li>         
+                    
+                    @if (currentRoleNames.Count > 0)
+                    {
+                        @if (currentRoleNames[0] != "Employee")
+                        {
+                            <li class="nav-item pcoded-hasmenu">
+                                <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Manage Users </span></a>
+                                <ul class="pcoded-submenu">
+                                    <li><a asp-controller="Administration" asp-action="listusers" asp-area="Admin">List Users</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item pcoded-hasmenu">
+                                <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user-check"></i></span><span class="pcoded-mtext">Manage Roles </span></a>
+                                <ul class="pcoded-submenu">
+                                    <li><a asp-controller="Administration" asp-action="listroles" asp-area="Admin">List Roles</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
+
                     <li class="nav-item pcoded-hasmenu">
-                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-list"></i></span><span class="pcoded-mtext">Category Management</span></a>
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-list"></i></span><span class="pcoded-mtext">Manage Categories </span></a>
                         <ul class="pcoded-submenu">
                             <li><a asp-controller="Category" asp-action="Index" asp-area="Admin">List Categories</a></li>
                         </ul>
@@ -200,24 +220,13 @@
                             <li><a asp-controller="CategoryBranch" asp-action="Index" asp-area="Admin">List Categories Branch</a></li>
                         </ul>
                     </li>
-                    @if (currentRoleNames.Count > 0)
-                    {
-                        @if (currentRoleNames[0] != "Employee")
-                        {
-                            <li class="nav-item pcoded-hasmenu">
-                                <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Users Management</span></a>
-                                <ul class="pcoded-submenu">
-                                    <li><a asp-controller="Administration" asp-action="listusers" asp-area="Admin">List Users</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item pcoded-hasmenu">
-                                <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user-check"></i></span><span class="pcoded-mtext">Roles Management</span></a>
-                                <ul class="pcoded-submenu">
-                                    <li><a asp-controller="Administration" asp-action="listroles" asp-area="Admin">List Roles</a></li>
-                                </ul>
-                            </li>
-                        }
-                    }
+
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-message-circle"></i></span><span class="pcoded-mtext">Manage Testimonials </span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a asp-controller="Testimonial" asp-action="Index" asp-area="Admin">List Testimonials</a></li>
+                        </ul>
+                    </li>
                 </ul>              
             </div>
         </div>

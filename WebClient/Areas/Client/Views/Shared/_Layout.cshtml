@@ -96,9 +96,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-4 py-lg-0">
-                    <a href="@Url.ActionLink("Index", "Home")" class="nav-item nav-link active">Home</a>
-                    <a href="@Url.ActionLink("About", "Home")" class="nav-item nav-link">About</a>
-                    <a href="@Url.ActionLink("Index", "Service")" class="nav-item nav-link">Service</a>
+                    <a asp-area="client" asp-action="index" asp-controller="home" class="nav-item nav-link active">Home</a>
+                    <a asp-area="client" asp-action="about" asp-controller="home" class="nav-item nav-link">About</a>
+                    <a asp-area="client" asp-action="index" asp-controller="service" class="nav-item nav-link">Service</a>
                     <a href="@Url.ActionLink("Project", "Home")" class="nav-item nav-link">Project</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>

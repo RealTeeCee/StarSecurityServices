@@ -13,13 +13,14 @@ namespace WebClient.Areas.Admin.Controllers
     {
         private readonly StarSecurityDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _env;
+        private readonly IWebHostEnvironment env;
+        private int pageSize = 6;
 
         public TestimonialController(StarSecurityDbContext context, IUnitOfWork unitOfWork, IWebHostEnvironment env)
         {
             this._context = context;
             this._unitOfWork = unitOfWork;
-            this._env = env;
+            this.env = env;
         }
 
         public async Task<IActionResult> Index(int p = 1)
@@ -28,16 +29,15 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 var model = await _unitOfWork.Testimonial.GetAll();
 
-                int pageSize = 6;
                 ViewBag.PageNumber = p;
-                ViewBag.PageRange = pageSize;
-                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Categories.Count() / pageSize);
+                ViewBag.PageRange = this.pageSize;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Testimonials.Count() / this.pageSize);
 
                 ViewBag.List = "List Testimonials";
                 ViewBag.Controller = "Testimonial";
                 ViewBag.AspAction = "Index";
 
-                return View(model.Skip((p - 1) * pageSize).Take(pageSize));
+                return View(model.Skip((p - 1) * this.pageSize).Take(this.pageSize));
             }
             catch (Exception)
             {
@@ -70,8 +70,21 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
+
                 if (testimonial != null)
                 {
+                    string imageName = "default.jpg";
+                    if (testimonial.ImageUpload != null)
+                    {
+                        string uploadDir = Path.Combine(env.WebRootPath, "media/testimonials");
+                        imageName = Guid.NewGuid().ToString() + "_" + testimonial.ImageUpload.FileName;
+                        string filePath = Path.Combine(uploadDir, imageName);
+                        FileStream fs = new FileStream(filePath, FileMode.Create);
+                        await testimonial.ImageUpload.CopyToAsync(fs);
+                        fs.Close();
+                    }
+                    testimonial.Image = imageName;
+
                     await _unitOfWork.Testimonial.Add(testimonial);
                     await _unitOfWork.Save();
                     TempData["msg"] = "Testimonial has been Created.";
@@ -143,8 +156,31 @@ namespace WebClient.Areas.Admin.Controllers
                     var testimonial = await _unitOfWork.Testimonial.GetFirstOrDefault(x => x.Id == model.Id);
 
                     if (testimonial != null)
-                    {
+                    {                        
+                        testimonial.Description = model.Description;
+                        testimonial.Title = model.Title;
+                        testimonial.Name = model.Name;
                         testimonial.UpdatedAt = DateTime.Now;
+
+                        if (model.ImageUpload != null)
+                        {
+                            string uploadDir = Path.Combine(env.WebRootPath, "media/testimonials");
+                            if (!string.Equals(testimonial.Image, "default.jpg"))
+                            {
+                                string oldImagePath = Path.Combine(uploadDir, testimonial.Image);
+                                if (System.IO.File.Exists(oldImagePath))
+                                {
+                                    System.IO.File.Delete(oldImagePath);
+                                }
+                            }
+                            string imageName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
+                            string filePath = Path.Combine(uploadDir, imageName);
+                            FileStream fs = new FileStream(filePath, FileMode.Create);
+                            await model.ImageUpload.CopyToAsync(fs);
+                            fs.Close();
+                            testimonial.Image = imageName;
+                        }
+
                         _context.Testimonials.Update(testimonial);
                         await _unitOfWork.Save();
 
@@ -173,8 +209,19 @@ namespace WebClient.Areas.Admin.Controllers
                     return RedirectToAction("Index");
                 }
 
+                if (!string.Equals(model.Image, "default.jpg"))
+                {
+                    string uploadDir = Path.Combine(env.WebRootPath, "media/testimonials");
+                    string oldImagePath = Path.Combine(uploadDir, model.Image);
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
                 _unitOfWork.Testimonial.Remove(model);
                 await _unitOfWork.Save();
+
                 TempData["msg"] = "Testimonial has been Deleted.";
                 TempData["msg_type"] = "success";
                 return RedirectToAction("Index");

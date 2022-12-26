@@ -1,5 +1,6 @@
 ﻿using DataAccess.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
+using Models.ViewModel;
 using System.Diagnostics;
 using WebClient.Models;
 
@@ -16,32 +17,35 @@ namespace WebClient.Areas.Customer.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {            
+        {
+            // vo day
+            HomeViewModel model = new HomeViewModel();
+            model.Categories = (List<global::Models.Category>)await unitOfWork.Category.GetAll();
 
-            return View();
+            return View(model);
         }
 
-        public IActionResult About()
+        public async Task<IActionResult>  About()
         {
             return View();
         }
 
-        public IActionResult Project()
+        public async Task<IActionResult>  Project()
         {
             return View();
         }
 
-        public IActionResult Feature()
+        public async Task<IActionResult> Feature()
         {
             return View();
         }
 
-        public IActionResult FreeQuote()
+        public async Task<IActionResult> FreeQuote()
         {
             return View();
         }
 
-        public IActionResult OurTeam()
+        public async Task<IActionResult> OurTeam()
         {
             return View();
         }
