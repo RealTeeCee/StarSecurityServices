@@ -136,7 +136,7 @@ namespace WebClient.Areas.Admin.Controllers
                     }
                 }
 
-                    if (result.Succeeded)
+                if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
@@ -155,7 +155,9 @@ namespace WebClient.Areas.Admin.Controllers
                     ViewBag.userEmail = model.UserNameOrEmail;
                     return View("AccountLocked");
                 }
-               
+
+                TempData["msg"] = "Username or Password incorrect !";
+                TempData["msg_type"] = "danger";
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt") ;
                 
             }

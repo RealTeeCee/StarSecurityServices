@@ -31,6 +31,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\media\errors\" />
+    <Folder Include="wwwroot\media\vacancies\" />
+    <Folder Include="wwwroot\media\services\" />
   </ItemGroup>
 
   <ItemGroup>
