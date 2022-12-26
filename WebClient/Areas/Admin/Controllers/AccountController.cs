@@ -111,12 +111,18 @@ namespace WebClient.Areas.Admin.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
+            if (signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)//AuthorizationPolicyBuilder.RequireAuthenticatedUser se add 1 returnUrl param vao khi Login
         {
+
             if (ModelState.IsValid)
             {                
                 var result = await signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password,model.RememberMe, true);//tham so rememberMe = isPersistent(rememberMe.value)                               
@@ -231,7 +237,7 @@ namespace WebClient.Areas.Admin.Controllers
                 Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token))
             };
 
-            return View(); 
+            return View(encodeToken); 
         }
         
         [HttpPost]
@@ -434,7 +440,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                 }
                 
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Profile", "Account", new { id = model.UserId });
             //}
             //catch (Exception)
             //{

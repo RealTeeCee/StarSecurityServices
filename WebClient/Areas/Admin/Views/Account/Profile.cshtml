@@ -5,114 +5,129 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">User Profile</h1>
 
-<div>
-    <a class="btn btn-primary btn-lg" asp-action="ChangePassword" asp-controller="Account" asp-route-id="@Model.UserId">Change Password</a>    
-</div>
-<hr />
-<div class="row">
-    <form asp-action="UpdateProfile" enctype="multipart/form-data">
-        <div class="container">
-            <div class = "row">
+  
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="@Model.Image" class="control-label">Current Avarta</label>
-                        <img src="~/media/profiles/@Model.Image" width="300" alt="" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Image" class="control-label">New Category Image</label>
-                        <input asp-for="@Model.ImageUpload" class="form-control" />
-                        <img src="" id="imgUpload" alt="" />
-                        <span asp-validation-for="@Model.ImageUpload" class="text-danger"></span>
-                    </div>
+
+<form asp-action="UpdateProfile" style="width:100%" enctype="multipart/form-data">
+    <a class="btn btn-primary btn-lg" asp-action="ChangePassword" asp-controller="Account" asp-route-id="@Model.UserId">Change Password</a>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="@Model.UserId" />
+    <input type="hidden" asp-for="@Model.Image" />
+
+    <div class="container mt-3">
+        <div class="form-row">
+
+            <div class="form-group col-md-6">
+                <div>
+                    <label asp-for="@Model.Image" class="control-label">Current Avarta</label>
                 </div>
-
-
-
-                <div class="col-md-8">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="@Model.UserId" />
-                    <input type="hidden" asp-for="@Model.Image" />
-
-                    <div class="form-group">
-                        <label asp-for="@Model.Email" class="control-label"></label>
-                        <input asp-for="@Model.Email" disabled class="form-control" />
-                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="@Model.UserName" class="control-label"></label>
-                        <input asp-for="@Model.UserName" disabled class="form-control" />
-                        <span asp-validation-for="@Model.UserName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="@Model.Name" class="control-label"></label>
-                        <input asp-for="@Model.Name" class="form-control" />
-                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Address" class="control-label"></label>
-                        <input asp-for="@Model.Address" class="form-control" />
-                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Phone" class="control-label"></label>
-                        <input asp-for="@Model.Phone" class="form-control" />
-                        <span asp-validation-for="@Model.Phone" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserCode" class="control-label"></label>
-                        <input asp-for="UserCode" class="form-control" />
-                        <span asp-validation-for="UserCode" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Education" class="control-label"></label>
-                        <input asp-for="Education" class="form-control" />
-                        <span asp-validation-for="Education" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Department" class="control-label"></label>
-                        <input asp-for="Department" class="form-control" />
-                        <span asp-validation-for="Department" class="text-danger"></span>
-                    </div>
-                     <div class="form-group">
-                        <label asp-for="Grade" class="control-label"></label>
-                        <input asp-for="Grade" class="form-control" />
-                        <span asp-validation-for="Grade" class="text-danger"></span>
-                    </div>
-                     <div class="form-group">
-                        <label asp-for="Client" class="control-label"></label>
-                        <input asp-for="Client" class="form-control" />
-                        <span asp-validation-for="Client" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Award" class="control-label"></label>
-                        <input asp-for="Award" class="form-control" />
-                        <span asp-validation-for="Award" class="text-danger"></span>
-                    </div>
-                </div>            
-         
-                
+                <img src="~/media/profiles/@Model.Image" width="245" alt="" />
             </div>
-           
+
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.Image" class="control-label">New Avarta</label>
+                <input asp-for="@Model.ImageUpload" class="form-control" />
+                <img src="" id="imgUpload" alt="" />
+                <span asp-validation-for="@Model.ImageUpload" class="text-danger"></span>
+            </div>
+
         </div>
-    
-        <div class="form-group d-flex w-100 justify-content-center">
-            <input type="submit" value="Update" class="btn btn-primary btn-lg" />
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.Email" class="control-label"></label>
+                <input asp-for="@Model.Email" disabled class="form-control" />
+                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.UserName" class="control-label"></label>
+                <input asp-for="@Model.UserName" disabled class="form-control" />
+                <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+            </div>
         </div>
-    </form>
-</div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.Name" class="control-label"></label>
+                <input asp-for="@Model.Name" class="form-control" />
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.Address" class="control-label"></label>
+                <input asp-for="@Model.Address" class="form-control" />
+                <span asp-validation-for="@Model.Address" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.Phone" class="control-label"></label>
+                <input asp-for="@Model.Phone" class="form-control" />
+                <span asp-validation-for="@Model.Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label asp-for="UserCode" class="control-label"></label>
+                <input asp-for="UserCode" class="form-control" />
+                <span asp-validation-for="UserCode" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="Education" class="control-label"></label>
+                <input asp-for="Education" class="form-control" />
+                <span asp-validation-for="Education" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label asp-for="Department" class="control-label"></label>
+                <input asp-for="Department" class="form-control" />
+                <span asp-validation-for="Department" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="Grade" class="control-label"></label>
+                <input asp-for="Grade" class="form-control" />
+                <span asp-validation-for="Grade" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label asp-for="Client" class="control-label"></label>
+                <input asp-for="Client" class="form-control" />
+                <span asp-validation-for="Client" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label asp-for="Award" class="control-label"></label>
+                <input asp-for="Award" class="form-control" />
+                <span asp-validation-for="Award" class="text-danger"></span>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="form-group d-flex w-100 justify-content-center">
+        <input type="submit" value="Update" class="btn btn-primary btn-lg" />
+    </div>
+</form>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-        <script>
-            $("#ImageUpload").change(function () {
-                readUrl(this);
-            });
-        </script>
+    <script>
+        $("#ImageUpload").change(function () {
+            readUrl(this);
+        });
+    </script>
 }
