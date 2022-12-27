@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace WebClient.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin, Employee")]
+    [Authorize]
     public class HomeController : Controller
 	{
 		public IActionResult Index()

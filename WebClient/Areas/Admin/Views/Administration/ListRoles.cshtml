@@ -16,11 +16,11 @@
     int no = 0;
 }
 
-<div class="w-100">
+@*<div class="w-100">
     <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="CreateRole">
         Add New Role
     </a>
-</div>
+</div>*@
 
 @if(Model.Any())
 {
@@ -61,9 +61,9 @@
 
         </tbody>
     </table>
-    <div class="d-flex w-100 justify-content-center">
+@*    <div class="d-flex w-100 justify-content-center">
         <pagination page-count="@ViewBag.TotalPages" page-target="/admin/administration/listroles" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
-    </div>
+    </div>*@
 }
 else
 {
@@ -74,10 +74,11 @@ else
     </div>
     <div class="card-body">
         <h5 class="card-title">
-            Use the button below to create a role
+            @*Use the button below to create a role*@
+            Please contact to Developer to Created Role !
         </h5>
-        <a class="btn btn-primary" style="width:auto" asp-controller="Administration" asp-action="CreateRole">
+@*        <a class="btn btn-primary" style="width:auto" asp-controller="Administration" asp-action="CreateRole">
             Create Role
-        </a>
+        </a>*@
     </div>
 }

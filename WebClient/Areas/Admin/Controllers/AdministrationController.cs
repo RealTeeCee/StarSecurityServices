@@ -64,7 +64,10 @@ namespace WebClient.Areas.Admin.Controllers
         {
             var user = await userManager.FindByIdAsync(id);
             var userRole = await userManager.GetRolesAsync(user);
-            ViewBag.UserRole = userRole[0];
+            if(userRole.Count > 0)
+            {
+                ViewBag.UserRole = userRole[0];
+            }
 
             if (user == null)
             {                
