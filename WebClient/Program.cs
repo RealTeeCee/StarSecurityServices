@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Models;
 using Services;
 using System.Configuration;
+using WebClient.Manager;
 using WebClient.Security;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -135,7 +136,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, SendMailService>();
 builder.Services.AddScoped<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();//Register this handler 
 builder.Services.AddScoped<IAuthorizationHandler, SuperAdminHandler>();
-builder.Services.AddScoped<List<Category>>();
+builder.Services.AddScoped<LayoutManager>();
 
 
 

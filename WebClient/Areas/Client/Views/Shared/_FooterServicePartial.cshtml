@@ -1,7 +1,7 @@
-﻿@using Models
-@inject List<Category> categoryList
+﻿@using WebClient.Manager
+@inject LayoutManager categoryList
 
-@foreach (var item in categoryList)
+@foreach (var item in await categoryList.CategoryList())
 {
     <a class="btn btn-link" asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="@item.Slug"> @item.Name</a>
 }
