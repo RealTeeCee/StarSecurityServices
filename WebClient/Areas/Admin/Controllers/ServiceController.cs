@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data;
 using DataAccess.Repositories.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Security.Claims;
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin, Employee")]
     public class ServiceController : Controller
     {
         private readonly StarSecurityDbContext _context;
@@ -46,12 +48,12 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
-
+        [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Create()
         {
             // User check Session, lay Id User đang đăng nhập
             ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name");
-
+            
             try
             {
                 ViewBag.List = "List Services";
@@ -70,6 +72,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Create(Service model)
         {
             try
@@ -126,8 +129,7 @@ namespace WebClient.Areas.Admin.Controllers
                     // Xử lý Thêm UserId cho Service
 
                     // Get Current user UserName
-                    var userName = User.FindFirstValue(ClaimTypes.Name);
-                    service.UpdatedBy = userName;
+                    service.UpdatedBy = User.FindFirstValue(ClaimTypes.Name);
 
 
                     await _unitOfWork.Service.Add(service);
@@ -145,12 +147,13 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> Edit(int id)
         {
             try
             {
                 var service = await _unitOfWork.Service.GetFirstOrDefault(x => x.Id == id);
-                ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name", service.CategoryId);
+                ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", service.CategoryId);
 
                 ViewBag.List = "List Services";
                 ViewBag.Controller = "Service";
@@ -168,6 +171,7 @@ namespace WebClient.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> Edit(int id, Service model)
         {
             try
@@ -235,8 +239,8 @@ namespace WebClient.Areas.Admin.Controllers
                         service.Description = model.Description;
                         service.ShortDescription = model.ShortDescription;
 
-                        // Phải thêm Edit bởi ai
-                        //service.UserId = ;
+                        // Get Current user UserName
+                        service.UpdatedBy = User.FindFirstValue(ClaimTypes.Name);
                         service.CategoryId = model.CategoryId;
 
                         service.Status = model.Status;
@@ -256,6 +260,7 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Policy = ("DeletePolicy"))]
         public async Task<IActionResult> Delete(int id)
         {
             try
