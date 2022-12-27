@@ -8,6 +8,13 @@
     Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
     
 }
+@section Styles {
+    <style>
+        img.new-format{            
+            height:225px;
+        }
+    </style>
+    }
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5 ">
         <div class="owl-carousel header-carousel position-relative">
@@ -154,7 +161,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="" class="btn btn-primary rounded-pill py-3 px-5">Explore More</a>
+                        <a asp-action="About" asp-controller="Home" asp-area="Client" class="btn btn-primary rounded-pill py-3 px-5">Explore More</a>
                     </div>
                 </div>
             </div>
@@ -182,7 +189,7 @@
                         <div class="service-item border h-100 p-5 service-div@(serviceDivide % 2 == 1 ? "1" : "2") ourservice-div">
                             <!-- bỏ bg-light -->
                             <div class="btn-square  rounded-circle mb-4" style="width: 200px;height: 200px">
-                                <img class="img-fluid" src="~/media/categories/@category.Image">
+                                <img class="img-fluid new-format" src="~/media/categories/@category.Image">
                             </div>
                             <div>
 
@@ -191,7 +198,7 @@
                             </div>
                             <div class="btn-position">
 
-                                <a class="btn" href="#"><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
+                            <a class="btn" asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="@category.Slug"><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
                             </div>
                         </div>
                     </div>
