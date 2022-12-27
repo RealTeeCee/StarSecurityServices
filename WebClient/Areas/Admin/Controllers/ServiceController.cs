@@ -1,13 +1,10 @@
 ﻿using DataAccess.Data;
 using DataAccess.Repositories.IRepositories;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Services;
-using System.Data;
 using System.Drawing.Printing;
 using System.Security.Claims;
 
@@ -16,17 +13,13 @@ namespace WebClient.Areas.Admin.Controllers
     [Area("Admin")]
     public class ServiceController : Controller
     {
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly UserManager<User> userManager;
         private readonly StarSecurityDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment env;
         private int pageSizes = 6;
 
-        public ServiceController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUnitOfWork unitOfWork, StarSecurityDbContext context, IWebHostEnvironment env)
+        public ServiceController(IUnitOfWork unitOfWork, StarSecurityDbContext context, IWebHostEnvironment env)
         {
-            this.roleManager = roleManager;
-            this.userManager = userManager;
             this._unitOfWork = unitOfWork;
             this._context = context;
             this.env = env;
@@ -56,18 +49,11 @@ namespace WebClient.Areas.Admin.Controllers
 
         public async Task<IActionResult> Create()
         {
+            // User check Session, lay Id User đang đăng nhập
+            ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name");
+
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(userId));
-
-                if (currentRoleNames[0] == "SuperAdmin" || currentRoleNames[0] == "GeneralAdmin")
-                {
-                    ViewBag.Branch = new SelectList(_context.Branches.ToList(), "Id", "Name");
-                }
-                // User check Session, lay Id User đang đăng nhập
-                ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name");
-
                 ViewBag.List = "List Services";
                 ViewBag.Controller = "Service";
                 ViewBag.AspAction = "Index";
@@ -137,10 +123,12 @@ namespace WebClient.Areas.Admin.Controllers
                     service.CategoryId = model.CategoryId;
                     service.Image = imageName;
                     service.Status = 1;
+                    // Xử lý Thêm UserId cho Service
 
                     // Get Current user UserName
                     var userName = User.FindFirstValue(ClaimTypes.Name);
                     service.UpdatedBy = userName;
+
 
                     await _unitOfWork.Service.Add(service);
                     await _unitOfWork.Save();
@@ -162,7 +150,7 @@ namespace WebClient.Areas.Admin.Controllers
             try
             {
                 var service = await _unitOfWork.Service.GetFirstOrDefault(x => x.Id == id);
-                ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", service.CategoryId);
+                ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name", service.CategoryId);
 
                 ViewBag.List = "List Services";
                 ViewBag.Controller = "Service";
@@ -247,10 +235,8 @@ namespace WebClient.Areas.Admin.Controllers
                         service.Description = model.Description;
                         service.ShortDescription = model.ShortDescription;
 
-                        // Get Current user UserName
-                        var userName = User.FindFirstValue(ClaimTypes.Name);
-                        service.UpdatedBy = userName;
-
+                        // Phải thêm Edit bởi ai
+                        //service.UserId = ;
                         service.CategoryId = model.CategoryId;
 
                         service.Status = model.Status;
