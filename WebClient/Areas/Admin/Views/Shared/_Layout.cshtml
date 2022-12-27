@@ -123,7 +123,7 @@
     <meta name="keywords" content="">
     <meta name="author" content="Phoenixcoded" />
     <!-- Favicon icon -->    
-    <link rel="icon" href="~/img/logo.png" type="image/x-icon" />
+    <link rel="icon" href="~/img/logo_admin_thumb.png" type="image/x-icon" />
     <!-- vendor css -->
 
     <link href="~/admin/assets/css/style.css" rel="stylesheet" />
@@ -200,11 +200,16 @@
                                     <li><a asp-controller="Administration" asp-action="listusers" asp-area="Admin">List Users</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item pcoded-hasmenu">
-                                <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user-check"></i></span><span class="pcoded-mtext">Manage Roles </span></a>
-                                <ul class="pcoded-submenu">
-                                    <li><a asp-controller="Administration" asp-action="listroles" asp-area="Admin">List Roles</a></li>
-                                </ul>
+                            <li class="nav-item">
+                                <a asp-controller="Administration" asp-action="listroles" asp-area="Admin" class="nav-link">
+                                    <span class="pcoded-micon">
+                                        <i class="feather icon-user-check"></i>
+                                    </span>
+                                    <span class="pcoded-mtext">Roles</span>
+                                </a>
+@*                                <ul class="pcoded-submenu">
+                                    <li><a asp-controller="Administration" asp-action="listroles" asp-area="Admin">All Roles</a></li>
+                                </ul>*@
                             </li>
                         }
                     }
@@ -256,8 +261,7 @@
             <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
             <a href="#!" class="b-brand">
                 <!-- ========   change your logo hear   ============ -->
-                <img src="~/img/logo.png" alt="Star Security Logo" style="width: 100px;" class="logo">
-                @*<img src="~/admin/assets/images/logo-icon.png" alt="" class="logo-thumb">*@
+                <img src="~/img/logo_admin_01.png" alt="Star Security Logo" style="width: 100px;" class="logo">
             </a>
             <a href="#!" class="mob-toggler">
                 <i class="feather icon-more-vertical"></i>
