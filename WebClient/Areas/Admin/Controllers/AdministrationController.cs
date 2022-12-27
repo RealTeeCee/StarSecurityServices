@@ -19,14 +19,16 @@ namespace WebClient.Areas.Admin.Controllers
         private readonly UserManager<User> userManager;
         private readonly IUnitOfWork unitOfWork;
         private readonly StarSecurityDbContext context;
+        private readonly SignInManager<User> signInManager;
         private int pageSize = 6;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUnitOfWork unitOfWork, StarSecurityDbContext context)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUnitOfWork unitOfWork, StarSecurityDbContext context, SignInManager<User> signInManager)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.unitOfWork = unitOfWork;
             this.context = context;
+            this.signInManager = signInManager;
         }
         //--------------------------------- USER ---------------------------------
         //Create User is Register
@@ -317,6 +319,10 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", "cannot add selected roles to user");
                 return View(model);
+            }
+            else
+            {
+                await userManager.UpdateSecurityStampAsync(user);                
             }
 
             TempData["msg"] = "Edit User 's Claims Successfully.";
@@ -670,6 +676,8 @@ namespace WebClient.Areas.Admin.Controllers
                     result = await userManager.AddToRoleAsync(user, role.Name);
                     if(result.Succeeded)
                     {
+
+
                         // Get All trong Branch
                         var branchs = await unitOfWork.Branch.GetAll();
                         foreach (var branch in branchs)
@@ -723,19 +731,20 @@ namespace WebClient.Areas.Admin.Controllers
                 }
 
                 if (result.Succeeded)
-                {                                     
-                    
-                    if (i < model.Count - 1)
-                    {
-                        continue;
-                    }
-                    else
-                    {
+                {
+                    await userManager.UpdateSecurityStampAsync(user);
+                    //if (i < model.Count - 1)
+                    //{
+                    //    continue;
+                    //}
+                    //else
+                    //{
+
                         TempData["msg"] = "Edit Users in Role Successfully.";
                         TempData["msg_type"] = "success";
                         
                         return RedirectToAction("EditRole", new { Id = roleId });
-                    }
+                    //}
                 }
             }
 

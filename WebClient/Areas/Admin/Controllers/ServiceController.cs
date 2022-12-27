@@ -50,7 +50,7 @@ namespace WebClient.Areas.Admin.Controllers
         public async Task<IActionResult> Create()
         {
             // User check Session, lay Id User đang đăng nhập
-            ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name");
+            ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name");
 
             try
             {

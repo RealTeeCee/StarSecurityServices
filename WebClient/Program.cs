@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
 using Services;
@@ -88,27 +89,27 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CreatePolicy", policy => policy.RequireAssertion(
                                                 context => context.User.IsInRole("GeneralAdmin") ||
                                                 context.User.IsInRole("Admin") && 
-                                                context.User.HasClaim(claim => claim.Type == "Create"  && claim.Value == "true") ||
+                                                context.User.HasClaim(claim => claim.Type == "Create"  && claim.Value == "True") ||
                                                 context.User.IsInRole("Admin") &&
-                                                context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "true") ||
+                                                context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "True") ||
                                                 context.User.IsInRole("SuperAdmin") 
                                                 ));
 
     options.AddPolicy("EditPolicy", policy => policy.RequireAssertion(
                                                 context => context.User.IsInRole("GeneralAdmin") ||
                                                 context.User.IsInRole("Admin") &&
-                                                context.User.HasClaim(claim => claim.Type == "Edit" && claim.Value == "true") ||
+                                                context.User.HasClaim(claim => claim.Type == "Edit" && claim.Value == "True") ||
                                                 context.User.IsInRole("Admin") &&
-                                                context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "true") ||
+                                                context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "True") ||
                                                 context.User.IsInRole("SuperAdmin")
                                                ));
 
     options.AddPolicy("DeletePolicy", policy => policy.RequireAssertion(
                                            context => context.User.IsInRole("GeneralAdmin") ||
                                             context.User.IsInRole("Admin") &&
-                                            context.User.HasClaim(claim => claim.Type == "Delete" && claim.Value == "true") ||
+                                            context.User.HasClaim(claim => claim.Type == "Delete" && claim.Value == "True") ||
                                             context.User.IsInRole("Admin") &&
-                                            context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "true") ||
+                                            context.User.HasClaim(claim => claim.Type == "All" && claim.Value == "True") ||
                                             context.User.IsInRole("SuperAdmin")
                                            ));
 
@@ -118,7 +119,11 @@ builder.Services.ConfigureApplicationCookie(config =>
 {
     config.LoginPath = "/Admin/Account/Login";
     config.AccessDeniedPath = "/Admin/Account/AccessDenied";
-});
+
+}).Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.FromSeconds(1);
+}); 
 
 
 

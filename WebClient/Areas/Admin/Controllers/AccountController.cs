@@ -313,7 +313,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         }
 
-        [AllowAnonymous]
+
         public IActionResult AccessDenied()
         {
             return View();
