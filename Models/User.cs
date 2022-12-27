@@ -20,6 +20,7 @@ namespace Models
         [Column(TypeName = "nvarchar")]
         public string? Address { get; set; } = "Some Address";
 
+        // Image Default
         public string? Image { get; set; } = "default.jpg";
 
         [NotMapped]
