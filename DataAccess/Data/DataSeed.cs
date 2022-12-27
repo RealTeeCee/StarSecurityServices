@@ -53,31 +53,6 @@ namespace DataAccess.Data
 
 
 
-            //modelBuilder.Entity<Role>().HasData(
-            //   new Role() { Id = 1, Name = "Super Administrator",Permissions = "{{\"security\":[\"read\",\"add\",\"edit\",\"delete\"], \"device\":[\"read\",\"add\",\"edit\",\"delete\"], \"role\":[\"read\",\"add\",\"edit\",\"delete\",\"permission\"],\"post\":[\"read\",\"add\",\"edit\",\"delete\"],\"user\":[\"read\",\"add\",\"edit\",\"delete\"],\"branch\":[\"read\",\"add\",\"edit\",\"delete\"],\"vacancy\":[\"read\",\"add\",\"edit\",\"delete\"],\"train\":[\"read\",\"add\",\"edit\",\"delete\"]}}", CreatedAt = DateTime.Now , UpdatedAt = null },
-            //   new Role() { Id = 2, Name = "General Administrator", Permissions = "{}", CreatedAt = DateTime.Now, UpdatedAt = null },
-            //   new Role() { Id = 3, Name = "Administrator", Permissions = "{}", CreatedAt = DateTime.Now, UpdatedAt = null },
-            //   new Role() { Id = 4, Name = "Employee", Permissions = "{}", CreatedAt = DateTime.Now, UpdatedAt = null }
-            //   );
-            //modelbuilder.entity<module>().hasdata(
-            //    new module() { id = 1, name = "security", title = "security manager", createdat = datetime.now, updatedat = null },
-            //    new module() { id = 2, name = "vacancy", title = "vacancy manager", createdat = datetime.now, updatedat = null },
-            //    new module() { id = 3, name = "device", title = "device manager", createdat = datetime.now, updatedat = null },
-            //    new module() { id = 4, name = "train", title = "train manager", createdat = datetime.now, updatedat = null },
-            //    new module() { id = 5, name = "role", title = "role manager", createdat = datetime.now, updatedat = null },
-            //    new module() { id = 6, name = "branch", title = "branch manager", createdat = datetime.now, updatedat = null },
-            //    new module() { id = 7, name = "user", title = "user manager", createdat = datetime.now, updatedat = null }
-
-            //    );
-
-            //modelBuilder.Entity<SuperAdmin>().HasData(
-            //    new SuperAdmin()  { Id = 1, Name = "Super Admin", Email = "admin@gmail.com",Password = "123456",Phone =" 0123456789",Address=" 590 CMT8",Image="default.jpg", RoleId=1,Status=1, CreatedAt = DateTime.Now, UpdatedAt = null }                       
-            //);
-
-            //modelBuilder.Entity<User>().HasData(
-            //   new User() { Id = 1, Name = "General Admin", Email = "g_admin@gmail.com", Password = "123456", Phone = " 0123456789", Address = " 590 CMT8", Image = "default.jpg", RoleId = 2, Status = 1, CreatedAt = DateTime.Now, UpdatedAt = null }
-            //);
-
             modelBuilder.Entity<Branch>().HasData(
                 new Branch() { Id = 1, Name = "Hồ Chí Minh", Email = "hcm@gmail.com", Phone = "0987654321", Address = "590 CMT8", TimeOpen = "01-01-2021", Facebook = "StarFb", Instagram = "StarIg", Twitter = "StarTw", Youtube = "StarYtb", CreatedAt = DateTime.Now, UpdatedAt = null }
             );

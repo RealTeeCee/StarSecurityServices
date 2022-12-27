@@ -91,6 +91,19 @@ namespace WebClient.Areas.Admin.Controllers
                     string imageName = "default.jpg";
                     if(category.ImageUpload != null)
                     {
+                        foreach (var item in ModelState)
+                        {
+                            if (item.Key == "ImageUpload")
+                            {
+                                if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                {
+                                    TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                    TempData["msg_type"] = "danger";
+                                    return RedirectToAction("Create", new { id = category.Id });
+                                }
+                            }
+                        }
+
                         string uploadDir = Path.Combine(env.WebRootPath, "media/categories");
                         imageName = Guid.NewGuid().ToString() + "_" + category.ImageUpload.FileName;
                         string filePath = Path.Combine(uploadDir, imageName);
@@ -193,7 +206,20 @@ namespace WebClient.Areas.Admin.Controllers
 
                                                
                         if (model.ImageUpload != null)
-                        { 
+                        {
+                            foreach (var item in ModelState)
+                            {
+                                if (item.Key == "ImageUpload")
+                                {
+                                    if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                    {
+                                        TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                        TempData["msg_type"] = "danger";
+                                        return RedirectToAction("Edit", new { id = model.Id });
+                                    }
+                                }
+                            }
+
                             string uploadDir = Path.Combine(env.WebRootPath, "media/categories");
                             if(!string.Equals(category.Image, "default.jpg")){
                                 string oldImagePath = Path.Combine(uploadDir, category.Image);

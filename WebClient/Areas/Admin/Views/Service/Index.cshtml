@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Models.Service>
+﻿@using System.Security.Claims
+@model IEnumerable<Models.Service>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,7 +9,7 @@
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <h3>List Categories</h3>
+            <h3>List Services</h3>
             <span class="d-block m-t-5">
                 <a asp-action="Create" class="btn btn-primary">Create New</a>
             </span>
@@ -22,6 +23,7 @@
                             <th>Service Image</th>
                             <th>Image</th>
                             <th>Status</th>
+                            <th>Updated By</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                             <th>Action</th>
@@ -35,7 +37,7 @@
                                 <td>@item.Name</td>
                                 <td><img src="~/media/services/@item.Image" width="200" alt="" /></td>
                                 <td>@(item.Status == 1 ? "Active" : "InActive")</td>
-
+                                <td>@item.UpdatedBy</td>
                                 <td>@item.CreatedAt</td>
                                 <td>@item.UpdatedAt</td>
                                 <td>

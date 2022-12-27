@@ -27,8 +27,7 @@ namespace DataAccess.Services
         public IUserDetail UserDetail { get; private set; }
 
         public IVacancy Vacancy { get; private set; }
-
-        public ISuperAdmin SuperAdmin { get; private set; }
+        
 
         public IContact Contact { get; private set; }
 
@@ -44,8 +43,7 @@ namespace DataAccess.Services
             Session = new SessionService(_context);
             Testimonial = new TestimonialService(_context);
             User = new UserService(_context);
-            UserDetail = new UserDetailService(_context);
-            SuperAdmin = new SuperAdminService(_context);
+            UserDetail = new UserDetailService(_context);            
             Vacancy = new VacancyService(_context);
             Contact = new ContactService(_context);
             UserBranch = new UserBranchService(_context);

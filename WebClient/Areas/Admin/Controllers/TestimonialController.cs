@@ -75,6 +75,20 @@ namespace WebClient.Areas.Admin.Controllers
                     string imageName = "default.jpg";
                     if (testimonial.ImageUpload != null)
                     {
+                        foreach (var item in ModelState)
+                        {
+                            if (item.Key == "ImageUpload")
+                            {
+                                if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                {
+                                    TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                    TempData["msg_type"] = "danger";
+                                    return RedirectToAction("Create", new { id = testimonial.Id });
+                                }
+                            }
+                        }
+
+
                         string uploadDir = Path.Combine(env.WebRootPath, "media/testimonials");
                         imageName = Guid.NewGuid().ToString() + "_" + testimonial.ImageUpload.FileName;
                         string filePath = Path.Combine(uploadDir, imageName);
@@ -162,6 +176,19 @@ namespace WebClient.Areas.Admin.Controllers
 
                         if (model.ImageUpload != null)
                         {
+                            foreach (var item in ModelState)
+                            {
+                                if (item.Key == "ImageUpload")
+                                {
+                                    if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                    {
+                                        TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                        TempData["msg_type"] = "danger";
+                                        return RedirectToAction("Edit", new { id = model.Id });
+                                    }
+                                }
+                            }
+
                             string uploadDir = Path.Combine(env.WebRootPath, "media/testimonials");
                             if (!string.Equals(testimonial.Image, "default.jpg"))
                             {

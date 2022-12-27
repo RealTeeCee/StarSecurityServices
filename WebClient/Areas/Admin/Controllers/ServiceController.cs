@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Services;
 using System.Drawing.Printing;
+using System.Security.Claims;
 
 namespace WebClient.Areas.Admin.Controllers
 {
@@ -92,6 +93,19 @@ namespace WebClient.Areas.Admin.Controllers
                     string imageName = "default.jpg";
                     if (model.ImageUpload != null)
                     {
+                        foreach (var item in ModelState)
+                        {
+                            if (item.Key == "ImageUpload")
+                            {
+                                if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                {
+                                    TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                    TempData["msg_type"] = "danger";
+                                    return RedirectToAction("Create", new { id = model.Id });
+                                }
+                            }
+                        }
+
                         string uploadDir = Path.Combine(env.WebRootPath, "media/services");
                         imageName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
                         string filePath = Path.Combine(uploadDir, imageName);
@@ -110,6 +124,11 @@ namespace WebClient.Areas.Admin.Controllers
                     service.Image = imageName;
                     service.Status = 1;
                     // Xử lý Thêm UserId cho Service
+
+                    // Get Current user UserName
+                    var userName = User.FindFirstValue(ClaimTypes.Name);
+                    service.UpdatedBy = userName;
+
 
                     await _unitOfWork.Service.Add(service);
                     await _unitOfWork.Save();
@@ -179,6 +198,21 @@ namespace WebClient.Areas.Admin.Controllers
 
                         if (model.ImageUpload != null)
                         {
+                            // Nếu ko Validate Hợp lệ
+                            foreach (var item in ModelState)
+                            {
+                                if (item.Key == "ImageUpload")
+                                {
+                                    if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                    {
+                                        TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                        TempData["msg_type"] = "danger";
+                                        return RedirectToAction("Edit", new { id = model.Id });
+                                    }
+                                }
+                            }
+
+
                             string uploadDir = Path.Combine(env.WebRootPath, "media/services");
                             if (!string.Equals(service.Image, "default.jpg"))
                             {

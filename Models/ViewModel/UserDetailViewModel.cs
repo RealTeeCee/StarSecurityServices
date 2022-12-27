@@ -35,11 +35,11 @@ namespace Models.ViewModel
         [Column(TypeName = "nvarchar")]
         public string? Address { get; set; } = "Some Address";
 
-        [FileExtension]
         public string? Image { get; set; } = "default.jpg";
 
         [NotMapped]
-        public IFormFile ImageUpload { get; set; }
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; }
 
         [StringLength(20)]
         [Required]

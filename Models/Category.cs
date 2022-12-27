@@ -18,10 +18,11 @@ namespace Models
         [StringLength(255)]
         public string? Slug { get; set; }
 
-        [FileExtension]
-        public string? Image { get; set; }
+        public string Image { get; set; }
+
         [NotMapped]
-        public IFormFile ImageUpload { get; set; }
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; }
 
         [StringLength(150)]
         [Column(TypeName = "nvarchar")]

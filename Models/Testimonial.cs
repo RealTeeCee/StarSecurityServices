@@ -19,10 +19,11 @@ namespace Models
         [StringLength(255)]
         public string? Description { get; set; }
 
-        [FileExtension]
-        public string? Image { get; set; }
+        public string Image { get; set; }
+
         [NotMapped]
-        public IFormFile ImageUpload { get; set; }
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; }
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }

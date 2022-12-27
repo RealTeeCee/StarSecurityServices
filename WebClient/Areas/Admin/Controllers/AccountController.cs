@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -389,6 +390,19 @@ namespace WebClient.Areas.Admin.Controllers
 
                         if (model.ImageUpload != null)
                         {
+                            foreach (var item in ModelState)
+                            {
+                                if(item.Key == "ImageUpload")
+                                {
+                                    if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                    {
+                                        TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                        TempData["msg_type"] = "danger";
+                                        return RedirectToAction("Profile", new { id = model.UserId });
+                                    }
+                                }
+                            }
+                            
                             string uploadDir = Path.Combine(env.WebRootPath, "media/profiles");
                             if (!string.Equals(user.Image, "default.jpg"))
                             {

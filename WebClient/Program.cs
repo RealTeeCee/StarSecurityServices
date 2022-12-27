@@ -45,9 +45,10 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 
     // Cấu hình đăng nhập.
     //options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)    
-    options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
+    options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại    
 
-    
+
+
 }).AddEntityFrameworkStores<StarSecurityDbContext>()
   .AddDefaultTokenProviders();
 
