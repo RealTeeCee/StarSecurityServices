@@ -16,7 +16,10 @@ namespace DataAccess.Data
         {
             //CREATE SUPERADMIN
             List<IdentityRole> roles = new List<IdentityRole>(){
-                new IdentityRole {Name = "SuperAdmin", NormalizedName = "SUPERADMIN"},                
+                new IdentityRole {Name = "SuperAdmin", NormalizedName = "SUPERADMIN"},
+                new IdentityRole {Name = "GeneralAdmin", NormalizedName = "GENERALADMIN"},
+                new IdentityRole {Name = "Admin", NormalizedName = "ADMIN"},
+                new IdentityRole {Name = "Employee", NormalizedName = "EMPLOYEE"}
             };
 
             modelBuilder.Entity<IdentityRole>().HasData(roles);
