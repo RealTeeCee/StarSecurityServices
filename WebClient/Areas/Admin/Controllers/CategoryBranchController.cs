@@ -10,7 +10,7 @@ using System.Linq;
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin, Employee")]
+    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin")]
     public class CategoryBranchController : Controller
     {
         private readonly StarSecurityDbContext _context;

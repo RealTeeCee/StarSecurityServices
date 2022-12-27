@@ -12,7 +12,7 @@ using System.Security.Claims;
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin, Employee")]
+    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin")]
     public class BranchController : Controller
     {
         private readonly StarSecurityDbContext _context;

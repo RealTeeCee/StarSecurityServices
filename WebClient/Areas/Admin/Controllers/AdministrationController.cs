@@ -59,10 +59,12 @@ namespace WebClient.Areas.Admin.Controllers
             }
 
         }
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
+            var userRole = await userManager.GetRolesAsync(user);
+            ViewBag.UserRole = userRole[0];
 
             if (user == null)
             {                
@@ -89,13 +91,13 @@ namespace WebClient.Areas.Admin.Controllers
             ViewBag.Controller = "Administration";
             ViewBag.AspAction = "ListUsers";
             ViewBag.AspSubAction = "EditUser";
-            ViewBag.Action = "Edit User";
+            ViewBag.Action = "Edit User";            
 
             return View(model);
 
         }
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
             var user = await userManager.FindByIdAsync(model.Id);
@@ -245,7 +247,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         //}
 
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin")]
+        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
         public async Task<IActionResult> ManageUserClaims(string userId)
         {                        
             var user = await userManager.FindByIdAsync(userId);

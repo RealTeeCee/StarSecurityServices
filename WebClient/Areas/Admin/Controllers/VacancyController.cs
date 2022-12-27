@@ -1,15 +1,18 @@
 ﻿using DataAccess.Data;
 using DataAccess.Repositories.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.ViewModel;
 using Services;
+using System.Data;
 
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin")]
     public class VacancyController : Controller
     {
         private readonly StarSecurityDbContext _context;
