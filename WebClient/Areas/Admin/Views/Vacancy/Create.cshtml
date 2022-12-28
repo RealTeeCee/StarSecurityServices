@@ -5,68 +5,58 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
 
-<h4>Vacancy</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="ImageUpload" class="form-control" />
-                <img src="" id="imgUpload" alt="" />
-                <span asp-validation-for="ImageUpload" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" value="#" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <select asp-for="CategoryId" asp-items="@ViewBag.Category" class="form-control">
-                    <option value="0">Choose Category</option>
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Branch" class="control-label"></label>
-                <select asp-for="BranchId" asp-items="@ViewBag.Branch" class="form-control">
-                    <option value="0">Choose a Branch</option>
-                </select>
-                <span asp-validation-for="BranchId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Noted" class="control-label"></label>
-                <textarea asp-for="Noted" class="form-control"></textarea>
-                <span asp-validation-for="Noted" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create" enctype="multipart/form-data" class="w-100">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
-</div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Image" class="control-label"></label>
+        <input asp-for="ImageUpload" class="form-control" />
+        <img src="" id="imgUpload" alt="" />
+        <span asp-validation-for="ImageUpload" class="text-danger"></span>
+    </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="Phone" class="control-label"></label>
+        <input asp-for="Phone" value="#" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Category" class="control-label"></label>
+        <select asp-for="CategoryId" asp-items="@ViewBag.Category" class="form-control">
+            <option value="0">Choose Category</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Branch" class="control-label"></label>
+        <select asp-for="BranchId" asp-items="@ViewBag.Branch" class="form-control">
+            <option value="0">Choose a Branch</option>
+        </select>
+        <span asp-validation-for="BranchId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Noted" class="control-label"></label>
+        <textarea asp-for="Noted" class="form-control"></textarea>
+        <span asp-validation-for="Noted" class="text-danger"></span>
+    </div>
+
+    <div class="form-group d-flex justify-content-between">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
+</form>
 
 @section Scripts {
     @{
