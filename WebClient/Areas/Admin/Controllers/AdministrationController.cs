@@ -18,7 +18,7 @@ namespace WebClient.Areas.Admin.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<User> userManager;
         private readonly IUnitOfWork unitOfWork;
-        private readonly StarSecurityDbContext context;,
+        private readonly StarSecurityDbContext context;
         private readonly SignInManager<User> signInManager;
         private int pageSize = 6;
 
@@ -58,7 +58,7 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
+
         [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> EditUser(string id)
         {
@@ -100,7 +100,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         }
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
             var user = await userManager.FindByIdAsync(model.Id);
@@ -524,7 +524,7 @@ namespace WebClient.Areas.Admin.Controllers
             }
 
         }
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -559,7 +559,7 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);
@@ -604,7 +604,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         }
 
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewBag.roleId = roleId;            
@@ -659,7 +659,7 @@ namespace WebClient.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> EditUsersInRole(List<RoleUsersViewModel> model, string roleId) //Muon nhan dc roleId o ben View chi dc sd form method post (ko action)
         {
             //Tim role cua 
