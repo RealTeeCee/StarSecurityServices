@@ -460,10 +460,8 @@ namespace WebClient.Areas.Admin.Controllers
                     await unitOfWork.UserDetail.Add(newUserDetails);
                     await unitOfWork.Save();
                 }                       
-
                 TempData["msg"] = "User Profile has been Updated.";
                 TempData["msg_type"] = "success";
-
             }
                 
             return RedirectToAction("Profile", "Account", new { id = model.UserId });

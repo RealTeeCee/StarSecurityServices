@@ -67,7 +67,8 @@ namespace DataAccess.Data
                new Category() { Id = 1, Name = "Security Service", Image = "default.jpg", Slug = "security-service", CreatedAt = DateTime.Now, UpdatedAt = null },
                new Category() { Id = 2, Name = "Vacancy Service", Image = "default.jpg", Slug = "vacancy-service", CreatedAt = DateTime.Now, UpdatedAt = null },
                new Category() { Id = 3, Name = "Cash Service", Image = "default.jpg", Slug = "cash-service", CreatedAt = DateTime.Now, UpdatedAt = null },
-               new Category() { Id = 4, Name = "Train Service", Image = "default.jpg", Slug = "train-service", CreatedAt = DateTime.Now, UpdatedAt = null }
+               new Category() { Id = 4, Name = "Train Service", Image = "default.jpg", Slug = "train-service", CreatedAt = DateTime.Now, UpdatedAt = null },
+               new Category() { Id = 5, Name = "Electronic Service", Image = "default.jpg", Slug = "electronic-service", CreatedAt = DateTime.Now, UpdatedAt = null }
             );
         }
     }
