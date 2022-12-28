@@ -3,6 +3,14 @@
     ViewData["Title"] = "Categories";
     Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
 }
+@section Styles {
+       <style>
+           img.new-format{
+               width:300px;
+               height:300px;
+           }
+       </style>
+    }
 
 <!-- Page Header Start -->
 <div class="container-fluid page-header py-5 mb-5">
@@ -34,7 +42,7 @@
                     <!-- thêm div123 -->
                     <div class="team-item div123">
                         <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="~/media/categories/@item.Image" alt="">
+                            <img class="img-fluid new-format" src="~/media/categories/@item.Image" alt="">
                             <div class="team-social">
                                 <!-- thêm btn-hover -->
                                 <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="@item.Slug" class="btn btn-primary">Read more</a>

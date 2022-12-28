@@ -58,30 +58,32 @@
     </form>
 </div>
     
-
-<div class="col-md-6">
-    <div class="card mt-3">
-        <div class="card-header">
-            <h3>User Permission</h3>
-        </div>
-        <div class="card-body">
-            @if (Model.Claims.Any())
-            {
-                @foreach (var claim in Model.Claims)
+@if(ViewBag.UserRole != "GeneralAdmin"){
+    <div class="col-md-6">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h3>User Permission</h3>
+            </div>
+            <div class="card-body">
+                @if (Model.Claims.Any())
                 {
-                    <h5 class="card-title">@claim</h5>
+                    @foreach (var claim in Model.Claims)
+                    {
+                        <h5 class="card-title">@claim</h5>
+                    }
                 }
-            }
-            else
-            {
-                <h5 class="card-title">None at the moment</h5>
-            }
-        </div>
-        <div class="card-footer">
-            <a asp-route-userId="@Model.Id" asp-action="ManageUserClaims" class="btn btn-primary" style="width:auto">Update Permission</a>
+                else
+                {
+                    <h5 class="card-title">None at the moment</h5>
+                }
+            </div>
+            <div class="card-footer">
+                <a asp-route-userId="@Model.Id" asp-action="ManageUserClaims" class="btn btn-primary" style="width:auto">Update Permission</a>
+            </div>
         </div>
     </div>
-</div>
+}
+
 
 
 

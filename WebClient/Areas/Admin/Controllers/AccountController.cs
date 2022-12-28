@@ -16,7 +16,7 @@ using System.Text;
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "SuperAdmin, GeneralAdmin,  Admin, Employee")]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<User> userManager;
@@ -313,7 +313,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         }
 
-        [AllowAnonymous]
+
         public IActionResult AccessDenied()
         {
             return View();
@@ -376,93 +376,107 @@ namespace WebClient.Areas.Admin.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> UpdateProfile(UserDetailViewModel model)
         {
-            //try
-            //{
-
-                if (model != null)
-                {
-                    var userDetails = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == model.UserId,includeProperties:"User"); //var model = User user             
+            if (model != null)
+            {
+                //var model = User user    
+                var userDetails = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == model.UserId,includeProperties:"User");          
                     
-                        var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == model.UserId);
-                        user.Name = model.Name;
-                        user.Address = model.Address;
-                        user.Phone = model.Phone;                        
+                var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == model.UserId);
+                user.Name = model.Name;
+                user.Address = model.Address;
+                user.Phone = model.Phone;                        
 
-                        if (model.ImageUpload != null)
+                if (model.ImageUpload != null)
+                {
+                    foreach (var item in ModelState)
+                    {
+                        if(item.Key == "ImageUpload")
                         {
-                            foreach (var item in ModelState)
+                            if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
                             {
-                                if(item.Key == "ImageUpload")
-                                {
-                                    if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                                    {
-                                        TempData["msg"] = "Only accept extension image: .jpg, .png ";
-                                        TempData["msg_type"] = "danger";
-                                        return RedirectToAction("Profile", new { id = model.UserId });
-                                    }
-                                }
+                                TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                TempData["msg_type"] = "danger";
+                                return RedirectToAction("Profile", new { id = model.UserId });
                             }
+                        }
+                    }
                             
-                            string uploadDir = Path.Combine(env.WebRootPath, "media/profiles");
-                            if (!string.Equals(user.Image, "default.jpg"))
-                            {
-                                string oldImagePath = Path.Combine(uploadDir, user.Image);
-                                if (System.IO.File.Exists(oldImagePath))
-                                {
-                                    System.IO.File.Delete(oldImagePath);
-                                }
-                            }
-                            string imageName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
-                            string filePath = Path.Combine(uploadDir, imageName);
-                            FileStream fs = new FileStream(filePath, FileMode.Create);
-                            await model.ImageUpload.CopyToAsync(fs);
-                            fs.Close();
-                            user.Image = imageName;
-                        }
-                        context.Users.Update(user);
-                        await unitOfWork.Save();                        
-                        
-
-                        if(userDetails != null)
+                    string uploadDir = Path.Combine(env.WebRootPath, "media/profiles");
+                    if (!string.Equals(user.Image, "default.jpg"))
+                    {
+                        string oldImagePath = Path.Combine(uploadDir, user.Image);
+                        if (System.IO.File.Exists(oldImagePath))
                         {
-                            userDetails.Award = model.Award;
-                            userDetails.UserCode = model.UserCode;
-                            userDetails.Client = model.Client;
-                            userDetails.Department = model.Department;
-                            userDetails.Education = model.Education;
-                            userDetails.Grade = model.Grade;
-                            userDetails.UpdatedAt = DateTime.Now;
-
-                            context.UserDetails.Update(userDetails);
-                            await unitOfWork.Save();
+                            System.IO.File.Delete(oldImagePath);
                         }
-                        else
-                        {
-                            UserDetail newUserDetails = new UserDetail();                            
-                            newUserDetails.UserId = model.UserId;
-                            newUserDetails.Award = model.Award;
-                            newUserDetails.UserCode = model.UserCode;
-                            newUserDetails.Client = model.Client;
-                            newUserDetails.Department = model.Department;
-                            newUserDetails.Education = model.Education;
-                            newUserDetails.Grade = model.Grade;
-                            newUserDetails.UpdatedAt = DateTime.Now;
-                            await unitOfWork.UserDetail.Add(newUserDetails);
-                            await unitOfWork.Save();
-                        }                       
-
-                        TempData["msg"] = "User Profile has been Updated.";
-                        TempData["msg_type"] = "success";
-
+                    }
+                    string imageName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
+                    string filePath = Path.Combine(uploadDir, imageName);
+                    FileStream fs = new FileStream(filePath, FileMode.Create);
+                    await model.ImageUpload.CopyToAsync(fs);
+                    fs.Close();
+                    user.Image = imageName;
                 }
-                
-                return RedirectToAction("Profile", "Account", new { id = model.UserId });
-            //}
-            //catch (Exception)
-            //{
+                context.Users.Update(user);
+                await unitOfWork.Save();                        
+                        
+                if(userDetails != null)
+                {
+                    userDetails.Award = model.Award;
+                    userDetails.Client = model.Client;
+                    userDetails.Department = model.Department;
+                    userDetails.Education = model.Education;
+                    userDetails.UpdatedAt = DateTime.Now;
 
-            //    return RedirectToAction("Index", "Error", new { area = "Admin" });
-            //}
+                    context.UserDetails.Update(userDetails);
+                    await unitOfWork.Save();
+                }
+                else
+                {
+                    string s = "You win some. You lose some.";
+
+                    string[] subs = s.Split(' ');
+
+                    foreach (var sub in subs)
+                    {
+                        Console.WriteLine($"Substring: {sub}");
+                    }
+
+                    // Generate UserCode
+                    string templateUserCode = "STAR_";
+                    var lastUserDetail = context.UserDetails.OrderByDescending(x => x.Id).FirstOrDefault();
+                    if(lastUserDetail != null && lastUserDetail.UserCode != null)
+                    {
+                        int index;
+                        string[] codeNumber = lastUserDetail.UserCode.Split("_");
+                        index = Int32.Parse(codeNumber[1]);
+                        ++index;
+                        templateUserCode += Convert.ToString(index);
+                    }
+                    else
+                    {
+                        templateUserCode = "STAR_1";
+                    }
+                    
+
+                    UserDetail newUserDetails = new UserDetail();                            
+                    newUserDetails.UserId = model.UserId;
+                    newUserDetails.Award = model.Award;
+                    newUserDetails.UserCode = model.UserCode;
+                    newUserDetails.Client = model.Client;
+                    newUserDetails.Department = model.Department;
+                    newUserDetails.Education = model.Education;
+                    newUserDetails.UpdatedAt = DateTime.Now;
+                    await unitOfWork.UserDetail.Add(newUserDetails);
+                    await unitOfWork.Save();
+                }                       
+
+                TempData["msg"] = "User Profile has been Updated.";
+                TempData["msg_type"] = "success";
+
+            }
+                
+            return RedirectToAction("Profile", "Account", new { id = model.UserId });
         }
 
     }

@@ -10,7 +10,7 @@ using System.Linq;
 namespace WebClient.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin, Employee")]
+    [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin")]
     public class CategoryBranchController : Controller
     {
         private readonly StarSecurityDbContext _context;
@@ -32,7 +32,7 @@ namespace WebClient.Areas.Admin.Controllers
                 ViewBag.PageRange = pageSize;
                 ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.CategoryBranches.Count() / pageSize);
 
-                ViewBag.List = "List CategoriesBranch";
+                ViewBag.List = "List Categories in Branch";
                 ViewBag.Controller = "CategoryBranch";
                 ViewBag.AspAction = "Index";
 
@@ -48,22 +48,15 @@ namespace WebClient.Areas.Admin.Controllers
         {           
             try
             {
-
-                //var branch = await _unitOfWork.Branch.GetAll();
-                //var category = await _unitOfWork.Category.GetAll();
-                //ViewBag.Category = category;
-                //ViewBag.Branch = branch;
-
-
                 ViewCategoryBranch viewCategoryBranch = new ViewCategoryBranch();
                 viewCategoryBranch.Branches = _context.Branches.ToList();
                 viewCategoryBranch.Categories = _context.Categories.ToList();
 
-                ViewBag.List = "List CategoriesBranch";
+                ViewBag.List = "List Categories in Branch";
                 ViewBag.Controller = "CategoryBranch";
                 ViewBag.AspAction = "Index";
-                ViewBag.AspSubAction = "OnChangeCategoryBranch";
-                ViewBag.Action = "On Change Categories In Branch";
+                ViewBag.AspSubAction = "Update Category in Branch";
+                ViewBag.Action = "Update Categories in Branch";
 
                 return View(viewCategoryBranch);
             }

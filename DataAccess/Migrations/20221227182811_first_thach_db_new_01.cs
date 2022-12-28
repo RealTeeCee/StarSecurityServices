@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class first_migrate_thach : Migration
+    public partial class first_thach_db_new_01 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -87,7 +87,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Slug = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShortDescription = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -121,7 +121,7 @@ namespace DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Description = table.Column<string>(type: "text", maxLength: 255, nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -322,13 +322,14 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Slug = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<byte>(type: "tinyint", nullable: false),
                     ShortDescription = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Description = table.Column<string>(type: "nvarchar", nullable: true),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -357,7 +358,7 @@ namespace DataAccess.Migrations
                     Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     BranchId = table.Column<long>(type: "bigint", nullable: false),
-                    Noted = table.Column<string>(type: "nvarchar", nullable: true),
+                    Noted = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -381,38 +382,38 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0f3b8444-506a-484e-af79-999f8873ca24", "cabd94b9-c049-4d5e-9b17-88f40006c1f1", "SuperAdmin", "SUPERADMIN" });
+                values: new object[] { "e43bc8f2-95fe-4eec-bbcf-2540efbc16b3", "cfbde06d-792b-4965-bfb5-ba990e634983", "SuperAdmin", "SUPERADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Discriminator", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UpdatedAt", "UserName" },
-                values: new object[] { "7a02944f-6ab3-4e78-8b83-ca12da78c694", 0, "Some Address", "d7f33001-20ec-4ba9-8d33-398d9b4196fc", new DateTime(2022, 12, 27, 1, 56, 23, 63, DateTimeKind.Local).AddTicks(7011), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "Nguyễn Ngọc Nguyên", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "TEECEE", "AQAAAAEAACcQAAAAELZoHzv3qfMNbFlgQxV8+Sv+xfVRpHVgGHa7g2QMRQHLuDZd+j53pXSGrcktPynFSg==", null, null, false, "7f274625-c00b-44f4-ad9f-51900e3541dd", (byte)1, false, null, "TeeCee" });
+                values: new object[] { "e285ce49-ef8e-41e6-857c-b2c7242f2edb", 0, "Some Address", "235a0a55-6360-46fb-98a5-eb775ea476c2", new DateTime(2022, 12, 28, 1, 28, 11, 530, DateTimeKind.Local).AddTicks(326), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "Nguyễn Ngọc Nguyên", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "TEECEE", "AQAAAAEAACcQAAAAED49Ru4Uh0vUsbeza8uAXN0kwsQcFIn3d5mSgrn9R8S6+8kLUgTkNxElw7vXDylTlQ==", null, null, false, "52dbd33a-2326-474e-a55b-c9182c9b897a", (byte)1, false, null, "TeeCee" });
 
             migrationBuilder.InsertData(
                 table: "Branches",
                 columns: new[] { "Id", "Address", "CreatedAt", "Email", "Facebook", "Instagram", "Name", "Phone", "TimeOpen", "Twitter", "UpdatedAt", "Youtube" },
-                values: new object[] { 1L, "590 CMT8", new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2016), "hcm@gmail.com", "StarFb", "StarIg", "Hồ Chí Minh", "0987654321", "01-01-2021", "StarTw", null, "StarYtb" });
+                values: new object[] { 1L, "590 CMT8", new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6395), "hcm@gmail.com", "StarFb", "StarIg", "Hồ Chí Minh", "0987654321", "01-01-2021", "StarTw", null, "StarYtb" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CreatedAt", "Image", "Name", "ShortDescription", "Slug", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2114), "default.jpg", "Security Service", null, "security-service", null },
-                    { 2L, new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2116), "default.jpg", "Vacancy Service", null, "vacancy-service", null },
-                    { 3L, new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2117), "default.jpg", "Cash Service", null, "cash-service", null },
-                    { 4L, new DateTime(2022, 12, 27, 1, 56, 23, 65, DateTimeKind.Local).AddTicks(2118), "default.jpg", "Train Service", null, "train-service", null }
+                    { 1L, new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6492), "default.jpg", "Security Service", null, "security-service", null },
+                    { 2L, new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6494), "default.jpg", "Vacancy Service", null, "vacancy-service", null },
+                    { 3L, new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6495), "default.jpg", "Cash Service", null, "cash-service", null },
+                    { 4L, new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6496), "default.jpg", "Train Service", null, "train-service", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "0f3b8444-506a-484e-af79-999f8873ca24", "7a02944f-6ab3-4e78-8b83-ca12da78c694" });
+                values: new object[] { "e43bc8f2-95fe-4eec-bbcf-2540efbc16b3", "e285ce49-ef8e-41e6-857c-b2c7242f2edb" });
 
             migrationBuilder.InsertData(
                 table: "UserBranchs",
                 columns: new[] { "Id", "BranchId", "UserId" },
-                values: new object[] { 1L, 1L, "7a02944f-6ab3-4e78-8b83-ca12da78c694" });
+                values: new object[] { 1L, 1L, "e285ce49-ef8e-41e6-857c-b2c7242f2edb" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -10,7 +10,7 @@
 
 
 <form asp-action="UpdateProfile" style="width:100%" enctype="multipart/form-data">
-    <a class="btn btn-primary btn-lg" asp-action="ChangePassword" asp-controller="Account" asp-route-id="@Model.UserId">Change Password</a>
+    <a class="btn btn-primary" asp-action="ChangePassword" asp-controller="Account" asp-route-id="@Model.UserId">Change Password</a>
 
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="@Model.UserId" />
@@ -37,9 +37,9 @@
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label asp-for="@Model.Email" class="control-label"></label>
-                <input asp-for="@Model.Email" disabled class="form-control" />
-                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                <label asp-for="UserCode" class="control-label"></label>
+                <input asp-for="UserCode" class="form-control" readonly />
+                <span asp-validation-for="UserCode" class="text-danger"></span>
             </div>
 
             <div class="form-group col-md-6">
@@ -71,9 +71,9 @@
             </div>
 
             <div class="form-group col-md-6">
-                <label asp-for="UserCode" class="control-label"></label>
-                <input asp-for="UserCode" class="form-control" />
-                <span asp-validation-for="UserCode" class="text-danger"></span>
+                <label asp-for="@Model.Email" class="control-label"></label>
+                <input asp-for="@Model.Email" disabled class="form-control" />
+                <span asp-validation-for="@Model.Email" class="text-danger"></span>
             </div>
         </div>
 
@@ -94,7 +94,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label asp-for="Grade" class="control-label"></label>
-                <input asp-for="Grade" class="form-control" />
+                <input asp-for="Grade" class="form-control" readonly />
                 <span asp-validation-for="Grade" class="text-danger"></span>
             </div>
 
@@ -117,7 +117,7 @@
 
 
     <div class="form-group d-flex w-100 justify-content-center">
-        <input type="submit" value="Update" class="btn btn-primary btn-lg" />
+        <input type="submit" value="Update" class="btn btn-primary" />
     </div>
 </form>
 
