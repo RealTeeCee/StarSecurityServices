@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccess.Data;
+using DataAccess.Repositories.IRepositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebClient.Areas.Client.Controllers
 {
@@ -6,10 +8,22 @@ namespace WebClient.Areas.Client.Controllers
     [Route("contact")]
     public class ContactController : Controller
     {
-        public IActionResult Index()
-        {
+        private readonly StarSecurityDbContext context;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IWebHostEnvironment env;
+        private int pageSizes = 6;
 
-            return View();
+        public ContactController(IUnitOfWork unitOfWork, StarSecurityDbContext context, IWebHostEnvironment env)
+        {
+            this.unitOfWork = unitOfWork;
+            this.context = context;
+            this.env = env;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var branches = await unitOfWork.Branch.GetAll();
+
+            return View(branches);
         }
     }
 }
