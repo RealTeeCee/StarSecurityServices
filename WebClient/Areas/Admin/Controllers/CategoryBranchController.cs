@@ -67,8 +67,6 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
-        
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnChangeCategoryBranch(ViewCategoryBranch model)
