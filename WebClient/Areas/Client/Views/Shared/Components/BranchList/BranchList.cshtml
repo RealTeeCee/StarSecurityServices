@@ -1,0 +1,61 @@
+﻿@using Models
+@model IEnumerable<Branch>
+
+
+
+<!-- Modal -->
+@*<div class="modal fade" id="selectBranch_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">*@
+<div class="modal" id="selectBranch_popup">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-7">
+						<div class="p30">
+							<div class="mailchimp_widget text-center mb30">
+								<div class="icon"><span class="flaticon-email-1"></span></div>
+								<div class="details" style=" color: #9B9B9B;">
+									<h3 class="title" style="    color: #9B9B9B;">Choose <span class="text-thm">the</span> Branch</h3>
+									<p class="para">Choose a branch of Star Security you want to get contact</p>
+								</div>
+							</div>
+							<div class="footer_social_widget">
+								<form class="footer_mailchimp_form mb10" method="post" asp-action="CreateSessionForBrachId" asp-controller="Home" asp-area="Client">
+									<div class="row align-items-center">
+										<select class="form-select form-select-lg mb-3" id="selectModalPopup" aria-label=".form-select-lg example" name="selectBranch" onchange="return myfuction()">
+											<option id="defaultOption">Select a branch</option>
+											@foreach (var item in Model)
+											{
+												<option value="@item.Id" id="@item.Image">@item.Name</option>
+											}
+										</select>
+										<button class="btn btn-primary" type="submit">Enter</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-5">
+						<img src="~/media/branches/security-branch1.jpg" style="width:100%;height:100%" alt="mailchimp-banner.jpg" id="imgPreviewModalPopup">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var options = document.getElementById("selectModalPopup").options;
+	var previewImg = document.getElementById("imgPreviewModalPopup");
+	function myfuction() {
+		var getId = options[options.selectedIndex].id;
+		if (getId == "defaultOption") {
+			previewImg.src = "";
+			previewImg.src = "/media/branches/default.jpg";
+		} else {
+			previewImg.src = "";
+			previewImg.src = "/media/branches/" + getId;
+		}
+	}
+</script>

@@ -433,15 +433,6 @@ namespace WebClient.Areas.Admin.Controllers
                 }
                 else
                 {
-                    string s = "You win some. You lose some.";
-
-                    string[] subs = s.Split(' ');
-
-                    foreach (var sub in subs)
-                    {
-                        Console.WriteLine($"Substring: {sub}");
-                    }
-
                     // Generate UserCode
                     string templateUserCode = "STAR_";
                     var lastUserDetail = context.UserDetails.OrderByDescending(x => x.Id).FirstOrDefault();
@@ -458,11 +449,10 @@ namespace WebClient.Areas.Admin.Controllers
                         templateUserCode = "STAR_1";
                     }
                     
-
                     UserDetail newUserDetails = new UserDetail();                            
                     newUserDetails.UserId = model.UserId;
                     newUserDetails.Award = model.Award;
-                    newUserDetails.UserCode = model.UserCode;
+                    newUserDetails.UserCode = templateUserCode;
                     newUserDetails.Client = model.Client;
                     newUserDetails.Department = model.Department;
                     newUserDetails.Education = model.Education;
@@ -470,10 +460,8 @@ namespace WebClient.Areas.Admin.Controllers
                     await unitOfWork.UserDetail.Add(newUserDetails);
                     await unitOfWork.Save();
                 }                       
-
                 TempData["msg"] = "User Profile has been Updated.";
                 TempData["msg_type"] = "success";
-
             }
                 
             return RedirectToAction("Profile", "Account", new { id = model.UserId });

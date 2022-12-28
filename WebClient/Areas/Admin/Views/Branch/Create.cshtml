@@ -6,7 +6,7 @@
 }
 
 
-<form asp-action="Create" style="width:100%">
+<form asp-action="Create" style="width:100%" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
        
     <input type="hidden" asp-for="Id" class="form-control" />
@@ -63,9 +63,37 @@
     </div>
 
     <div class="form-row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-6">
             <label for="Address">Address</label>
             <input type="text" class="form-control" asp-for="@Model.Address" placeholder="Input Address" value="#">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="Image" class="control-label"></label>
+            <input asp-for="ImageUpload" class="form-control" />
+            <img src="" id="imgUpload" alt="" />
+            <span asp-validation-for="ImageUpload" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Latitude">Latitude</label>
+            <input type="text" class="form-control" asp-for="@Model.Latitude" placeholder="Input Latitude">
+            <span asp-validation-for="Latitude" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="Longitude">Longitude</label>
+            <input type="text" class="form-control" asp-for="@Model.Longitude" placeholder="Input Longitude">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="GoogleMap">Google Map Source</label>
+            <textarea type="text" class="form-control" asp-for="@Model.GoogleMap" placeholder="Input GoogleMap Source">#</textarea>
+            <span asp-validation-for="GoogleMap" class="text-danger"></span>
         </div>
     </div>
     
@@ -79,5 +107,12 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $("#ImageUpload").change(function () {
+            readUrl(this);
+        });
+    </script>
 }

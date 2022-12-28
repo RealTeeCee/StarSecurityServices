@@ -18,14 +18,16 @@ namespace WebClient.Areas.Admin.Controllers
         private readonly StarSecurityDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly UserManager<User> userManager;        
+        private readonly UserManager<User> userManager;
+        private readonly IWebHostEnvironment env;
 
-        public BranchController(StarSecurityDbContext context, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public BranchController(StarSecurityDbContext context, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IWebHostEnvironment env)
         {
             _context = context;
             _unitOfWork = unitOfWork;
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.env = env;
         }
         public async Task<IActionResult> Index(int p=1)
         {
@@ -192,6 +194,33 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 if (model != null)
                 {
+                    string imageName = "default.jpg";
+                    if (model.ImageUpload != null)
+                    {
+                        foreach (var item in ModelState)
+                        {
+                            if (item.Key == "ImageUpload")
+                            {
+                                if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                {
+                                    TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                    TempData["msg_type"] = "danger";
+                                    return RedirectToAction("Create", new { id = model.Id });
+                                }
+                            }
+                        }
+
+                        string uploadDir = Path.Combine(env.WebRootPath, "media/branches");
+                        imageName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
+                        string filePath = Path.Combine(uploadDir, imageName);
+                        FileStream fs = new FileStream(filePath, FileMode.Create);
+                        await model.ImageUpload.CopyToAsync(fs);
+                        fs.Close();
+                    }
+
+                    model.Image = imageName;
+
+
                     await _unitOfWork.Branch.Add(model);
                     await _unitOfWork.Save();
                    
@@ -304,6 +333,41 @@ namespace WebClient.Areas.Admin.Controllers
 
                     if (branch != null)
                     {
+                        if (model.ImageUpload != null)
+                        {
+                            foreach (var item in ModelState)
+                            {
+                                if (item.Key == "ImageUpload")
+                                {
+                                    if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                                    {
+                                        TempData["msg"] = "Only accept extension image: .jpg, .png ";
+                                        TempData["msg_type"] = "danger";
+                                        return RedirectToAction("Edit", new { id = model.Id });
+                                    }
+                                }
+                            }
+
+                            string uploadDir = Path.Combine(env.WebRootPath, "media/branches");
+                            if (!string.Equals(branch.Image, "default.jpg"))
+                            {
+                                string oldImagePath = Path.Combine(uploadDir, branch.Image);
+                                if (System.IO.File.Exists(oldImagePath))
+                                {
+                                    System.IO.File.Delete(oldImagePath);
+                                }
+                            }
+                            string imageName = Guid.NewGuid().ToString() + "_" + model.ImageUpload.FileName;
+                            string filePath = Path.Combine(uploadDir, imageName);
+                            FileStream fs = new FileStream(filePath, FileMode.Create);
+                            await model.ImageUpload.CopyToAsync(fs);
+                            fs.Close();
+                            branch.Image = imageName;
+                        }
+
+                        branch.Longitude = model.Longitude;
+                        branch.Latitude = model.Latitude;
+                        branch.GoogleMap = model.GoogleMap;
                         branch.Name = model.Name;
                         branch.Email = model.Email;
                         branch.Address = model.Address;

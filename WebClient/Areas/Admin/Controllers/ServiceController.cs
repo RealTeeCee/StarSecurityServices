@@ -48,6 +48,7 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
+
         [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Create()
         {
@@ -89,7 +90,13 @@ namespace WebClient.Areas.Admin.Controllers
                         TempData["msg"] = "This Service has been exists.";
                         TempData["msg_type"] = "danger";
 
-                        ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name", model.CategoryId);
+                        ViewBag.List = "List Services";
+                        ViewBag.Controller = "Service";
+                        ViewBag.AspAction = "Index";
+                        ViewBag.AspSubAction = "Create";
+                        ViewBag.Action = "Create Service";
+
+                        ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", model.CategoryId);
                         return View(model);
                     }
 
@@ -104,7 +111,15 @@ namespace WebClient.Areas.Admin.Controllers
                                 {
                                     TempData["msg"] = "Only accept extension image: .jpg, .png ";
                                     TempData["msg_type"] = "danger";
-                                    return RedirectToAction("Create", new { id = model.Id });
+
+                                    ViewBag.List = "List Services";
+                                    ViewBag.Controller = "Service";
+                                    ViewBag.AspAction = "Index";
+                                    ViewBag.AspSubAction = "Create";
+                                    ViewBag.Action = "Create Service";
+
+                                    ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", model.CategoryId);
+                                    return View(model);
                                 }
                             }
                         }
@@ -193,9 +208,16 @@ namespace WebClient.Areas.Admin.Controllers
 
                             if (slug != null)
                             {
-                                ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name", service.CategoryId);
+                                ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", service.CategoryId);
                                 TempData["msg"] = "This Service already exists in this category";
                                 TempData["msg_type"] = "danger";
+
+                                ViewBag.List = "List Services";
+                                ViewBag.Controller = "Service";
+                                ViewBag.AspAction = "Index";
+                                ViewBag.AspSubAction = "Edit";
+                                ViewBag.Action = "Edit Service";
+
                                 return View(service);
                             }
                         }
@@ -211,7 +233,14 @@ namespace WebClient.Areas.Admin.Controllers
                                     {
                                         TempData["msg"] = "Only accept extension image: .jpg, .png ";
                                         TempData["msg_type"] = "danger";
-                                        return RedirectToAction("Edit", new { id = model.Id });
+
+                                        ViewBag.List = "List Services";
+                                        ViewBag.Controller = "Service";
+                                        ViewBag.AspAction = "Index";
+                                        ViewBag.AspSubAction = "Edit";
+                                        ViewBag.Action = "Edit Service";
+
+                                        return View(service);
                                     }
                                 }
                             }

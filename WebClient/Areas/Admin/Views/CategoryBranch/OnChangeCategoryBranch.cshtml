@@ -60,9 +60,41 @@
     <script>
         const selectBrandId = $("select[name='BranchId']");
 
-        selectBrandId.on("change", function () {
-            const brandId = selectBrandId.val()
-            
+        selectBrandId.on("change", () => {
+            const brandId = selectBrandId.val();
+
+            const categoryIdArr = $("input[name='CategoryId']");
+            //Reset before Call Ajax
+            $.each(categoryIdArr, (index, value) => {
+                categoryIdArr[index].checked = false
+            });
+            // Call Ajax, send Brand Id, waiting response in controller
+            $.ajax({
+                type: "POST",
+                url: "@(Programs.pathRoot + "/admin/CategoryBranch/OnChangeAjaxCategoryBranch")",
+                data: {
+                    brandId
+                },
+                success: function(response){
+                    // Check If CategoryArr not Empty
+                    if (response.length > 0){
+                        $.each(response, (index, item) => {
+                            // List Category Key index
+                            $.each(categoryIdArr, (index, value) => {
+                                // If category  - 1 == index, thì checked
+                                if(item.categoryId - 1 == index) {
+                                    // Checked by Category Selected Before
+                                    categoryIdArr[index].checked = true
+                                }
+                            });
+                        });
+                    }else {
+                        $.each(categoryIdArr, (index, value) => {
+                            categoryIdArr[index].checked = false
+                        });
+                    }
+                },
+            });
         });
     </script>
 }

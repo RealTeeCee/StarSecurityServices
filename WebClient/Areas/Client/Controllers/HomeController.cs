@@ -16,14 +16,46 @@ namespace WebClient.Areas.Customer.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? localeId)
         {
-            // vo day
             HomeViewModel model = new HomeViewModel();
             model.Categories = (List<global::Models.Category>)await unitOfWork.Category.GetAll();
 
             return View(model);
         }
+
+        public async Task<IActionResult> CreateSessionForBrachId(int selectBranch)
+        {
+            try
+            {
+                var branch = await unitOfWork.Branch.GetFirstOrDefault(x => x.Id == selectBranch, includeProperties: "");
+
+                if (branch != null)
+                {
+                    //CookieOptions cookieOptions = new CookieOptions()
+                    //{
+                    //    Expires = DateTime.Now.AddDays(30),
+                    //};
+                    //Response.Cookies.Append("branchId", selectBranch.ToString(), cookieOptions);
+                    //Response.Cookies.Append("branchName", branch.Name, cookieOptions);
+                    HttpContext.Session.SetString("branchId", selectBranch.ToString());
+                    HttpContext.Session.SetString("branchName", branch.Name);
+                    HttpContext.Session.SetString("branchEmail", branch.Email);
+                    HttpContext.Session.SetString("branchPhone", branch.Phone);
+                    HttpContext.Session.SetString("branchTimeOpen", branch.TimeOpen);                    
+                }
+
+                return RedirectToAction("Index", new { localeId = selectBranch });
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Index", "Error", new { area = "Customer" });
+
+            }
+
+        }
+
 
         public async Task<IActionResult>  About()
         {

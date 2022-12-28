@@ -31,8 +31,8 @@ namespace Models
         [Column(TypeName = "nvarchar")]
         [StringLength(255)]
         public string? ShortDescription { get; set; }
-        [Column(TypeName = "nvarchar")]
-        //[StringLength(400)]
+
+        [Column(TypeName = "text")]
         public string? Description { get; set; }
         public long CategoryId { get; set; }
         //Tạo phương thức ảo ràng buộc FK CategoryId vs Id cua Model Category
@@ -48,5 +48,6 @@ namespace Models
     public class ServiceViewModel
     {
         public List<Service> Services { get; set; }
+        public List<Vacancy> Vacancies { get; set; }
     }
 }

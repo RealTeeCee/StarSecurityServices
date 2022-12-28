@@ -43,6 +43,18 @@
 	
 </head>
 <body>
+    @using Microsoft.AspNetCore.Http
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    @{
+        var branchIdSession = HttpContextAccessor.HttpContext.Session.GetString("branchId");
+        var branchNameSession = HttpContextAccessor.HttpContext.Session.GetString("branchName");
+        var branchEmailSession = HttpContextAccessor.HttpContext.Session.GetString("branchEmail");
+        var branchPhoneSession = HttpContextAccessor.HttpContext.Session.GetString("branchPhone");
+        var branchTimeOpenSession = HttpContextAccessor.HttpContext.Session.GetString("branchTimeOpen");
+    }
+    <div class="popup_onload_modal">
+		@await Component.InvokeAsync("BranchList")
+	</div>
 	<header>
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -59,13 +71,23 @@
                         <div class="btn-sm-square rounded-circle bg-primary me-2">
                             <small class="fa fa-map-marker-alt text-white"></small>
                         </div>
-                        <small>123 Street, New York, USA</small>
+
+                        @if (branchIdSession != null)
+                        {
+                            <li class="list-inline-item" style="color:white"><span class="flaticon-phone-call mr5"></span> Current branch site: <strong>@branchNameSession</strong></li>
+                            <li style="color:red;" class="list-inline-item"><a href="#" class="changeBranch" data-toggle="modal" data-target="#selectBranch_popup" id="showModal"><strong>*Change branch</strong></a></li>
+                        }
+                        else
+                        {
+                            <li style="color:red;" class="list-inline-item"><a href="#" class="changeBranch" data-toggle="modal" data-target="#selectBranch_popup" id="showModal"><strong>*Choose branch</strong></a></li>
+                        }
+
                     </div>
                     <div class="h-100 d-inline-flex align-items-center py-3">
                         <div class="btn-sm-square rounded-circle bg-primary me-2">
                             <small class="fa fa-envelope-open text-white"></small>
                         </div>
-                        <small>info@example.com</small>
+                        <small>@branchEmailSession</small>
                     </div>
                 </div>
                 <div class="col-lg-6 text-end">
@@ -73,13 +95,13 @@
                         <div class="btn-sm-square rounded-circle bg-primary me-2">
                             <small class="fa fa-phone-alt text-white"></small>
                         </div>
-                        <small>+012 345 6789</small>
+                        <small>@branchPhoneSession</small>
                     </div>
                     <div class="h-100 d-inline-flex align-items-center py-3">
                         <div class="btn-sm-square rounded-circle bg-primary me-2">
                             <small class="far fa-clock text-white"></small>
                         </div>
-                        <small>Mon - Fri : 9AM - 9PM</small>
+                        <small>@branchTimeOpenSession</small>
                     </div>
                 </div>
             </div>
@@ -98,7 +120,19 @@
                 <div class="navbar-nav ms-auto py-4 py-lg-0">
                     <a asp-area="client" asp-action="index" asp-controller="home" class="nav-item nav-link active">Home</a>
                     <a asp-area="client" asp-action="about" asp-controller="home" class="nav-item nav-link">About</a>
-                    <a asp-area="client" asp-action="index" asp-controller="category" class="nav-item nav-link">Services</a>
+                    @*<a asp-area="client" asp-action="index" asp-controller="category" class="nav-item nav-link">Services</a>*@
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Services</a>
+                        <div class="dropdown-menu rounded-0 rounded-bottom m-0">
+                            <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="security-service" class="dropdown-item">Security Services</a>
+                            <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="cash-service" class="dropdown-item">Cash Services</a>
+                            <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="train-service" class="dropdown-item">Train Services</a>
+                            <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="electronic-service" class="dropdown-item">Electronic Services</a>
+                        </div>
+                    </div>
+
+
+                    <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="vacancy-service" class="nav-item nav-link">Vacancies</a>
                     <a href="@Url.ActionLink("Project", "Home")" class="nav-item nav-link">Project</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>

@@ -6,7 +6,7 @@ namespace WebClient.Areas.Client.Controllers
     [Route("service/{id?}")]
     public class ServiceController : Controller
     {
-        
+    
         public IActionResult Index()
         {
             return View();

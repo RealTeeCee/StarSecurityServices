@@ -8,6 +8,7 @@ using Models;
 using Models.ViewModel;
 using Services;
 using System.Data;
+using System.Security.Claims;
 
 namespace WebClient.Areas.Admin.Controllers
 {
@@ -31,7 +32,7 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-                var model = await _unitOfWork.Vacancy.GetAll(includeProperties: "Category,Branch");
+                var model = await _unitOfWork.Vacancy.GetAll(includeProperties: "Category");
 
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = this.pageSizes;
@@ -49,11 +50,10 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Create()
         {
-            // User check Session, lay Id User đang đăng nhập
-            ViewBag.Branch = new SelectList(_context.Branches.ToList(), "Id", "Name");
-            ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name");
+            ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name");
 
             try
             {
@@ -75,6 +75,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Create(Vacancy model)
         {
             try
@@ -83,18 +84,6 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     // Kiểm tra Limit Title lại 100 ký tự, để slug không bị full
                     model.Slug = SlugService.Create(model.Title).ToLower();
-
-                    //Kiểm tra slug exists trên db hay chưa
-                    var slug = await _unitOfWork.Vacancy.GetFirstOrDefault(x => x.Slug == model.Slug && x.CategoryId == model.CategoryId);
-                    if (slug != null)
-                    {
-                        TempData["msg"] = "This Vacancy has been exists.";
-                        TempData["msg_type"] = "danger";
-
-                        ViewBag.Branch = new SelectList(_context.Branches.ToList(), "Id", "Name", model.BranchId);
-                        ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", model.CategoryId);
-                        return View(model);
-                    }
 
                     string imageName = "default.jpg";
                     if (model.ImageUpload != null)
@@ -107,15 +96,16 @@ namespace WebClient.Areas.Admin.Controllers
                         fs.Close();
                     }
 
+                    var categoryVacancy = await _unitOfWork.Category.GetFirstOrDefault(x => x.Slug == "vacancy-service");
+
                     Vacancy vacancy = new Vacancy();
                     vacancy.Title = model.Title;
                     vacancy.Slug = model.Slug;
                     vacancy.Description = model.Description;
                     vacancy.Phone = model.Phone;
-                    // Thêm Create Bởi UserId
-                    //vacancy.UserId = 1;
-                    vacancy.BranchId = model.BranchId;
-                    vacancy.CategoryId = model.CategoryId;
+                    // Get Current user UserName
+                    vacancy.UpdatedBy = User.FindFirstValue(ClaimTypes.Name);
+                    vacancy.CategoryId = categoryVacancy.Id;
                     vacancy.Noted = model.Noted;
                     vacancy.Image = imageName;
                     vacancy.Status = 1;
@@ -135,14 +125,14 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> Edit(int id)
         {
             try
             {
                 var vacancy = await _unitOfWork.Vacancy.GetFirstOrDefault(x => x.Id == id);
 
-                ViewBag.Branch = new SelectList(_context.Branches.ToList(), "Id", "Name", vacancy.BranchId);
-                ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", vacancy.CategoryId);
+                ViewBag.Category = new SelectList(_context.Categories.ToList(), "Id", "Name", vacancy.CategoryId);
                 //ViewBag.User = new SelectList(_context.Users.ToList(), "Id", "Name", vacancy.UserId);
 
                 ViewBag.List = "List Vacancies";
@@ -157,10 +147,10 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
-
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> Edit(int id, Vacancy model)
         {
             try
@@ -172,20 +162,6 @@ namespace WebClient.Areas.Admin.Controllers
                     if (vacancy != null)
                     {
                         vacancy.Slug = SlugService.Create(model.Title).ToLower();
-
-                        var vacancyDb = await _unitOfWork.Vacancy.GetAll(x => x.Id != id);
-                        foreach (var itemDb in vacancyDb)
-                        {
-                            //Kiểm tra slug exists trên db hay chưa, ngoại trừ Id hiện tại và slug trùng phải cùng Category
-                            var slug = await _context.Vacancies.Where(x => x.Id != id).FirstOrDefaultAsync(p => p.Slug == vacancy.Slug && p.CategoryId == itemDb.CategoryId);
-                            if (slug != null)
-                            {
-                                //ModelState.AddModelError("", "This Vacancy already exists !");
-                                TempData["msg"] = "This Vacancy already exists in this category";
-                                TempData["msg_type"] = "danger";
-                                return View(vacancy);
-                            }
-                        }
 
                         if (model.ImageUpload != null)
                         {
@@ -209,10 +185,8 @@ namespace WebClient.Areas.Admin.Controllers
                         vacancy.Title = model.Title;
                         vacancy.Description = model.Description;
                         vacancy.Phone = model.Phone;
-
-                        //vacancy.UserId = model.UserId;
-                        vacancy.CategoryId = model.CategoryId;
-                        vacancy.BranchId = model.BranchId;
+                        // Get Current user UserName
+                        vacancy.UpdatedBy = User.FindFirstValue(ClaimTypes.Name);
                         vacancy.Noted = model.Noted;
                         vacancy.Status = model.Status;
                         vacancy.UpdatedAt = DateTime.Now;
@@ -232,6 +206,7 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Policy = ("DeletePolicy"))]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -269,10 +244,9 @@ namespace WebClient.Areas.Admin.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-
             try
             {
-                Vacancy vacancy = await _unitOfWork.Vacancy.GetFirstOrDefault(x => x.Id == id, includeProperties: "User,Category,Branch");
+                Vacancy vacancy = await _unitOfWork.Vacancy.GetFirstOrDefault(x => x.Id == id);
                 if (vacancy == null)
                 {
                     return RedirectToAction("Index", "Error", new { area = "Admin" });
@@ -285,13 +259,10 @@ namespace WebClient.Areas.Admin.Controllers
                 ViewBag.Action = "Vacancy Details";
 
                 return View(vacancy);
-
             }
             catch (Exception)
             {
-
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
-
             }
         }
     }

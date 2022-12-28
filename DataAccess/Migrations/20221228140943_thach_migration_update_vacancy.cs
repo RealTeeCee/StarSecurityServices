@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class first_thach_db_new_01 : Migration
+    public partial class thach_migration_update_vacancy : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,7 +63,10 @@ namespace DataAccess.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Latitude = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     TimeOpen = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -71,6 +74,7 @@ namespace DataAccess.Migrations
                     Twitter = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Youtube = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Instagram = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    GoogleMap = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -242,8 +246,8 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Education = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Department = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Grade = table.Column<byte>(type: "tinyint", nullable: true),
@@ -322,12 +326,12 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Slug = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<byte>(type: "tinyint", nullable: false),
                     ShortDescription = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -355,9 +359,9 @@ namespace DataAccess.Migrations
                     Slug = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<byte>(type: "tinyint", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
-                    BranchId = table.Column<long>(type: "bigint", nullable: false),
                     Noted = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -365,12 +369,6 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vacancies", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Vacancies_Branches_BranchId",
-                        column: x => x.BranchId,
-                        principalTable: "Branches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Vacancies_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -382,38 +380,45 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "e43bc8f2-95fe-4eec-bbcf-2540efbc16b3", "cfbde06d-792b-4965-bfb5-ba990e634983", "SuperAdmin", "SUPERADMIN" });
+                values: new object[,]
+                {
+                    { "1cb69a4d-f5fe-4e26-9fdc-ddd3731e477b", "b6ee404a-084c-4514-bf9d-78c03e8d9024", "GeneralAdmin", "GENERALADMIN" },
+                    { "c14f98f9-0f64-4de8-a5c5-42a3af371c6b", "6ca218f7-3a48-43f2-ad40-15ada4176be4", "SuperAdmin", "SUPERADMIN" },
+                    { "ca6d72d0-58be-4e5d-a150-55f8aea2dcea", "cd229d3c-f911-4db7-98e1-32a7eb8c0e65", "Employee", "EMPLOYEE" },
+                    { "d884b093-9d45-4d2c-b8ed-cde1b4877208", "40f8ec4a-500a-42da-8994-4bcc73bfdbf9", "Admin", "ADMIN" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Discriminator", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UpdatedAt", "UserName" },
-                values: new object[] { "e285ce49-ef8e-41e6-857c-b2c7242f2edb", 0, "Some Address", "235a0a55-6360-46fb-98a5-eb775ea476c2", new DateTime(2022, 12, 28, 1, 28, 11, 530, DateTimeKind.Local).AddTicks(326), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "Nguyễn Ngọc Nguyên", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "TEECEE", "AQAAAAEAACcQAAAAED49Ru4Uh0vUsbeza8uAXN0kwsQcFIn3d5mSgrn9R8S6+8kLUgTkNxElw7vXDylTlQ==", null, null, false, "52dbd33a-2326-474e-a55b-c9182c9b897a", (byte)1, false, null, "TeeCee" });
+                values: new object[] { "58bffffb-870a-4167-a31d-36871a9cf49e", 0, "Some Address", "4ef6bdfc-43bb-4b36-b3e1-68231c6cc7aa", new DateTime(2022, 12, 28, 21, 9, 43, 137, DateTimeKind.Local).AddTicks(7165), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "Nguyễn Ngọc Nguyên", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "TEECEE", "AQAAAAEAACcQAAAAEB+uZFslywhCXk0LX8tkZO3CPLes5iTkDlm5tio0sTkOSxmJnr7e0TpI75WPPFLNIg==", null, null, false, "b324488a-c8a2-483e-849e-b04c20c20754", (byte)1, false, null, "TeeCee" });
 
             migrationBuilder.InsertData(
                 table: "Branches",
-                columns: new[] { "Id", "Address", "CreatedAt", "Email", "Facebook", "Instagram", "Name", "Phone", "TimeOpen", "Twitter", "UpdatedAt", "Youtube" },
-                values: new object[] { 1L, "590 CMT8", new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6395), "hcm@gmail.com", "StarFb", "StarIg", "Hồ Chí Minh", "0987654321", "01-01-2021", "StarTw", null, "StarYtb" });
+                columns: new[] { "Id", "Address", "CreatedAt", "Email", "Facebook", "GoogleMap", "Image", "Instagram", "Latitude", "Longitude", "Name", "Phone", "TimeOpen", "Twitter", "UpdatedAt", "Youtube" },
+                values: new object[] { 1L, "590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3, Thành phố Hồ Chí Minh", new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7567), "hcm@gmail.com", "StarFb", null, null, "StarIg", "10.787249", "106.666595", "Hồ Chí Minh", "0987654321", "01-01-2021", "StarTw", null, "StarYtb" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CreatedAt", "Image", "Name", "ShortDescription", "Slug", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6492), "default.jpg", "Security Service", null, "security-service", null },
-                    { 2L, new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6494), "default.jpg", "Vacancy Service", null, "vacancy-service", null },
-                    { 3L, new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6495), "default.jpg", "Cash Service", null, "cash-service", null },
-                    { 4L, new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6496), "default.jpg", "Train Service", null, "train-service", null }
+                    { 1L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7701), "default.jpg", "Security Service", null, "security-service", null },
+                    { 2L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7702), "default.jpg", "Vacancy Service", null, "vacancy-service", null },
+                    { 3L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7704), "default.jpg", "Cash Service", null, "cash-service", null },
+                    { 4L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7705), "default.jpg", "Train Service", null, "train-service", null },
+                    { 5L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7706), "default.jpg", "Electronic Service", null, "electronic-service", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "e43bc8f2-95fe-4eec-bbcf-2540efbc16b3", "e285ce49-ef8e-41e6-857c-b2c7242f2edb" });
+                values: new object[] { "c14f98f9-0f64-4de8-a5c5-42a3af371c6b", "58bffffb-870a-4167-a31d-36871a9cf49e" });
 
             migrationBuilder.InsertData(
                 table: "UserBranchs",
                 columns: new[] { "Id", "BranchId", "UserId" },
-                values: new object[] { 1L, 1L, "e285ce49-ef8e-41e6-857c-b2c7242f2edb" });
+                values: new object[] { 1L, 1L, "58bffffb-870a-4167-a31d-36871a9cf49e" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -485,11 +490,6 @@ namespace DataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vacancies_BranchId",
-                table: "Vacancies",
-                column: "BranchId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Vacancies_CategoryId",
                 table: "Vacancies",
                 column: "CategoryId");
@@ -537,10 +537,10 @@ namespace DataAccess.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Branches");
 
             migrationBuilder.DropTable(
-                name: "Branches");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Categories");

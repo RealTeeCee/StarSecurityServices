@@ -51,10 +51,31 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e43bc8f2-95fe-4eec-bbcf-2540efbc16b3",
-                            ConcurrencyStamp = "cfbde06d-792b-4965-bfb5-ba990e634983",
+                            Id = "c14f98f9-0f64-4de8-a5c5-42a3af371c6b",
+                            ConcurrencyStamp = "6ca218f7-3a48-43f2-ad40-15ada4176be4",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
+                        },
+                        new
+                        {
+                            Id = "1cb69a4d-f5fe-4e26-9fdc-ddd3731e477b",
+                            ConcurrencyStamp = "b6ee404a-084c-4514-bf9d-78c03e8d9024",
+                            Name = "GeneralAdmin",
+                            NormalizedName = "GENERALADMIN"
+                        },
+                        new
+                        {
+                            Id = "d884b093-9d45-4d2c-b8ed-cde1b4877208",
+                            ConcurrencyStamp = "40f8ec4a-500a-42da-8994-4bcc73bfdbf9",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "ca6d72d0-58be-4e5d-a150-55f8aea2dcea",
+                            ConcurrencyStamp = "cd229d3c-f911-4db7-98e1-32a7eb8c0e65",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
                         });
                 });
 
@@ -218,8 +239,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "e285ce49-ef8e-41e6-857c-b2c7242f2edb",
-                            RoleId = "e43bc8f2-95fe-4eec-bbcf-2540efbc16b3"
+                            UserId = "58bffffb-870a-4167-a31d-36871a9cf49e",
+                            RoleId = "c14f98f9-0f64-4de8-a5c5-42a3af371c6b"
                         });
                 });
 
@@ -251,8 +272,7 @@ namespace DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -265,9 +285,22 @@ namespace DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("GoogleMap")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Instagram")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Latitude")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -301,11 +334,13 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            Address = "590 CMT8",
-                            CreatedAt = new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6395),
+                            Address = "590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3, Thành phố Hồ Chí Minh",
+                            CreatedAt = new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7567),
                             Email = "hcm@gmail.com",
                             Facebook = "StarFb",
                             Instagram = "StarIg",
+                            Latitude = "10.787249",
+                            Longitude = "106.666595",
                             Name = "Hồ Chí Minh",
                             Phone = "0987654321",
                             TimeOpen = "01-01-2021",
@@ -352,7 +387,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6492),
+                            CreatedAt = new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7701),
                             Image = "default.jpg",
                             Name = "Security Service",
                             Slug = "security-service"
@@ -360,7 +395,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6494),
+                            CreatedAt = new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7702),
                             Image = "default.jpg",
                             Name = "Vacancy Service",
                             Slug = "vacancy-service"
@@ -368,7 +403,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6495),
+                            CreatedAt = new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7704),
                             Image = "default.jpg",
                             Name = "Cash Service",
                             Slug = "cash-service"
@@ -376,10 +411,18 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2022, 12, 28, 1, 28, 11, 531, DateTimeKind.Local).AddTicks(6496),
+                            CreatedAt = new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7705),
                             Image = "default.jpg",
                             Name = "Train Service",
                             Slug = "train-service"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            CreatedAt = new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7706),
+                            Image = "default.jpg",
+                            Name = "Electronic Service",
+                            Slug = "electronic-service"
                         });
                 });
 
@@ -427,12 +470,13 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar");
+                        .HasColumnType("text");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -547,7 +591,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1L,
                             BranchId = 1L,
-                            UserId = "e285ce49-ef8e-41e6-857c-b2c7242f2edb"
+                            UserId = "58bffffb-870a-4167-a31d-36871a9cf49e"
                         });
                 });
 
@@ -582,7 +626,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserCode")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -604,9 +647,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("BranchId")
-                        .HasColumnType("bigint");
 
                     b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
@@ -646,9 +686,10 @@ namespace DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("BranchId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
@@ -688,21 +729,21 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e285ce49-ef8e-41e6-857c-b2c7242f2edb",
+                            Id = "58bffffb-870a-4167-a31d-36871a9cf49e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "235a0a55-6360-46fb-98a5-eb775ea476c2",
+                            ConcurrencyStamp = "4ef6bdfc-43bb-4b36-b3e1-68231c6cc7aa",
                             Email = "nguyenngocnguyen.rtc@starsec.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENNGOCNGUYEN.RTC@STARSEC.COM",
                             NormalizedUserName = "TEECEE",
-                            PasswordHash = "AQAAAAEAACcQAAAAED49Ru4Uh0vUsbeza8uAXN0kwsQcFIn3d5mSgrn9R8S6+8kLUgTkNxElw7vXDylTlQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB+uZFslywhCXk0LX8tkZO3CPLes5iTkDlm5tio0sTkOSxmJnr7e0TpI75WPPFLNIg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "52dbd33a-2326-474e-a55b-c9182c9b897a",
+                            SecurityStamp = "b324488a-c8a2-483e-849e-b04c20c20754",
                             TwoFactorEnabled = false,
                             UserName = "TeeCee",
                             Address = "Some Address",
-                            CreatedAt = new DateTime(2022, 12, 28, 1, 28, 11, 530, DateTimeKind.Local).AddTicks(326),
+                            CreatedAt = new DateTime(2022, 12, 28, 21, 9, 43, 137, DateTimeKind.Local).AddTicks(7165),
                             Image = "default.jpg",
                             Name = "Nguyễn Ngọc Nguyên",
                             Status = (byte)1
@@ -822,19 +863,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Models.Vacancy", b =>
                 {
-                    b.HasOne("Models.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Branch");
 
                     b.Navigation("Category");
                 });

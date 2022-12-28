@@ -67,8 +67,6 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
-        
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnChangeCategoryBranch(ViewCategoryBranch model)
@@ -125,6 +123,20 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnChangeAjaxCategoryBranch([FromForm] long brandId)
+        {
+            if (brandId == 0)
+            {
+                return BadRequest("No Brand Id Selected");
+            }
+
+            var categroyIdArr = await _unitOfWork.CategoryBranch.GetAll(x => x.BranchId == brandId);
+
+            return Ok(categroyIdArr);
         }
     }
 }

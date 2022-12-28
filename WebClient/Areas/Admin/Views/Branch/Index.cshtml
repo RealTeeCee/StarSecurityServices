@@ -22,7 +22,9 @@
                             
                             <th>NO</th>
                             <th>Name</th>
+                            <th>Image</th>
                             <th>Email</th>
+                            <th>Address</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                             <th>Manage</th>
@@ -36,7 +38,9 @@
                         <tr class="bg-dark">
                             <td>@item.Id</td>
                             <td>@item.Name</td>
+                            <td><img src="~/media/branches/@item.Image" width="200" /></td>
                             <td>@item.Email</td>
+                            <th>@item.Address</th>
                             <td>@item.CreatedAt</td>
                             <td>@item.UpdatedAt</td>
                             <td>
