@@ -50,9 +50,9 @@
                                 @*  KHÔNG BỎ COMMENT NÀY DÒNG NÀY GIỮ ĐỂ THAM KHẢO CODE THÔI @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)*@
 
                                 <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">
-                                    Edit
+                                    Update User in Role
                                 </a>
-                                <button type="submit" class="btn btn-danger confirmDeletion">Detete</button>
+                                @*<button type="submit" class="btn btn-danger confirmDeletion">Detete</button>*@
                             </form>
                         </td>
                     </tr>
