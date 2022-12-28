@@ -32,7 +32,7 @@ namespace Models
         [StringLength(255)]
         public string? ShortDescription { get; set; }
         [Column(TypeName = "nvarchar")]
-        //[StringLength(400)]
+        [StringLength(4000)]
         public string? Description { get; set; }
         public long CategoryId { get; set; }
         //Tạo phương thức ảo ràng buộc FK CategoryId vs Id cua Model Category
