@@ -18,9 +18,16 @@ namespace WebClient.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index(int? localeId)
         {
+            if(localeId == null)
+            {
+                //mac dinh HCM
+                HomeViewModel modelNoBranch = new HomeViewModel();
+                modelNoBranch.CategoriesBranches = (List<global::Models.CategoryBranch>)await unitOfWork.CategoryBranch.GetAll(x=>x.BranchId == 1,includeProperties:"Category,Branch");
+                return View(modelNoBranch);
+            }
             // vo day
             HomeViewModel model = new HomeViewModel();
-            model.Categories = (List<global::Models.Category>)await unitOfWork.Category.GetAll();
+            model.CategoriesBranches = (List<global::Models.CategoryBranch>)await unitOfWork.CategoryBranch.GetAll(x=>x.BranchId == localeId, includeProperties: "Category,Branch");
 
             return View(model);
         }
@@ -43,7 +50,8 @@ namespace WebClient.Areas.Customer.Controllers
                     HttpContext.Session.SetString("branchName", branch.Name);
                     HttpContext.Session.SetString("branchEmail", branch.Email);
                     HttpContext.Session.SetString("branchPhone", branch.Phone);
-                    HttpContext.Session.SetString("branchTimeOpen", branch.TimeOpen);                    
+                    HttpContext.Session.SetString("branchTimeOpen", branch.TimeOpen);
+                    HttpContext.Session.SetString("branchAddress", branch.Address);
                 }
 
                 return RedirectToAction("Index", new { localeId = selectBranch });

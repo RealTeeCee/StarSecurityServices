@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.Branch>
+﻿@model Models.CategoryViewModel
 @{
     ViewData["Title"] = "Contact";
     Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
@@ -68,18 +68,38 @@
                     </form>
                 </div>
             </div>
-
-        @if(Model.Count() > 0)
+            <div class="container-fluid bg-light overflow-hidden px-lg-0">
+                <div class="container contact px-lg-0">
+                    <div class="row g-0 mx-lg-0">
+                        <!-- contact form -->
+                        <div class="col-lg-12 bg-dark contact-text py-5 px-5 wow fadeIn"
+                             data-wow-delay="0.5s">
+                            <div class="p-lg-5 ps-lg-0">
+                                <div class="section-title text-start">
+                                    <h1 class="display-5 mb-4">Contact Us</h1>
+                                </div>
+                               
+                                <h2 class="mb-4">Find The Closest Store : </h2>
+                                <div id="showResult">
+                                    <button id="calDistance" class="btn btn-warning">Click here</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        
+        @if(Model.Branches.Count() > 0)
         {
-            @foreach(var item in Model)
+            @foreach(var item in Model.Branches)
             {
                 @if (item.GoogleMap != null && item.GoogleMap.StartsWith("https://www.google.com/maps/embed"))
                 {
-                    <div class="col-lg-3 pe-lg-0 p-1" style="min-height: 300px">
+                    <div class="col-lg-3 pe-lg-0 p-1" style="min-height: 400px">
                         <p class="text-center text-dark pt-1 text-region">@item.Name</p>
                         <div class="position-relative h-80">
                                 <iframe class="position-absolute w-100 h-100"
-                            style="min-height: 230px; object-fit: cover"
+                            style="min-height: 330px; object-fit: cover"
                             src="@item.GoogleMap"
                             frameborder="0"
                             allowfullscreen=""
@@ -87,6 +107,7 @@
                             tabindex="0"></iframe>
                         </div>
                     </div>
+                            @*allow="geolocation"*@
                 }
             }
         }
@@ -94,3 +115,50 @@
     </div>
 </div>
 <!-- Contact End -->
+@section Scripts{
+    <script type="text/javascript">
+
+
+        $(function () {
+            var x = document.getElementById("demo");
+            $("#calDistance").on("click", function () {
+                getLocation();
+            });
+        });
+
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            $.ajax({
+                url: "/Client/Contact/FindShortestBranch",
+                type: "GET",
+                data: { latituteUser: position.coords.latitude, longitudeUser: position.coords.longitude },
+                success: function (response) {
+                    if (response.data != "" && response.data != undefined) {
+                        $("#showResult").html(`
+                                    <h3  style="color:white;">Branch Name:  ${response.data.name} </h3>
+                                    <h3  style="color:white;">Address:  ${response.data.address}  </h3>
+                                    <h3  style="color:white;">Phone:  ${response.data.phone}  </h3>                                    
+                                        <iframe class="position-absolute w-100 h-100"
+                                        style="min-height: 330px; object-fit: cover"
+                                                        src="${response.data.googleMap}"
+                                        frameborder="0"
+                                        allowfullscreen=""
+                                        aria-hidden="false"
+                                        tabindex="0"></iframe>                                    
+                                `);
+                    }
+                }
+            });
+        }
+
+
+    </script>
+}

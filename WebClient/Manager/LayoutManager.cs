@@ -11,10 +11,15 @@ namespace WebClient.Manager
         {
             this.unitOfWork = unitOfWork;
         }
-        public async Task<List<Category>> CategoryList()
+        public async Task<List<CategoryBranch>> CategoryBranchList(int? localeId)
         {
-            var categoryList = await unitOfWork.Category.GetAll();
-            return (List<Category>)categoryList;
+            if(localeId == null)
+            {
+                var categoryNoBranch = await unitOfWork.CategoryBranch.GetAll(x => x.BranchId ==1 ,includeProperties: "Category,Branch");
+                return categoryNoBranch.ToList();
+            }
+            var categoryBranch = await unitOfWork.CategoryBranch.GetAll(x=>x.BranchId==localeId,includeProperties: "Category,Branch");
+            return categoryBranch.ToList();
         }
     }
 }

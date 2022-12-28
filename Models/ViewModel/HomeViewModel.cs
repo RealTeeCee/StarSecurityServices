@@ -8,6 +8,7 @@ namespace Models.ViewModel
 {
     public class HomeViewModel
     {
-        public List<Category> Categories { get; set; }        
+        public List<Category> Categories { get; set; }
+        public List<CategoryBranch> CategoriesBranches { get; set; }
     }
 }

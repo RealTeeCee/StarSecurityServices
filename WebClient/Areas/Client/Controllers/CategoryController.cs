@@ -19,11 +19,18 @@ namespace WebClient.Areas.Customer.Controllers
 
         //https://localhost:7273/client/category
         //trang này sd trang Our Team -> show 4 cards
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? localeId)
         {
             //Show toan bo cate, tra ve view Category
+            if(localeId == null)
+            {
+                CategoryViewModel modelNoBranch = new CategoryViewModel();
+                modelNoBranch.Categories = (List<Category>)await unitOfWork.Category.GetAll();
+                return View(modelNoBranch);
+            }
             CategoryViewModel model = new CategoryViewModel();
-            model.Categories = (List<Category>)await unitOfWork.Category.GetAll();
+            model.CategoriesBranches = (List<CategoryBranch>)await unitOfWork.CategoryBranch.GetAll(x => x.BranchId == localeId,includeProperties:"Category,Branch");
+
             return View(model);
         }
         // nút Readmore
