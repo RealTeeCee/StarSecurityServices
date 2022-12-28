@@ -88,6 +88,14 @@
             <input type="text" class="form-control" asp-for="@Model.Longitude" placeholder="Input Longitude">
         </div>
     </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="GoogleMap">Google Map Source</label>
+            <textarea type="text" class="form-control" asp-for="@Model.GoogleMap" placeholder="Input GoogleMap Source">#</textarea>
+            <span asp-validation-for="GoogleMap" class="text-danger"></span>
+        </div>
+    </div>
     
     <div class="form-row d-flex justify-content-between">
         <button type="submit" class="btn btn-primary">Create</button>      

@@ -367,6 +367,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                         branch.Longitude = model.Longitude;
                         branch.Latitude = model.Latitude;
+                        branch.GoogleMap = model.GoogleMap;
                         branch.Name = model.Name;
                         branch.Email = model.Email;
                         branch.Address = model.Address;

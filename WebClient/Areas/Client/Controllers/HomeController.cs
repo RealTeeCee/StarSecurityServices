@@ -16,7 +16,7 @@ namespace WebClient.Areas.Customer.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? localeId)
         {
             // vo day
             HomeViewModel model = new HomeViewModel();
@@ -46,7 +46,7 @@ namespace WebClient.Areas.Customer.Controllers
                     HttpContext.Session.SetString("branchTimeOpen", branch.TimeOpen);                    
                 }
 
-                return RedirectToAction("Index", new { id = selectBranch });
+                return RedirectToAction("Index", new { localeId = selectBranch });
             }
             catch (Exception)
             {

@@ -74,6 +74,7 @@ namespace DataAccess.Migrations
                     Twitter = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Youtube = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Instagram = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    GoogleMap = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -330,7 +331,7 @@ namespace DataAccess.Migrations
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<byte>(type: "tinyint", nullable: false),
                     ShortDescription = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -381,42 +382,43 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "3b23bbe0-86cf-46da-b62d-285472f3f709", "2b898096-4784-4812-a851-7d9cdbaa1cac", "Admin", "ADMIN" },
-                    { "3f6c708f-b084-402e-bc2f-98f50ba3ea10", "42fc3460-0795-426e-a3cc-99e2c2d5d543", "SuperAdmin", "SUPERADMIN" },
-                    { "cd6a7fd6-de62-448b-bea4-c104237d6bfa", "84be1ba1-00bc-443d-9988-55fe04b8ca3d", "Employee", "EMPLOYEE" },
-                    { "d343cffc-f026-4cad-981b-465a23aa9ac9", "3080f4bc-c317-4d64-acad-3b1cca718808", "GeneralAdmin", "GENERALADMIN" }
+                    { "1cb69a4d-f5fe-4e26-9fdc-ddd3731e477b", "b6ee404a-084c-4514-bf9d-78c03e8d9024", "GeneralAdmin", "GENERALADMIN" },
+                    { "c14f98f9-0f64-4de8-a5c5-42a3af371c6b", "6ca218f7-3a48-43f2-ad40-15ada4176be4", "SuperAdmin", "SUPERADMIN" },
+                    { "ca6d72d0-58be-4e5d-a150-55f8aea2dcea", "cd229d3c-f911-4db7-98e1-32a7eb8c0e65", "Employee", "EMPLOYEE" },
+                    { "d884b093-9d45-4d2c-b8ed-cde1b4877208", "40f8ec4a-500a-42da-8994-4bcc73bfdbf9", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Discriminator", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UpdatedAt", "UserName" },
-                values: new object[] { "d445288e-fe98-4b06-a449-f8e4764cbf24", 0, "Some Address", "226790b4-5b30-4096-ba00-e4e8203aa80a", new DateTime(2022, 12, 28, 19, 14, 5, 284, DateTimeKind.Local).AddTicks(6655), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "Nguyễn Ngọc Nguyên", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "TEECEE", "AQAAAAEAACcQAAAAEMJ534FBpD0k8BGFxzUFTEo4mcdUoQ9hoIuvTwhf2RpyYv0eP3Y7bZ5ftF5Q+hePgw==", null, null, false, "39edfa59-42bc-49a0-a5ee-1f4f19972ee3", (byte)1, false, null, "TeeCee" });
+                values: new object[] { "58bffffb-870a-4167-a31d-36871a9cf49e", 0, "Some Address", "4ef6bdfc-43bb-4b36-b3e1-68231c6cc7aa", new DateTime(2022, 12, 28, 21, 9, 43, 137, DateTimeKind.Local).AddTicks(7165), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "Nguyễn Ngọc Nguyên", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "TEECEE", "AQAAAAEAACcQAAAAEB+uZFslywhCXk0LX8tkZO3CPLes5iTkDlm5tio0sTkOSxmJnr7e0TpI75WPPFLNIg==", null, null, false, "b324488a-c8a2-483e-849e-b04c20c20754", (byte)1, false, null, "TeeCee" });
 
             migrationBuilder.InsertData(
                 table: "Branches",
-                columns: new[] { "Id", "Address", "CreatedAt", "Email", "Facebook", "Image", "Instagram", "Latitude", "Longitude", "Name", "Phone", "TimeOpen", "Twitter", "UpdatedAt", "Youtube" },
-                values: new object[] { 1L, "590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3, Thành phố Hồ Chí Minh", new DateTime(2022, 12, 28, 19, 14, 5, 286, DateTimeKind.Local).AddTicks(1749), "hcm@gmail.com", "StarFb", null, "StarIg", "10.787249", "106.666595", "Hồ Chí Minh", "0987654321", "01-01-2021", "StarTw", null, "StarYtb" });
+                columns: new[] { "Id", "Address", "CreatedAt", "Email", "Facebook", "GoogleMap", "Image", "Instagram", "Latitude", "Longitude", "Name", "Phone", "TimeOpen", "Twitter", "UpdatedAt", "Youtube" },
+                values: new object[] { 1L, "590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3, Thành phố Hồ Chí Minh", new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7567), "hcm@gmail.com", "StarFb", null, null, "StarIg", "10.787249", "106.666595", "Hồ Chí Minh", "0987654321", "01-01-2021", "StarTw", null, "StarYtb" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CreatedAt", "Image", "Name", "ShortDescription", "Slug", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2022, 12, 28, 19, 14, 5, 286, DateTimeKind.Local).AddTicks(1833), "default.jpg", "Security Service", null, "security-service", null },
-                    { 2L, new DateTime(2022, 12, 28, 19, 14, 5, 286, DateTimeKind.Local).AddTicks(1834), "default.jpg", "Vacancy Service", null, "vacancy-service", null },
-                    { 3L, new DateTime(2022, 12, 28, 19, 14, 5, 286, DateTimeKind.Local).AddTicks(1835), "default.jpg", "Cash Service", null, "cash-service", null },
-                    { 4L, new DateTime(2022, 12, 28, 19, 14, 5, 286, DateTimeKind.Local).AddTicks(1837), "default.jpg", "Train Service", null, "train-service", null }
+                    { 1L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7701), "default.jpg", "Security Service", null, "security-service", null },
+                    { 2L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7702), "default.jpg", "Vacancy Service", null, "vacancy-service", null },
+                    { 3L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7704), "default.jpg", "Cash Service", null, "cash-service", null },
+                    { 4L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7705), "default.jpg", "Train Service", null, "train-service", null },
+                    { 5L, new DateTime(2022, 12, 28, 21, 9, 43, 139, DateTimeKind.Local).AddTicks(7706), "default.jpg", "Electronic Service", null, "electronic-service", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "3f6c708f-b084-402e-bc2f-98f50ba3ea10", "d445288e-fe98-4b06-a449-f8e4764cbf24" });
+                values: new object[] { "c14f98f9-0f64-4de8-a5c5-42a3af371c6b", "58bffffb-870a-4167-a31d-36871a9cf49e" });
 
             migrationBuilder.InsertData(
                 table: "UserBranchs",
                 columns: new[] { "Id", "BranchId", "UserId" },
-                values: new object[] { 1L, 1L, "d445288e-fe98-4b06-a449-f8e4764cbf24" });
+                values: new object[] { 1L, 1L, "58bffffb-870a-4167-a31d-36871a9cf49e" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

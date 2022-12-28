@@ -44,6 +44,9 @@ namespace Models
         public string? Youtube { get; set; }
         [StringLength(255)]
         public string? Instagram { get; set; }
+
+        [Column(TypeName = "text")]
+        public string? GoogleMap { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }

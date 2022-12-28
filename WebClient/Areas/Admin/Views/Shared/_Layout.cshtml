@@ -81,15 +81,17 @@
                         </div>
                     </div>
                 }
-                
-
                 <ul class="nav pcoded-inner-navbar ">
-                    <li class="nav-item pcoded-menu-caption">
-                        <label>Navigation</label>
-                    </li>
                     <li class="nav-item">
                         <a href="/admin" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
                     </li>
+                </ul>
+
+                <ul class="nav pcoded-inner-navbar ">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Authorize Management</label>
+                    </li>
+
 
                     <li class="nav-item">
                         <a asp-controller="Branch" asp-action="Index" asp-area="Admin" class="nav-link">
@@ -122,7 +124,12 @@
                             </li>
                         }
                     }
-
+                </ul>       
+                
+                <ul class="nav pcoded-inner-navbar ">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Service Management</label>
+                    </li>
                     <li class="nav-item pcoded-hasmenu">
                         <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-list"></i></span><span class="pcoded-mtext">Manage Categories </span></a>
                         <ul class="pcoded-submenu">
@@ -132,8 +139,7 @@
                             <li><a asp-controller="CategoryBranch" asp-action="Index" asp-area="Admin">List Categories Branch</a></li>
                         </ul>
                     </li>
-
-                     <li class="nav-item">
+                    <li class="nav-item">
                         <a asp-controller="Service" asp-action="Index" asp-area="Admin" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
@@ -151,6 +157,12 @@
                         </a>
                     </li>
 
+                </ul>
+
+                <ul class="nav pcoded-inner-navbar ">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Other</label>
+                    </li>
                     <li class="nav-item">
                         <a asp-controller="Testimonial" asp-action="Index" asp-area="Admin" class="nav-link">
                             <span class="pcoded-micon">
@@ -159,8 +171,7 @@
                             <span class="pcoded-mtext">Manage Testimonials</span>
                         </a>
                     </li>
-
-                </ul>              
+                </ul>
             </div>
         </div>
     </nav>

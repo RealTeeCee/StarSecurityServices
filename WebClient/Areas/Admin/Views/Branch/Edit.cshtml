@@ -80,6 +80,13 @@
         </div>
 
         <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="GoogleMap">Google Map Source</label>
+                <textarea type="text" class="form-control" asp-for="@Model.GoogleMap" placeholder="Input GoogleMap Source"></textarea>
+            </div>
+        </div>
+
+        <div class="form-row">
             <div class="form-group col-md-6">
                 <label asp-for="Image" class="control-label">Current Image</label><br />
                 <img src="~/media/branches/@Model.Image" width="150" height="150" alt="" />
