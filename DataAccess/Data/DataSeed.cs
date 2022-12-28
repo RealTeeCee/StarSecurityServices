@@ -57,7 +57,7 @@ namespace DataAccess.Data
 
 
             modelBuilder.Entity<Branch>().HasData(
-                new Branch() { Id = 1, Name = "Hồ Chí Minh", Email = "hcm@gmail.com", Phone = "0987654321", Address = "590 CMT8", TimeOpen = "01-01-2021", Facebook = "StarFb", Instagram = "StarIg", Twitter = "StarTw", Youtube = "StarYtb", CreatedAt = DateTime.Now, UpdatedAt = null }
+                new Branch() { Id = 1, Name = "Hồ Chí Minh", Email = "hcm@gmail.com", Phone = "0987654321", Address = "590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3, Thành phố Hồ Chí Minh",Latitude = "10.787249", Longitude = "106.666595", TimeOpen = "01-01-2021", Facebook = "StarFb", Instagram = "StarIg", Twitter = "StarTw", Youtube = "StarYtb", CreatedAt = DateTime.Now, UpdatedAt = null }
             );
             modelBuilder.Entity<UserBranch>().HasData(
                 new UserBranch() { Id = 1, UserId = users[0].Id, BranchId = 1 }                

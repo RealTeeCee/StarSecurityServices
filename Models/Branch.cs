@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,6 +19,15 @@ namespace Models
         public string Name { get; set; }
         [Column(TypeName = "nvarchar")]
         [StringLength(255)]
+        
+        public string? Latitude { get; set; }
+
+        public string? Longitude { get; set; }
+
+        public string? Image { get; set; }
+        [NotMapped]
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; }
         public string? Address { get; set; }
         
         [StringLength(100)]

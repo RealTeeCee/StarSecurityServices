@@ -231,7 +231,7 @@ namespace WebClient.Areas.Admin.Controllers
                             fs.Close();
                             category.Image = imageName;
                         }
-                        
+                        category.Name = model.Name;
                         category.ShortDescription = model.ShortDescription;
                         category.UpdatedAt = DateTime.Now;
                         _context.Categories.Update(category);

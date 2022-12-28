@@ -23,6 +23,17 @@
             $("div.alert.notification").fadeOut();
         },10000);
     }
+
+    $('#selectBranch_popup').modal({ backdrop: 'static', keyboard: false })
+    var checkSessionBranchId = $("#checkSessionBranchId").val();
+
+    if (checkSessionBranchId == 1) {
+        $('#selectBranch_popup').modal('show');
+    }
+
+    $("#showModal").on("click", function () {
+        $('#selectBranch_popup').modal('show');
+    })
 });
 function readUrl(input) {
     if (input.files && input.files[0]) {
