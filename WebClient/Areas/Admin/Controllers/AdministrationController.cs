@@ -18,7 +18,7 @@ namespace WebClient.Areas.Admin.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<User> userManager;
         private readonly IUnitOfWork unitOfWork;
-        private readonly StarSecurityDbContext context;
+        private readonly StarSecurityDbContext context;,
         private readonly SignInManager<User> signInManager;
         private int pageSize = 6;
 
@@ -57,9 +57,9 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
-
         }
         [Authorize(Roles = "SuperAdmin, GeneralAdmin, Admin")]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
