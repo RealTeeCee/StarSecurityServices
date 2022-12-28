@@ -18,7 +18,6 @@ namespace WebClient.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index(int? localeId)
         {
-            // vo day
             HomeViewModel model = new HomeViewModel();
             model.Categories = (List<global::Models.Category>)await unitOfWork.Category.GetAll();
 

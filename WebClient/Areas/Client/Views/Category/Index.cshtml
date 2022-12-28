@@ -38,23 +38,26 @@
             }
             @foreach (var item in Model.Categories)
             {
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.@(i)s">
-                    <!-- thêm div123 -->
-                    <div class="team-item div123">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid new-format" src="~/media/categories/@item.Image" alt="">
-                            <div class="team-social">
-                                <!-- thêm btn-hover -->
-                                <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="@item.Slug" class="btn btn-primary">Read more</a>
+                @if(item.Slug != "vacancy-service")
+                {
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.@(i)s">
+                        <!-- thêm div123 -->
+                        <div class="team-item div123">
+                            <div class="overflow-hidden position-relative">
+                                <img class="img-fluid new-format" src="~/media/categories/@item.Image" alt="">
+                                <div class="team-social">
+                                    <!-- thêm btn-hover -->
+                                    <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="@item.Slug" class="btn btn-primary">Read more</a>
+                                </div>
+                            </div>
+                            <div class="text-center p-4">
+                                <h5 class="mb-0">@item.Name</h5>
+                                <span class="text-primary">@item.ShortDescription</span>
                             </div>
                         </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">@item.Name</h5>
-                            <span class="text-primary">@item.ShortDescription</span>
-                        </div>
                     </div>
-                </div>
-                i += 2;
+                    i += 2;
+                }
             }          
         </div>
     </div>

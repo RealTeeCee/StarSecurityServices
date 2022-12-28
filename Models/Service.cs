@@ -48,5 +48,6 @@ namespace Models
     public class ServiceViewModel
     {
         public List<Service> Services { get; set; }
+        public List<Vacancy> Vacancies { get; set; }
     }
 }
