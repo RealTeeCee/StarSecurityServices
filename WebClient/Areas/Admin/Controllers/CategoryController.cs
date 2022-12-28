@@ -189,18 +189,16 @@ namespace WebClient.Areas.Admin.Controllers
 
                     if (category != null)
                     {
-                        //Kiểm tra nếu Id là home, thì slug không được thay đổi, còn lại sẽ replace
-                        //page.Slug = page.Id == 1 ? "home" : page.Title.ToLower().Replace(" ", "-");
-                        category.Slug = SlugService.Create(category.Name).ToLower();
-                        //Kiểm tra slug exists trên db hay chưa, nhưng phải khác Id hiện tại
-                        var slug = await _context.Categories.Where(c => c.Id != category.Id).FirstOrDefaultAsync(c => c.Slug == category.Slug);
-                        if (slug != null)
-                        {
-                            TempData["msg"] = "Slug has already existed!";
-                            TempData["msg_type"] = "danger";
+                        //category.Slug = SlugService.Create(category.Name).ToLower();
+                        ////Kiểm tra slug exists trên db hay chưa, nhưng phải khác Id hiện tại
+                        //var slug = await _context.Categories.Where(c => c.Id != category.Id).FirstOrDefaultAsync(c => c.Slug == category.Slug);
+                        //if (slug != null)
+                        //{
+                        //    TempData["msg"] = "Slug has already existed!";
+                        //    TempData["msg_type"] = "danger";
                             
-                            return View(category);
-                        }
+                        //    return View(category);
+                        //}
 
                                                
                         if (model.ImageUpload != null)
@@ -234,7 +232,6 @@ namespace WebClient.Areas.Admin.Controllers
                             category.Image = imageName;
                         }
                         
-                        category.Name = model.Name;
                         category.ShortDescription = model.ShortDescription;
                         category.UpdatedAt = DateTime.Now;
                         _context.Categories.Update(category);
@@ -275,10 +272,10 @@ namespace WebClient.Areas.Admin.Controllers
                             System.IO.File.Delete(oldImagePath);
                         }
                     }
-                    _unitOfWork.Category.Remove(model);
-                    await _unitOfWork.Save();
-                    TempData["msg"] = "Category has been Deleted.";
-                    TempData["msg_type"] = "success";
+                    //_unitOfWork.Category.Remove(model);
+                    //await _unitOfWork.Save();
+                    //TempData["msg"] = "Category has been Deleted.";
+                    //TempData["msg_type"] = "success";
                     return RedirectToAction("Index");
                 }              
             }

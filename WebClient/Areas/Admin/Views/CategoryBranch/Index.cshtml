@@ -9,9 +9,8 @@
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <h3>List Categories In Branch</h3>
             <span class="d-block m-t-5">               
-                <a asp-action="OnChangeCategoryBranch">Update Category Branch</a>                
+                <a asp-action="OnChangeCategoryBranch" class="btn btn-primary">Update Category In Branch</a>                
             </span>
         </div>
         <div class="card-body table-border-style">
@@ -44,10 +43,12 @@
         </div>
     </div>
 </div>
-@section Scripts {
+@section Scripts 
+{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    }
+
+}
 
 

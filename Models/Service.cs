@@ -14,6 +14,7 @@ namespace Models
 
         [Column(TypeName = "nvarchar")]
         [StringLength(100)]
+        [Required]
         public string? Name { get; set; }
         [StringLength(255)]
         public string? Slug { get; set; }
