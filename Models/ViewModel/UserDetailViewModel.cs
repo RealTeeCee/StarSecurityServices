@@ -42,7 +42,6 @@ namespace Models.ViewModel
         public IFormFile? ImageUpload { get; set; }
 
         [StringLength(20)]
-        [Required]
         public string? UserCode { get; set; }
         [Column(TypeName = "nvarchar")]
         [StringLength(255)]

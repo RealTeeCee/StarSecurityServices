@@ -32,21 +32,6 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Category" class="control-label"></label>
-        <select asp-for="CategoryId" asp-items="@ViewBag.Category" class="form-control">
-            <option value="0">Choose Category</option>
-        </select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Branch" class="control-label"></label>
-        <select asp-for="BranchId" asp-items="@ViewBag.Branch" class="form-control">
-            <option value="0">Choose a Branch</option>
-        </select>
-        <span asp-validation-for="BranchId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
         <label asp-for="Noted" class="control-label"></label>
         <textarea asp-for="Noted" class="form-control"></textarea>
         <span asp-validation-for="Noted" class="text-danger"></span>

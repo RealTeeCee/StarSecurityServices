@@ -35,17 +35,14 @@ namespace Models
         [DefaultValue(1)]
         public byte Status { get; set; } = 1;
 
+        public string? UpdatedBy { get; set; }
+
         [StringLength(15)]
         public string Phone { get; set; }
 
         public long CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
-
-        public long BranchId { get; set; }
-
-        [ForeignKey("BranchId")]
-        public virtual Branch Branch { get; set; }
 
         [Column(TypeName = "nvarchar")]
         [StringLength(500)]

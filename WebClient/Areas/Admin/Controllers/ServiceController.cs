@@ -48,6 +48,7 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
+
         [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Create()
         {
