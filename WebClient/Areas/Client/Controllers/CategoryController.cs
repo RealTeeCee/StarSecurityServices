@@ -44,7 +44,7 @@ namespace WebClient.Areas.Customer.Controllers
                 var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
                 if(category == null)
                 {
-                    return RedirectToAction("Index", "Error", new { area = "Client" });
+                    return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                 }
 
                 long categoryId = category.Id;
@@ -84,7 +84,7 @@ namespace WebClient.Areas.Customer.Controllers
                 var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
                 if (category == null)
                 {
-                    return RedirectToAction("Index", "Error", new { area = "Client" });
+                    return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                 }
 
                 if(categorySlug != "vacancy-service")
@@ -92,7 +92,7 @@ namespace WebClient.Areas.Customer.Controllers
                     var service = await unitOfWork.Service.GetFirstOrDefault(x => x.Slug == serviceSlug);
                     if (service == null)
                     {
-                        return RedirectToAction("Index", "Error", new { area = "Client" });
+                        return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                     }
 
                     var serviceRelated = await unitOfWork.Service.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id);
@@ -108,7 +108,7 @@ namespace WebClient.Areas.Customer.Controllers
                     var service = await unitOfWork.Vacancy.GetFirstOrDefault(x => x.Slug == serviceSlug);
                     if (service == null)
                     {
-                        return RedirectToAction("Index", "Error", new { area = "Client" });
+                        return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                     }
 
                     var serviceRelated = await unitOfWork.Vacancy.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id);

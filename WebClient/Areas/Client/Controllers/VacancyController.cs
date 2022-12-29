@@ -3,6 +3,7 @@
 namespace WebClient.Areas.Client.Controllers
 {
     [Area("Client")]
+    [Route("vacancy")]
     public class VacancyController : Controller
     {
         public IActionResult Index()

@@ -39,7 +39,7 @@ namespace WebClient.Areas.Client.Controllers
         {
             if (contact == null)
             {
-                return RedirectToAction("Index", "Error", new { area = "Client" });
+                return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
             }
 
             try
