@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace WebClient.Areas.Client.Controllers
 {
     [Area("Client")]
+    [Route("testimonial")]
     public class TestimonialController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -33,7 +34,7 @@ namespace WebClient.Areas.Client.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Index", "Error", new { area = "Admin" });
+                return RedirectToAction("Index", "Error", new { area = "Client" });
             }
         }
     }

@@ -19,11 +19,18 @@ namespace WebClient.Areas.Customer.Controllers
 
         //https://localhost:7273/category
         //trang này sd trang Our Team -> show 4 cards
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? localeId)
         {
             //Show toan bo cate, tra ve view Category
+            if (localeId == null)
+            {
+                CategoryViewModel modelNoBranch = new CategoryViewModel();
+                modelNoBranch.Categories = (List<Category>)await unitOfWork.Category.GetAll();
+                return View(modelNoBranch);
+            }
             CategoryViewModel model = new CategoryViewModel();
-            model.Categories = (List<Category>)await unitOfWork.Category.GetAll();
+            model.CategoriesBranches = (List<CategoryBranch>)await unitOfWork.CategoryBranch.GetAll(x => x.BranchId == localeId, includeProperties: "Category,Branch");
+
             return View(model);
         }
         // nút Readmore
@@ -37,7 +44,7 @@ namespace WebClient.Areas.Customer.Controllers
                 var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
                 if(category == null)
                 {
-                    return RedirectToAction("NotFound", "Error", new { area = "Client" });
+                    return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                 }
 
                 long categoryId = category.Id;
@@ -77,7 +84,7 @@ namespace WebClient.Areas.Customer.Controllers
                 var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
                 if (category == null)
                 {
-                    return RedirectToAction("NotFound", "Error", new { area = "Client" });
+                    return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                 }
 
                 if(categorySlug != "vacancy-service")
@@ -85,7 +92,7 @@ namespace WebClient.Areas.Customer.Controllers
                     var service = await unitOfWork.Service.GetFirstOrDefault(x => x.Slug == serviceSlug);
                     if (service == null)
                     {
-                        return RedirectToAction("NotFound", "Error", new { area = "Client" });
+                        return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                     }
 
                     var serviceRelated = await unitOfWork.Service.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id);
@@ -101,7 +108,7 @@ namespace WebClient.Areas.Customer.Controllers
                     var service = await unitOfWork.Vacancy.GetFirstOrDefault(x => x.Slug == serviceSlug);
                     if (service == null)
                     {
-                        return RedirectToAction("NotFound", "Error", new { area = "Client" });
+                        return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                     }
 
                     var serviceRelated = await unitOfWork.Vacancy.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id);

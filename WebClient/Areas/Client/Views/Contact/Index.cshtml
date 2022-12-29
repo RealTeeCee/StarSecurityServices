@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.Branch>
+﻿@model Models.CategoryViewModel
 @{
     ViewData["Title"] = "Contact";
     Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
@@ -17,18 +17,18 @@
                     </div>
                     <p class="mb-4">
                         The contact form is currently inactive. Get a functional and
-                        working contact form with Ajax & PHP in a few minutes. Just copy
+                        working contact form with in a few minutes. Just copy
                         and paste the files, add a little code and you're done.
-                        <a href="https://htmlcodex.com/contact-form">Download Now</a>.
                     </p>
-                    <form>
+                    <form method="post" >
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text"
                                            class="form-control bg-dark"
                                            id="name"
-                                           placeholder="Your Name" />
+                                           placeholder="Your Name"
+                                           name="Name" />
                                     <label for="name">Your Name</label>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                     <input type="email"
                                            class="form-control bg-dark"
                                            id="email"
-                                           placeholder="Your Email" />
+                                           placeholder="Your Email" name="Email" />
                                     <label for="email">Your Email</label>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                                     <input type="text"
                                            class="form-control bg-dark"
                                            id="subject"
-                                           placeholder="Subject" />
+                                           placeholder="Subject" name="Subject" />
                                     <label for="subject">Subject</label>
                                 </div>
                             </div>
@@ -55,31 +55,54 @@
                                     <textarea class="form-control bg-dark"
                                               placeholder="Leave a message here"
                                               id="message"
-                                              style="height: 100px"></textarea>
+                                              style="height: 100px" name="Message"></textarea>
                                     <label for="message">Message</label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">
+                                <button class="btn btn-primary w-100 py-3" type="submit" onclick="sendMessage(event)">
                                     Send Message
                                 </button>
+
+                      @*          <a onclick="sendMessage(event)" href="#" class="btn btn-primary w-100 py-3">
+                                    Send Message
+                                </a>*@
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
+            <div class="container-fluid bg-light overflow-hidden px-lg-0">
+                <div class="container contact px-lg-0">
+                    <div class="row g-0 mx-lg-0">
+                        <!-- contact form -->
+                        <div class="col-lg-12 bg-dark contact-text py-5 px-5 wow fadeIn"
+                             data-wow-delay="0.5s">
+                            <div class="p-lg-5 ps-lg-0">                                
 
-        @if(Model.Count() > 0)
+                                <h2 class="mb-4">Find The <a href="#">Closest Store :</a> </h2>
+                                <div id="showResult">
+                                    <button id="calDistance" class="btn btn-warning">Click here</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-center"><a href="#">All of Star Security Branches</a></h2>
+
+        @if (Model.Branches.Count() > 0)
         {
-            @foreach(var item in Model)
+            @foreach (var item in Model.Branches)
             {
                 @if (item.GoogleMap != null && item.GoogleMap.StartsWith("https://www.google.com/maps/embed"))
                 {
-                    <div class="col-lg-3 pe-lg-0 p-1" style="min-height: 300px">
+                        <div class="col-lg-3 pe-lg-0 p-1" style="min-height: 400px">
                         <p class="text-center text-dark pt-1 text-region">@item.Name</p>
                         <div class="position-relative h-80">
                                 <iframe class="position-absolute w-100 h-100"
-                            style="min-height: 230px; object-fit: cover"
+                            style="min-height: 330px; object-fit: cover"
                             src="@item.GoogleMap"
                             frameborder="0"
                             allowfullscreen=""
@@ -94,3 +117,135 @@
     </div>
 </div>
 <!-- Contact End -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        function sendMessage(event){
+            event.preventDefault();
+
+            const Name = $("#name").val();
+            const Email = $("#email").val();
+            const Subject = $("#subject").val();
+            const Message = $("#message").val();
+
+            if(Name === "" || Email === "" || Subject === "" || Message === ""){   
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Please input your information in to the Form',
+                  showConfirmButton: false,
+                  showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                  },
+                  timer: 2000
+                })
+            }else {
+                const data = {
+                    Name,
+                    Email,
+                    Subject,
+                    Message
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "@(Programs.pathRoot + "/contact/send-message")",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response, status) {}
+                });
+
+                Swal.fire({
+                    position: 'top-end',
+                    title: 'Sending...',
+                    html: 'Please waiting after <b></b> milliseconds.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                            b.textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        // After Success
+
+                        $("#name").val('');
+                        $("#email").val('');
+                        $("#subject").val('');
+                        $("#message").val('');
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                });
+            }
+
+
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            var x = document.getElementById("demo");
+            $("#calDistance").on("click", function () {
+                getLocation();
+            });
+        });
+
+        function getLocation() {
+            if (navigator.geolocation) 
+            {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+            else 
+            {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            $.ajax({
+                url: "/Contact/Find-Shortest-Branch",
+                type: "GET",
+                data: 
+                { 
+                    latituteUser: position.coords.latitude,
+                    longitudeUser: position.coords.longitude 
+                },
+                success: function (response) {
+                    if (response.data != "" && response.data != undefined) {
+                        $("#showResult").html(`
+                                                <h3 style="color:#ffc107;">Branch Name:  ${response.data.name} </h3>
+                                                <h3 style="color:#ffc107;">Address:  ${response.data.address}  </h3>
+                                                <h3 style="color:#ffc107;">Phone:  ${response.data.phone}  </h3>
+                                                <iframe class="position-absolute w-100 h-100"
+                                                style="min-height: 330px; object-fit: cover"
+                                                                src="${response.data.googleMap}"
+                                                frameborder="0"
+                                                allowfullscreen=""
+                                                aria-hidden="false"
+                                                tabindex="0"></iframe>
+                                        `);
+                    }
+                }
+            });
+        }
+    </script>
+}
+                                
