@@ -76,7 +76,7 @@
                 <div class="container contact px-lg-0">
                     <div class="row g-0 mx-lg-0">
                         <!-- contact form -->
-                        <div class="col-lg-12 bg-dark contact-text py-5 px-5 wow fadeIn"
+                        <div style="margin-block-start: -100px;" class="col-lg-12 bg-dark contact-text py-5 px-5 wow fadeIn"
                              data-wow-delay="0.5s">
                             <div class="p-lg-5 ps-lg-0">                                
 
@@ -90,7 +90,7 @@
                 </div>
             </div>
 
-            <h2 class="text-center"><a href="#">All of Star Security Branches</a></h2>
+            <h2 style="background-image: linear-gradient(270deg, #2C74B3 0, #0A2647 100%);" class="text-center"><a href="#">All of Star Security Branches</a></h2>
 
         @if (Model.Branches.Count() > 0)
         {
@@ -228,16 +228,18 @@
                 success: function (response) {
                     if (response.data != "" && response.data != undefined) {
                         $("#showResult").html(`
-                                                <h3 style="color:#ffc107;">Branch Name:  ${response.data.name} </h3>
-                                                <h3 style="color:#ffc107;">Address:  ${response.data.address}  </h3>
-                                                <h3 style="color:#ffc107;">Phone:  ${response.data.phone}  </h3>
+                                            <div class="col-lg-12 pe-lg-0 p-1" style="min-height: 400px">                                                
+                                                <h3 class="text-center" style="color:#ffc107;">Branch Name:  ${response.data.name} </h3>
+                                                <h3 class="text-center"style="color:#ffc107;">Address:  ${response.data.address}  </h3>
+                                                <h3 class="text-center"style="color:#ffc107;">Phone:  ${response.data.phone}  </h3>
                                                 <iframe class="position-absolute w-100 h-100"
                                                 style="min-height: 330px; object-fit: cover"
-                                                                src="${response.data.googleMap}"
+                                                src="${response.data.googleMap}"
                                                 frameborder="0"
                                                 allowfullscreen=""
                                                 aria-hidden="false"
                                                 tabindex="0"></iframe>
+                                            </div>
                                         `);
                     }
                 }
