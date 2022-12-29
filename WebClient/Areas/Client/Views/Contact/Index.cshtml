@@ -103,8 +103,6 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     
     <script>
-        
-
         function sendMessage(event){
             event.preventDefault();
 
@@ -113,50 +111,72 @@
             const Subject = $("#subject").val();
             const Message = $("#message").val();
 
-            $.ajax({
-                type: "POST",
-                url: "@(Programs.pathRoot + "/contact/sendmessage")",
-                data: {
+            if(Name === "" || Email === "" || Subject === "" || Message === ""){   
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Please input your information in to the Form',
+                  showConfirmButton: false,
+                  showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                  },
+                  timer: 2000
+                })
+            }else {
+                const data = {
                     Name,
                     Email,
                     Subject,
                     Message
-                },
-                success: function (response) {
-                    console.log(response);
-                }
-            });
+                };
 
-            Swal.fire({
-                position: 'top-end',
-                title: 'Sending...',
-                html: 'Please waiting after <b></b> milliseconds.',
-                timer: 2000,
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading()
-                    const b = Swal.getHtmlContainer().querySelector('b')
-                    timerInterval = setInterval(() => {
-                        b.textContent = Swal.getTimerLeft()
-                    }, 100)
-                },
-                willClose: () => {
-                    clearInterval(timerInterval)
-                }
-            }).then((result) => {
-                /* Read more about handling dismissals below */
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    // After Success
+                $.ajax({
+                    type: "POST",
+                    url: "@(Programs.pathRoot + "/contact/sendmessage")",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response, status) {}
+                });
 
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            })
+                Swal.fire({
+                    position: 'top-end',
+                    title: 'Sending...',
+                    html: 'Please waiting after <b></b> milliseconds.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                            b.textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        // After Success
+
+                        $("#name").val('');
+                        $("#email").val('');
+                        $("#subject").val('');
+                        $("#message").val('');
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                });
+            }
+
+
         }
 
     </script>
