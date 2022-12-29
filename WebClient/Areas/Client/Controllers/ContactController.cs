@@ -2,6 +2,7 @@
 using DataAccess.Repositories.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using System.Threading.Tasks;
 
 namespace WebClient.Areas.Client.Controllers
 {
@@ -34,8 +35,23 @@ namespace WebClient.Areas.Client.Controllers
         }
 
         [Route("sendmessage")]
-        public IActionResult HandleReceivedMessage([FromForm] string data)
+        public async Task<IActionResult> HandleReceivedMessage([FromBody] Contact contact)
         {
+            if (contact == null)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Client" });
+            }
+
+            try
+            {
+                await unitOfWork.Contact.Add(contact);
+                await unitOfWork.Save();
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error", new { area = "Client" });
+            }
+
             return Ok();
         }
 
