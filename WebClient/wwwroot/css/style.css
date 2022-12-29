@@ -154,7 +154,7 @@ small{
 }
 
 .navbar .navbar-nav .nav-link {
-    margin-right: 30px;
+    margin: 0 20px;
     padding: 25px 0;
     color: var(--light-dark-1);
     font-weight: 500;
@@ -164,8 +164,8 @@ small{
 .navbar .navbar-nav .nav-link:hover,
 .navbar .navbar-nav .nav-link.active {
     color: black;
-    text-decoration: underline;  
-    
+    text-decoration: none;
+    transition: all 0.3s linear;
 }
 
 .navbar .dropdown-toggle::after {

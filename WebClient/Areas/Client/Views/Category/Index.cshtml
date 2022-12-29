@@ -41,8 +41,14 @@
             @{
                 int i = 1;                
             }
+<<<<<<< HEAD
             @if(brandIdSession == null){
                 @foreach (var item in Model.Categories)
+=======
+            @foreach (var item in Model.Categories)
+            {
+                @if(item.Slug != "vacancy-service")
+>>>>>>> 7d9819a96615b0925c9f2ee0e4321aa8d7a22c50
                 {
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.@(i)s">
                         <!-- thêm div123 -->
@@ -59,6 +65,7 @@
                                 <span class="text-primary">@item.ShortDescription</span>
                             </div>
                         </div>
+<<<<<<< HEAD
                     </div>
                     i += 2;
                 }
@@ -86,6 +93,12 @@
                     i += 2;
                 }
             }    
+=======
+                    </div>
+                    i += 2;
+                }
+            }          
+>>>>>>> 7d9819a96615b0925c9f2ee0e4321aa8d7a22c50
         </div>
     </div>
 </div>

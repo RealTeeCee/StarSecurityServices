@@ -18,6 +18,7 @@ namespace WebClient.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index(int? localeId)
         {
+<<<<<<< HEAD
             if(localeId == null)
             {
                 //mac dinh HCM
@@ -26,6 +27,8 @@ namespace WebClient.Areas.Customer.Controllers
                 return View(modelNoBranch);
             }
             // vo day
+=======
+>>>>>>> 7d9819a96615b0925c9f2ee0e4321aa8d7a22c50
             HomeViewModel model = new HomeViewModel();
             model.CategoriesBranches = (List<global::Models.CategoryBranch>)await unitOfWork.CategoryBranch.GetAll(x=>x.BranchId == localeId, includeProperties: "Category,Branch");
 

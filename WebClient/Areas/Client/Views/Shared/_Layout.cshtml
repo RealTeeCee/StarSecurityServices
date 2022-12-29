@@ -120,7 +120,23 @@
                 <div class="navbar-nav ms-auto py-4 py-lg-0">
                     <a asp-area="client" asp-action="index" asp-controller="home" class="nav-item nav-link active">Home</a>
                     <a asp-area="client" asp-action="about" asp-controller="home" class="nav-item nav-link">About</a>
+<<<<<<< HEAD
                     <a asp-area="client" asp-action="index" asp-controller="category" asp-route-localeId="@(branchIdSession != null ? branchIdSession : "")" class="nav-item nav-link">Services</a>
+=======
+                    @*<a asp-area="client" asp-action="index" asp-controller="category" class="nav-item nav-link">Services</a>*@
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Services</a>
+                        <div class="dropdown-menu rounded-0 rounded-bottom m-0">
+                            <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="security-service" class="dropdown-item">Security Services</a>
+                            <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="cash-service" class="dropdown-item">Cash Services</a>
+                            <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="train-service" class="dropdown-item">Train Services</a>
+                            <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="electronic-service" class="dropdown-item">Electronic Services</a>
+                        </div>
+                    </div>
+
+
+                    <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="vacancy-service" class="nav-item nav-link">Vacancies</a>
+>>>>>>> 7d9819a96615b0925c9f2ee0e4321aa8d7a22c50
                     <a href="@Url.ActionLink("Project", "Home")" class="nav-item nav-link">Project</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>

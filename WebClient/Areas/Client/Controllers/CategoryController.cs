@@ -17,7 +17,7 @@ namespace WebClient.Areas.Customer.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        //https://localhost:7273/client/category
+        //https://localhost:7273/category
         //trang này sd trang Our Team -> show 4 cards
         public async Task<IActionResult> Index(int? localeId)
         {
@@ -39,39 +39,93 @@ namespace WebClient.Areas.Customer.Controllers
         [HttpGet("{categorySlug?}")]
         public async Task<IActionResult> Detail(string categorySlug)
         {
-            var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
-            long categoryId = category.Id;
+            try
+            {
+                var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
+                if(category == null)
+                {
+                    return RedirectToAction("NotFound", "Error", new { area = "Client" });
+                }
 
-            //Show toan bo cate, tra ve view Category
-            ServiceViewModel model = new ServiceViewModel();
-            model.Services = (List<Service>)await unitOfWork.Service.GetAll(x=> x.CategoryId == categoryId, includeProperties:"Category");
-            // Nhớ trả về View Detail trong folder Category
+                long categoryId = category.Id;
 
-            
-            string categoryName = category.Name;
-            ViewBag.CategoryName = categoryName;
-            ViewBag.CategorySlug = categorySlug;
+                //Show toan bo cate, tra ve view Category
+                ServiceViewModel model = new ServiceViewModel();
+                if(categorySlug != "vacancy-service")
+                {
+                    model.Services = (List<Service>)await unitOfWork.Service.GetAll(x => x.CategoryId == categoryId, includeProperties: "Category");
+                }
+                else
+                {
+                    model.Vacancies = (List<Vacancy>)await unitOfWork.Vacancy.GetAll(x => x.CategoryId == categoryId, includeProperties: "Category");
+                }
 
-            return View(model);
+                // Nhớ trả về View Detail trong folder Category
+
+                string categoryName = category.Name;
+                ViewBag.CategoryName = categoryName;
+                ViewBag.CategorySlug = categorySlug;
+
+                return View(model);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error", new { area = "Client" });
+            }
         }
 
         [HttpGet("{categorySlug?}/{serviceSlug?}")]
         public async Task<IActionResult> DetailService(string categorySlug, string serviceSlug)
         {
-            var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
-            string categoryName = category.Name;
-            ViewBag.CategoryName = categoryName;
-            
+            try
+            {
+                //Show toan bo cate, tra ve view Category            
+                // Nhớ trả về View Detail trong folder Category
+                var category = await unitOfWork.Category.GetFirstOrDefault(x => x.Slug == categorySlug);
+                if (category == null)
+                {
+                    return RedirectToAction("NotFound", "Error", new { area = "Client" });
+                }
 
-            var service = await unitOfWork.Service.GetFirstOrDefault(x => x.Slug == serviceSlug);
-            string serviceName = service.Name;
-            ViewBag.ServiceName = serviceName;
-            
+                if(categorySlug != "vacancy-service")
+                {
+                    var service = await unitOfWork.Service.GetFirstOrDefault(x => x.Slug == serviceSlug);
+                    if (service == null)
+                    {
+                        return RedirectToAction("NotFound", "Error", new { area = "Client" });
+                    }
 
-            //Show toan bo cate, tra ve view Category            
-            // Nhớ trả về View Detail trong folder Category
+                    var serviceRelated = await unitOfWork.Service.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id);
+                    ViewBag.ServiceRelated = serviceRelated;
 
-            return View(service);
+                    ViewBag.CategoryName = category.Name;
+                    ViewBag.CategorySlug = category.Slug;
+
+                    return View(service);
+                }
+                else
+                {
+                    var service = await unitOfWork.Vacancy.GetFirstOrDefault(x => x.Slug == serviceSlug);
+                    if (service == null)
+                    {
+                        return RedirectToAction("NotFound", "Error", new { area = "Client" });
+                    }
+
+                    var serviceRelated = await unitOfWork.Vacancy.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id);
+                    ViewBag.ServiceRelated = serviceRelated;
+
+                    ViewBag.CategoryName = category.Name;
+                    ViewBag.CategorySlug = category.Slug;
+
+                    return View("DetailVacancy", service);
+                }
+
+
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error", new { area = "Client" });
+            }
         }
 
     }

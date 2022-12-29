@@ -1,14 +1,13 @@
 ﻿@model Models.ViewModel.HomeViewModel;
-
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
     ViewData["Title"] = "Home";
     Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
+<<<<<<< HEAD
     @using Microsoft.AspNetCore.Http
     @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
     var branchIdSession = HttpContextAccessor.HttpContext.Session.GetString("branchId");
+=======
+>>>>>>> 7d9819a96615b0925c9f2ee0e4321aa8d7a22c50
 }
 @section Styles {
     <style>
@@ -16,7 +15,7 @@
             height:225px;
         }
     </style>
-    }
+}
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5 ">
         <div class="owl-carousel header-carousel position-relative">
@@ -180,6 +179,7 @@
                 <h1 class="display-5 mb-5">Our Services</h1>
             </div>
             <div class="row g-0 service-row">
+<<<<<<< HEAD
                 @*delay + 0.2s*@
                 @{
                     int i = 1;
@@ -211,6 +211,37 @@
                 }   
             
                                            
+=======
+            @{
+                int i = 1;
+                int serviceDivide = 1;
+            }
+                @foreach(var category in Model.Categories)
+                {                    
+                    if(category.Slug != "vacancy-service")
+                    {
+                        <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.@(i)s">
+                            <div class="service-item border h-100 p-5 service-div@(serviceDivide % 2 == 1 ? "1" : "2") ourservice-div">
+                                <!-- bỏ bg-light -->
+                                <div class="btn-square  rounded-circle mb-4" style="width: 200px;height: 200px">
+                                    <img class="img-fluid new-format" src="~/media/categories/@category.Image">
+                                </div>
+                                <div>
+
+                                    <h4 class="mb-3">@category.Name</h4>
+                                    <p class="mb-4">@category.ShortDescription</p>
+                                </div>
+                                <div class="btn-position">
+                                    <a class="btn" asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="@category.Slug"><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        i += 2;
+                        serviceDivide++;
+                    }
+                }                              
+>>>>>>> 7d9819a96615b0925c9f2ee0e4321aa8d7a22c50
             </div>
         </div>
     </div>
