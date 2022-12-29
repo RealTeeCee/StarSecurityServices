@@ -25,7 +25,7 @@ namespace Models
         [StringLength(255)]
         public string? Slug { get; set; }
 
-        public string Image { get; set; }
+        public string Image { get; set; } = "default.jpg";
 
         [NotMapped]
 
