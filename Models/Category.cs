@@ -35,5 +35,8 @@ namespace Models
     public class CategoryViewModel
     {
         public List<Category> Categories { get; set; }
+        public List<CategoryBranch> CategoriesBranches { get; set; }
+        public List<Branch> Branches { get; set; }
+        public Branch Branch { get; set; }
     }
 }

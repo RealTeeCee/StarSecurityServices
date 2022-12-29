@@ -19,21 +19,14 @@ namespace Models
         public string Name { get; set; }
         [StringLength(100)]
         public string Email { get; set; }       
-        [StringLength(15)]
-        public string Phone { get; set; }      
 
-        public long CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
-        public virtual Category Category { get; set; }
-
-        public long BranchId { get; set; }
-        [ForeignKey("BranchId")]
-        public virtual Branch Branch { get; set; }
+        [StringLength(50)]
+        public string Subject { get; set; }
 
         [Column(TypeName = "nvarchar")]
         [StringLength(400)]
-        public string Noted { get; set; }
+        public string Message { get; set; }
+
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
-        public DateTime? UpdatedAt { get; set; }
     }
 }

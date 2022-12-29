@@ -50,4 +50,13 @@ namespace Models
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }
+
+    public class Location
+    {
+        public string BranchName { get; set; }
+        public int BranchId { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double DistanceToUser { get; set; }
+    }
 }
