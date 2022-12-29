@@ -33,7 +33,7 @@ namespace WebClient.Areas.Client.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Index", "Error", new { area = "Admin" });
+                return RedirectToAction("Index", "Error", new { area = "Client" });
             }
         }
     }

@@ -11,9 +11,9 @@ namespace WebClient.Areas.Client.Controllers
             return View();
         }
 
-        public IActionResult NotFound()
-        {
-            return View();
-        }
+        //public IActionResult PageNotFound()
+        //{
+        //    return View();
+        //}
     }
 }

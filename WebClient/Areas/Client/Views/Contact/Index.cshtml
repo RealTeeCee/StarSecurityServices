@@ -17,18 +17,18 @@
                     </div>
                     <p class="mb-4">
                         The contact form is currently inactive. Get a functional and
-                        working contact form with Ajax & PHP in a few minutes. Just copy
+                        working contact form with in a few minutes. Just copy
                         and paste the files, add a little code and you're done.
-                        <a href="https://htmlcodex.com/contact-form">Download Now</a>.
                     </p>
-                    <form>
+                    <form method="post" >
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text"
                                            class="form-control bg-dark"
                                            id="name"
-                                           placeholder="Your Name" />
+                                           placeholder="Your Name"
+                                           name="Name" />
                                     <label for="name">Your Name</label>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                     <input type="email"
                                            class="form-control bg-dark"
                                            id="email"
-                                           placeholder="Your Email" />
+                                           placeholder="Your Email" name="Email" />
                                     <label for="email">Your Email</label>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                                     <input type="text"
                                            class="form-control bg-dark"
                                            id="subject"
-                                           placeholder="Subject" />
+                                           placeholder="Subject" name="Subject" />
                                     <label for="subject">Subject</label>
                                 </div>
                             </div>
@@ -55,14 +55,18 @@
                                     <textarea class="form-control bg-dark"
                                               placeholder="Leave a message here"
                                               id="message"
-                                              style="height: 100px"></textarea>
+                                              style="height: 100px" name="Message"></textarea>
                                     <label for="message">Message</label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">
+                                <button class="btn btn-primary w-100 py-3" type="submit" onclick="sendMessage(event)">
                                     Send Message
                                 </button>
+
+                      @*          <a onclick="sendMessage(event)" href="#" class="btn btn-primary w-100 py-3">
+                                    Send Message
+                                </a>*@
                             </div>
                         </div>
                     </form>
@@ -94,3 +98,67 @@
     </div>
 </div>
 <!-- Contact End -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        
+
+        function sendMessage(event){
+            event.preventDefault();
+
+            const Name = $("#name").val();
+            const Email = $("#email").val();
+            const Subject = $("#subject").val();
+            const Message = $("#message").val();
+
+            $.ajax({
+                type: "POST",
+                url: "@(Programs.pathRoot + "/contact/sendmessage")",
+                data: {
+                    Name,
+                    Email,
+                    Subject,
+                    Message
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+
+            Swal.fire({
+                position: 'top-end',
+                title: 'Sending...',
+                html: 'Please waiting after <b></b> milliseconds.',
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading()
+                    const b = Swal.getHtmlContainer().querySelector('b')
+                    timerInterval = setInterval(() => {
+                        b.textContent = Swal.getTimerLeft()
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    // After Success
+
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            })
+        }
+
+    </script>
+}
+                                

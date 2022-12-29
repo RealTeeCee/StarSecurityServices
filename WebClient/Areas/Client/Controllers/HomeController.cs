@@ -50,7 +50,7 @@ namespace WebClient.Areas.Customer.Controllers
             catch (Exception)
             {
 
-                return RedirectToAction("Index", "Error", new { area = "Customer" });
+                return RedirectToAction("Index", "Error", new { area = "Client" });
 
             }
 

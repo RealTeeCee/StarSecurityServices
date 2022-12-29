@@ -11,7 +11,6 @@ namespace WebClient.Areas.Client.Controllers
         private readonly StarSecurityDbContext context;
         private readonly IUnitOfWork unitOfWork;
         private readonly IWebHostEnvironment env;
-        private int pageSizes = 6;
 
         public ContactController(IUnitOfWork unitOfWork, StarSecurityDbContext context, IWebHostEnvironment env)
         {
@@ -24,6 +23,12 @@ namespace WebClient.Areas.Client.Controllers
             var branches = await unitOfWork.Branch.GetAll();
 
             return View(branches);
+        }
+
+        [Route("sendmessage")]
+        public IActionResult HandleReceivedMessage([FromForm] string data)
+        {
+            return Ok();
         }
     }
 }
