@@ -34,7 +34,7 @@ namespace WebClient.Areas.Client.Controllers
             return View(model);
         }
 
-        [Route("sendmessage")]
+        [Route("send-message")]
         public async Task<IActionResult> HandleReceivedMessage([FromBody] Contact contact)
         {
             if (contact == null)
@@ -55,7 +55,7 @@ namespace WebClient.Areas.Client.Controllers
             return Ok();
         }
 
-        [Route("findshortestbranch")]
+        [Route("find-shortest-branch")]
         public async Task<IActionResult> FindShortestBranch(string latituteUser, string longitudeUser)
         {
             try
@@ -118,7 +118,7 @@ namespace WebClient.Areas.Client.Controllers
             }
         }
 
-
+        [Route("calculate-distance")]
         public double CalculateDistance(Location location1, Location currentUserLocation)
         {
             try

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace WebClient.Areas.Client.Controllers
 {
     [Area("Client")]
-    [Route("testimonial}")]
+    [Route("testimonial")]
     public class TestimonialController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -12,9 +12,22 @@ namespace WebClient.Manager
             this.unitOfWork = unitOfWork;
         }
         public async Task<List<CategoryBranch>> CategoryBranchList(int? localeId)
+        {            
+            var categoryBranch = await unitOfWork.CategoryBranch.GetAll(x => x.BranchId == localeId && x.Category.Slug != "vacancy-service", includeProperties: "Category,Branch");
+            return categoryBranch.ToList();
+        }
+
+        public async Task<bool> HasVacancy(int? localeId)
         {
             var categoryBranch = await unitOfWork.CategoryBranch.GetAll(x => x.BranchId == localeId, includeProperties: "Category,Branch");
-            return categoryBranch.ToList();
+            foreach (var item in categoryBranch)
+            {
+                if(item.Category.Slug == "vacancy-service")
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

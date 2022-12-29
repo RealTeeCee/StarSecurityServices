@@ -109,9 +109,9 @@
             </div>
         </div>
         <!-- Topbar End -->
-        <!-- Navbar Start -->
+@*        <!-- Navbar Start -->
         <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 px-4 px-lg-5">
-            <a href="index.html" class="navbar-brand d-flex align-items-center">
+            <a asp-area="client" asp-action="index" asp-controller="home" asp-route-localeId="@(branchIdSession != null ? branchIdSession : "1")"  class="navbar-brand d-flex align-items-center">
                 <!-- <h2 class="m-0 text-primary">Securex</h2> -->
                 <img id="logo-img" src="~/img/logo.png" alt="Logo Star Security">
             </a>
@@ -120,10 +120,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-4 py-lg-0">
-                    <a asp-area="client" asp-action="index" asp-controller="home" class="nav-item nav-link active">Home</a>
-                    <a asp-area="client" asp-action="about" asp-controller="home" class="nav-item nav-link">About</a>
+                    <a asp-area="client" asp-action="index" asp-controller="home" asp-route-localeId="@(branchIdSession != null ? branchIdSession : "1")" class="nav-item nav-link active">Home</a>
+                    <a asp-area="client" asp-action="about" asp-controller="home" class="nav-item nav-link">About</a>*@
                     @*<a asp-area="client" asp-action="index" asp-controller="category" class="nav-item nav-link">Services</a>*@
-                    <div class="nav-item dropdown">
+                    <partial name="_NavbarServicePartial" />
+@*                    <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Services</a>
                         <div class="dropdown-menu rounded-0 rounded-bottom m-0">
                             <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="security-service" class="dropdown-item">Security Services</a>
@@ -132,10 +133,9 @@
                             <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="electronic-service" class="dropdown-item">Electronic Services</a>
                         </div>
                     </div>
+                    <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="vacancy-service" class="nav-item nav-link">Vacancies</a>*@
 
-
-                    <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="vacancy-service" class="nav-item nav-link">Vacancies</a>
-                    <a href="@Url.ActionLink("Project", "Home")" class="nav-item nav-link">Project</a>
+                 @*   <a href="@Url.ActionLink("Project", "Home")" class="nav-item nav-link">Project</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu rounded-0 rounded-bottom m-0">
@@ -155,7 +155,7 @@
                     <a class="btn btn-square rounded-circle bg-light text-primary me-0" href=""><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
-        </nav>
+        </nav>*@
         <!-- Navbar End -->
 	</header>
 
