@@ -159,7 +159,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a asp-action="About" asp-controller="Home" asp-area="Client" class="btn btn-primary rounded-pill py-3 px-5">Explore More</a>
+                        <a asp-area="client" asp-action="index" asp-controller="about" class="btn btn-primary rounded-pill py-3 px-5">Explore More</a>
                     </div>
                 </div>
             </div>
@@ -432,27 +432,27 @@
                         <form>
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Your Name" style="height: 55px;">
+                                    <input type="text" id="name" class="form-control border-0" placeholder="Your Name" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="email" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
+                                <input type="email" id="email" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
                                 </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Your Mobile" style="height: 55px;">
+                                <div class="col-12 col-sm-12">
+                                <input type="text" id="subject" class="form-control border-0" placeholder="Subject" style="height: 55px;">
                                 </div>
-                                <div class="col-12 col-sm-6">
+@*                                <div class="col-12 col-sm-6">
                                     <select class="form-select border-0" style="height: 55px;">
                                         <option selected>Select A Service</option>
                                         <option value="1">Service 1</option>
                                         <option value="2">Service 2</option>
                                         <option value="3">Service 3</option>
                                     </select>
+                                </div>*@
+                                <div class="col-12">
+                                    <textarea class="form-control border-0" placeholder="Leave a message here" id="message"></textarea>
                                 </div>
                                 <div class="col-12">
-                                    <textarea class="form-control border-0" placeholder="Special Note"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Get A Free Quote</button>
+                                    <button class="btn btn-primary w-100 py-3" type="submit" onclick="sendMessage(event)">Get A Free Quote</button>
                                 </div>
                             </div>
                         </form>
@@ -545,3 +545,82 @@
         </div>
     </div>
     <!-- Team End -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function sendMessage(event) {
+            event.preventDefault();
+
+            const Name = $("#name").val();
+            const Email = $("#email").val();
+            const Subject = $("#subject").val();
+            const Message = $("#message").val();
+
+            if (Name === "" || Email === "" || Subject === "" || Message === "") {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Please input your information in to the Form',
+                    showConfirmButton: false,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    timer: 2000
+                })
+            } else {
+                const data = {
+                    Name,
+                    Email,
+                    Subject,
+                    Message
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "@(Programs.pathRoot + "/contact/send-message")",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response, status) { }
+                });
+
+                Swal.fire({
+                    position: 'top-end',
+                    title: 'Sending...',
+                    html: 'Please waiting after <b></b> milliseconds.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                            b.textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        // After Success
+
+                        $("#name").val('');
+                        $("#email").val('');
+                        $("#subject").val('');
+                        $("#message").val('');
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                });
+            }
+        }
+    </script>
+}
