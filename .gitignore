@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /WebClient/appsettings.json
+/DataAccess/Migrations/20221229190659_Update_Client.cs
+/DataAccess/Migrations/20221229190659_Update_Client.Designer.cs
+/DataAccess/Migrations/StarSecurityDbContextModelSnapshot.cs
+/WebClient/appsettings.json

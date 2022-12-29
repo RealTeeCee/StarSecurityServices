@@ -33,6 +33,8 @@ namespace DataAccess.Services
 
         public IUserBranch UserBranch { get; private set; }
 
+        public IClient Client { get; private set; }
+
         public UnitOfWork(StarSecurityDbContext context)
         {
             _context = context;
@@ -47,6 +49,7 @@ namespace DataAccess.Services
             Vacancy = new VacancyService(_context);
             Contact = new ContactService(_context);
             UserBranch = new UserBranchService(_context);
+            Client = new ClientService(_context);
         }
 
         public void ClearTracking()
