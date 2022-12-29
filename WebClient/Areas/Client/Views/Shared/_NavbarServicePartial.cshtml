@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto py-4 py-lg-0">
             <a asp-area="client" asp-action="index" asp-controller="home" asp-route-localeId="@(branchIdSession != null ? branchIdSession : "1")" class="nav-item nav-link active">Home</a>
-            <a asp-area="client" asp-action="about" asp-controller="home" class="nav-item nav-link">About</a>
+            <a asp-area="client" asp-action="index" asp-controller="about" class="nav-item nav-link">About</a>
 
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Services</a>
@@ -39,15 +39,15 @@
             {
                     <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-localeId="@branchIdSession" asp-route-categorySlug="vacancy-service" class="nav-item nav-link">Vacancies</a>
             }
-            <a href="@Url.ActionLink("Project", "Home")" class="nav-item nav-link">Project</a>
+            <a href="@Url.ActionLink("Index", "Project")" class="nav-item nav-link">Project</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu rounded-0 rounded-bottom m-0">
-                    <a href="@Url.ActionLink("Feature", "Home")" class="dropdown-item">Feature</a>
-                    <a href="@Url.ActionLink("FreeQuote", "Home")" class="dropdown-item">Free Quote</a>
-                    <a href="@Url.ActionLink("OurTeam", "Home")" class="dropdown-item">Our Team</a>
+                    <a href="@Url.ActionLink("Index", "Feature")" class="dropdown-item">Feature</a>
+                    <a href="@Url.ActionLink("Index", "FreeQuote")" class="dropdown-item">Free Quote</a>
+                    <a href="@Url.ActionLink("Index", "OurTeam")" class="dropdown-item">Our Team</a>
                     <a href="@Url.ActionLink("Index", "Testimonial")" class="dropdown-item">Testimonial</a>
-                    <a href="@Url.ActionLink("Index", "Error")" class="dropdown-item">404 Page</a>
+                    
                 </div>
             </div>
             <a href="@Url.ActionLink("Index", "Contact")" class="nav-item nav-link">Contact</a>

@@ -65,7 +65,6 @@ namespace WebClient.Areas.Customer.Controllers
 
         }
 
-
         public async Task<IActionResult>  About()
         {
             return View();
