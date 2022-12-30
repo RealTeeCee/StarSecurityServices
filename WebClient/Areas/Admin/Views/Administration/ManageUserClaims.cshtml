@@ -15,14 +15,17 @@
         <div class="card-body">
             @for (int i = 0; i < Model.Claims.Count; i++)
             {
-                <div class="custom-control custom-checkbox">
-                    <input type="hidden" asp-for="@Model.Claims[i].ClaimType" />
-                    <input class="custom-control-input" asp-for="@Model.Claims[i].IsSelected" />
-                    <label class="custom-control-label" asp-for="@Model.Claims[i].IsSelected">
-                        <!-- Now when click on label it checked status toggle as expected -->
-                        @Model.Claims[i].ClaimType
-                    </label>
-                </div>
+                @if(Model.Claims[i].ClaimType != "All"){
+                    <div class="custom-control custom-checkbox">
+                        <input type="hidden" asp-for="@Model.Claims[i].ClaimType" />
+                        <input class="custom-control-input" asp-for="@Model.Claims[i].IsSelected" />
+                        <label class="custom-control-label" asp-for="@Model.Claims[i].IsSelected">
+                            <!-- Now when click on label it checked status toggle as expected -->
+                            @Model.Claims[i].ClaimType
+                        </label>
+                    </div>
+                }
+                
             }
         </div>
         <div class="card-footer">
