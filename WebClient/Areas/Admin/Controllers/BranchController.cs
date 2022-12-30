@@ -133,7 +133,7 @@ namespace WebClient.Areas.Admin.Controllers
                 foreach (var item in model)
                 {
                     // Lấy toàn bộ UserBranch ra so sánh với model.UserId truyền vào
-                    var usersBranch = await _unitOfWork.UserBranch.GetAll(x => x.UserId == item.UserId);
+                    var usersBranch = await _unitOfWork.UserBranch.GetAll(x => x.UserId == item.UserId && x.BranchId == id);
 
                     //if (item.IsSelected && usersBranch.UserId != item.UserId)
 
@@ -149,10 +149,13 @@ namespace WebClient.Areas.Admin.Controllers
 
                     else if (!item.IsSelected && usersBranch.Count() > 0)
                     {
-
-                        var deleteUserBranch = await _unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == item.UserId && x.BranchId == id);                        
-                        _unitOfWork.UserBranch.Remove(deleteUserBranch);
-                        await _unitOfWork.Save();
+                        if(item.RoleName != "SuperAdmin" && item.RoleName != "GeneralAdmin") 
+                        {
+                            var deleteUserBranch = await _unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == item.UserId && x.BranchId == id);
+                            _unitOfWork.UserBranch.Remove(deleteUserBranch);
+                            await _unitOfWork.Save();
+                        }
+                        
                     }                  
 
                 }
