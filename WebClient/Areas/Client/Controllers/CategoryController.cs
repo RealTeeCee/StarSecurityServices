@@ -53,11 +53,11 @@ namespace WebClient.Areas.Customer.Controllers
                 ServiceViewModel model = new ServiceViewModel();
                 if(categorySlug != "vacancy-service")
                 {
-                    model.Services = (List<Service>)await unitOfWork.Service.GetAll(x => x.CategoryId == categoryId, includeProperties: "Category");
+                    model.Services = (List<Service>)await unitOfWork.Service.GetAll(x => x.CategoryId == categoryId && x.Status == 1, includeProperties: "Category");
                 }
                 else
                 {
-                    model.Vacancies = (List<Vacancy>)await unitOfWork.Vacancy.GetAll(x => x.CategoryId == categoryId, includeProperties: "Category");
+                    model.Vacancies = (List<Vacancy>)await unitOfWork.Vacancy.GetAll(x => x.CategoryId == categoryId && x.Status == 1, includeProperties: "Category");
                 }
 
                 // Nhớ trả về View Detail trong folder Category
@@ -95,7 +95,7 @@ namespace WebClient.Areas.Customer.Controllers
                         return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                     }
 
-                    var serviceRelated = await unitOfWork.Service.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id);
+                    var serviceRelated = await unitOfWork.Service.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id && x.Status == 1);
                     ViewBag.ServiceRelated = serviceRelated;
 
                     ViewBag.CategoryName = category.Name;
@@ -111,7 +111,7 @@ namespace WebClient.Areas.Customer.Controllers
                         return RedirectToAction("PageNotFound", "Error", new { area = "Client" });
                     }
 
-                    var serviceRelated = await unitOfWork.Vacancy.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id);
+                    var serviceRelated = await unitOfWork.Vacancy.GetAll(x => x.Id != service.Id && x.CategoryId == category.Id && x.Status == 1);
                     ViewBag.ServiceRelated = serviceRelated;
 
                     ViewBag.CategoryName = category.Name;
