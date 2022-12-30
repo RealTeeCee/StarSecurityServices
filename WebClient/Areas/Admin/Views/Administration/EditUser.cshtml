@@ -69,7 +69,10 @@
                 {
                     @foreach (var claim in Model.Claims)
                     {
-                        <h5 class="card-title">@claim</h5>
+                        @if(claim != "All"){
+                            <h5 class="card-title">@claim</h5>
+                        }
+                        
                     }
                 }
                 else
