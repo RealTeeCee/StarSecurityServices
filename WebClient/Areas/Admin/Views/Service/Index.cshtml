@@ -2,14 +2,13 @@
 @model IEnumerable<Models.Service>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "List Services";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <h3>List Services</h3>
             <span class="d-block m-t-5">
                 <a asp-action="Create" class="btn btn-primary">Create New</a>
             </span>
@@ -55,5 +54,6 @@
                     <pagination page-count="@ViewBag.TotalPages" page-target="/admin/service" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
                 </div>
         </div>
+    </div>
     </div>
 </div>

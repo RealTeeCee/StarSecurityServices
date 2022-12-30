@@ -35,7 +35,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = this.pageSizes;
-                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Vacancies.Count() / this.pageSizes);
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)_context.Services.Count() / this.pageSizes);
 
                 ViewBag.List = "List Services";
                 ViewBag.Controller = "Service";
@@ -78,6 +78,21 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
+                if(model.CategoryId == 0)
+                {
+                    TempData["msg"] = "Please choose a category.";
+                    TempData["msg_type"] = "danger";
+
+                    ViewBag.List = "List Services";
+                    ViewBag.Controller = "Service";
+                    ViewBag.AspAction = "Index";
+                    ViewBag.AspSubAction = "Create";
+                    ViewBag.Action = "Create Service";
+
+                    ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", model.CategoryId);
+                    return View(model);
+                }
+
                 if (model != null)
                 {
                     // Kiểm tra Limit Name lại 100 ký tự, để slug không bị full

@@ -4,6 +4,10 @@
 @inject IHttpContextAccessor httpContextAccessor
 @{
     var branchIdSession = (httpContextAccessor.HttpContext.Session.GetString("branchId") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchId")) : "1";
+    var branchFbSession = (httpContextAccessor.HttpContext.Session.GetString("branchFacebook") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchFacebook")) : "https://www.facebook.com/";
+    var branchIgSession = (httpContextAccessor.HttpContext.Session.GetString("branchInstagram") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchInstagram")) : "https://www.instagram.com/";
+    var branchYtbSession = (httpContextAccessor.HttpContext.Session.GetString("branchYoutube") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchYoutube")) : "https://www.youtube.com/";
+    var branchTwSession = (httpContextAccessor.HttpContext.Session.GetString("branchTwitter") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchTwitter")) : "https://www.twitter.com/";
 }
 
 <header>
@@ -44,7 +48,7 @@
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu rounded-0 rounded-bottom m-0">
                     <a href="@Url.ActionLink("Index", "Feature")" class="dropdown-item">Feature</a>
-                    <a href="@Url.ActionLink("Index", "FreeQuote")" class="dropdown-item">Free Quote</a>
+                    @*<a href="@Url.ActionLink("Index", "FreeQuote")" class="dropdown-item">Free Quote</a>*@
                     <a href="@Url.ActionLink("Index", "OurTeam")" class="dropdown-item">Our Team</a>
                     <a href="@Url.ActionLink("Index", "Testimonial")" class="dropdown-item">Testimonial</a>
                     
@@ -53,10 +57,10 @@
             <a href="@Url.ActionLink("Index", "Contact")" class="nav-item nav-link">Contact</a>
         </div>
         <div class="h-100 d-lg-inline-flex align-items-center d-none">
-            <a class="btn btn-square rounded-circle bg-light text-primary me-2" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square rounded-circle bg-light text-primary me-2" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square rounded-circle bg-light text-primary me-2" href=""><i class="fab fa-linkedin-in"></i></a>
-            <a class="btn btn-square rounded-circle bg-light text-primary me-0" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square rounded-circle bg-light text-primary me-2" href="@branchFbSession"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square rounded-circle bg-light text-primary me-2" href="@branchTwSession"><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-square rounded-circle bg-light text-primary me-2" href="@branchYtbSession"><i class="fab fa-youtube"></i></a>
+                <a class="btn btn-square rounded-circle bg-light text-primary me-0" href="@branchIgSession"><i class="fab fa-instagram"></i></a>
         </div>
     </div>
 </nav>

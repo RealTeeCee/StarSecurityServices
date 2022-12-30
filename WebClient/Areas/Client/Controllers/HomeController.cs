@@ -52,6 +52,10 @@ namespace WebClient.Areas.Customer.Controllers
                     HttpContext.Session.SetString("branchPhone", branch.Phone);
                     HttpContext.Session.SetString("branchTimeOpen", branch.TimeOpen);
                     HttpContext.Session.SetString("branchAddress", branch.Address);
+                    HttpContext.Session.SetString("branchFacebook", branch.Facebook);
+                    HttpContext.Session.SetString("branchTwitter", branch.Twitter);
+                    HttpContext.Session.SetString("branchYoutube", branch.Youtube);
+                    HttpContext.Session.SetString("branchInstagram", branch.Instagram);
                 }
 
                 return RedirectToAction("Index", new { localeId = selectBranch });

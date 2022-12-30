@@ -159,7 +159,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a asp-action="About" asp-controller="Home" asp-area="Client" class="btn btn-primary rounded-pill py-3 px-5">Explore More</a>
+                        <a asp-area="client" asp-action="index" asp-controller="about" class="btn btn-primary rounded-pill py-3 px-5">Explore More</a>
                     </div>
                 </div>
             </div>
@@ -432,27 +432,27 @@
                         <form>
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Your Name" style="height: 55px;">
+                                    <input type="text" id="name" class="form-control border-0" placeholder="Your Name" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="email" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
+                                <input type="email" id="email" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
                                 </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Your Mobile" style="height: 55px;">
+                                <div class="col-12 col-sm-12">
+                                <input type="text" id="subject" class="form-control border-0" placeholder="Subject" style="height: 55px;">
                                 </div>
-                                <div class="col-12 col-sm-6">
+@*                                <div class="col-12 col-sm-6">
                                     <select class="form-select border-0" style="height: 55px;">
                                         <option selected>Select A Service</option>
                                         <option value="1">Service 1</option>
                                         <option value="2">Service 2</option>
                                         <option value="3">Service 3</option>
                                     </select>
+                                </div>*@
+                                <div class="col-12">
+                                    <textarea class="form-control border-0" placeholder="Leave a message here" id="message"></textarea>
                                 </div>
                                 <div class="col-12">
-                                    <textarea class="form-control border-0" placeholder="Special Note"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Get A Free Quote</button>
+                                    <button class="btn btn-primary w-100 py-3" type="submit" onclick="sendMessage(event)">Get A Free Quote</button>
                                 </div>
                             </div>
                         </form>
@@ -463,85 +463,82 @@
     </div>
     <!-- Quote End -->
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <!-- Team Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <div class="bg-primary mb-3 mx-auto" style="width: 60px; height: 2px;"></div>
-                <h1 class="display-5 mb-5">Team Members</h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <!-- thêm div123 -->
-                    <div class="team-item div123">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="~/img/team-1.jpg" alt="">
-                            <div class="team-social">
-                                <!-- thêm btn-hover -->
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Full Name</h5>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <!-- thêm div123 -->
-                    <div class="team-item div123">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="~/img/team-2.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Full Name</h5>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <!-- thêm div123 -->
-                    <div class="team-item div123">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="~/img/team-3.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Full Name</h5>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <!-- thêm div123 -->
-                    <div class="team-item div123">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="~/img/team-4.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-dark rounded-circle m-1 btn-hover" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Full Name</h5>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
+    <script>
+        function sendMessage(event) {
+            event.preventDefault();
+
+            const Name = $("#name").val();
+            const Email = $("#email").val();
+            const Subject = $("#subject").val();
+            const Message = $("#message").val();
+
+            if (Name === "" || Email === "" || Subject === "" || Message === "") {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Please input your information in to the Form',
+                    showConfirmButton: false,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    timer: 2000
+                })
+            } else {
+                const data = {
+                    Name,
+                    Email,
+                    Subject,
+                    Message
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "@(Programs.pathRoot + "/contact/send-message")",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response, status) { }
+                });
+
+                Swal.fire({
+                    position: 'top-end',
+                    title: 'Sending...',
+                    html: 'Please waiting after <b></b> milliseconds.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                            b.textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        // After Success
+
+                        $("#name").val('');
+                        $("#email").val('');
+                        $("#subject").val('');
+                        $("#message").val('');
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                });
+            }
+        }
+    </script>
+}
