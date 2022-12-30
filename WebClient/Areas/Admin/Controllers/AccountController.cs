@@ -191,7 +191,6 @@ namespace WebClient.Areas.Admin.Controllers
                 string[] strings = model.Email.Split('@');
                 var gmailDomain = strings[0] + "@gmail.com";
                 
-                
                 if(user != null )
                 {
 
@@ -209,6 +208,10 @@ namespace WebClient.Areas.Admin.Controllers
                         $"To reset your password please <a href='{passwordResetLink}'>Click here</a>.");
 
                     // Chuyển đến trang thông báo đã gửi mail để reset password
+                    TempData["msg"] = "We 've send an email for you to reset password, please check your inbox or trash";
+                    TempData["msg_type"] = "success";
+
+
                     return View("ForgotPasswordConfirmation");
 
                     
@@ -220,6 +223,9 @@ namespace WebClient.Areas.Admin.Controllers
 
                     //return View("ForgotPasswordConfirmation");
                 }
+
+                TempData["msg"] = "Your account does not existed";
+                TempData["msg_type"] = "danger";
                 return View("ForgotPasswordConfirmation");
             }
             return View(model);
