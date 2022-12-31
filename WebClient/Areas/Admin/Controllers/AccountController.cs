@@ -338,7 +338,10 @@ namespace WebClient.Areas.Admin.Controllers
             var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == id);
             var model = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == id, includeProperties: "User");
             var client = await unitOfWork.ClientDetail.GetFirstOrDefault(x => x.UserId == id);
-             
+            if(client != null)
+            {
+                ViewBag.Client = client.Name;
+            }
             if (model == null)
             {
                 UserDetailViewModel userDetails = new UserDetailViewModel();
@@ -388,7 +391,7 @@ namespace WebClient.Areas.Admin.Controllers
             if (model != null)
             {
                 //var model = User user    
-                var userDetails = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == model.UserId, includeProperties: "User");
+                var userDetails = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == model.UserId, includeProperties: "User");                
 
                 var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == model.UserId);
                 user.Name = model.Name;
