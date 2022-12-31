@@ -9,7 +9,8 @@ namespace DataAccess.Repositories.IRepositories
     public interface IUnitOfWork
     {
         IBranch Branch { get; }
-        IVacancy Vacancy { get; }        
+        IVacancy Vacancy { get; }
+        IProject Project { get; }
         IContact Contact { get; }
         IUserBranch UserBranch { get; }
         ICategory Category { get; }
