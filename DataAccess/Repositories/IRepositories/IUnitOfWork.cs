@@ -18,6 +18,7 @@ namespace DataAccess.Repositories.IRepositories
         ISession Session { get; }
         ITestimonial Testimonial { get; }
         IUser User { get; }
+        IClientDetail ClientDetail { get; }
         IUserDetail UserDetail { get; }
         Task<int> Save();
         void ClearTracking();

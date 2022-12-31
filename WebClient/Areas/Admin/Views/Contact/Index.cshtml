@@ -38,7 +38,7 @@
                                 <td>
                                     @*@Html.ActionLink("Edit", "Edit", new {  id = item.Id }) |*@
                                     @*@Html.ActionLink("Details", "Details", new {  id = item.Id }) |*@
-                                    @*<a class="confirmDeletion btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                                    <a style="background-color: #287ecb;" class="btn btn-dark" asp-action="SendMail" asp-route-id="@item.Id">Reply</a>
                                 </td>
                             </tr>
                         }

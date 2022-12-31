@@ -33,6 +33,8 @@ namespace DataAccess.Services
 
         public IUserBranch UserBranch { get; private set; }
 
+        public IClientDetail ClientDetail { get; private set; }
+
         public UnitOfWork(StarSecurityDbContext context)
         {
             _context = context;
@@ -46,6 +48,7 @@ namespace DataAccess.Services
             UserDetail = new UserDetailService(_context);            
             Vacancy = new VacancyService(_context);
             Contact = new ContactService(_context);
+            ClientDetail = new ClientDetailService(_context);
             UserBranch = new UserBranchService(_context);
         }
 

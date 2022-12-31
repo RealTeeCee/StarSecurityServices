@@ -1,15 +1,15 @@
-﻿@model IEnumerable<Models.Testimonial>
+﻿@model IEnumerable<Models.ClientDetail>
 
 @{
-    ViewData["Title"] = "Testimonial";
+    ViewData["Title"] = "Client";
 }
 
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            
+
             <span class="d-block m-t-5">
-                <a class="btn btn-primary" asp-action="Create">Create New</a>
+                <a class="btn btn-success" asp-action="Create">Create New</a>
             </span>
         </div>
         <div class="card-body table-border-style">
@@ -26,10 +26,16 @@
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Title)
-                            </th>                    
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>                           
                             <th>
-                                Image
+                                Service
+                            </th>
+                            <th>
+                                Supported By
+                            </th>
+                            <th>
+                                Address
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.CreatedAt)
@@ -48,8 +54,10 @@
                             <tr class="bg-dark">
                                 <td>@item.Id</td>
                                 <td>@item.Name</td>
-                                <td>@item.Title</td>                                
-                                <td><img src="~/media/testimonials/@item.Image" width="200" alt="" /></td>
+                                <td>@item.Email</td>
+                                <td>@item.Service.Name</td>
+                                <td>@item.User.UserName</td>
+                                <td>@item.Address</td>                                
                                 <td>@item.CreatedAt</td>
                                 <td>@item.UpdatedAt</td>
                                 <td>
@@ -62,7 +70,7 @@
                     </tbody>
                 </table>
                 <div class="d-flex w-100 justify-content-center">
-                    <pagination page-count="@ViewBag.TotalPages" page-target="/admin/testimonial" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+                    <pagination page-count="@ViewBag.TotalPages" page-target="/admin/clientdetail" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
                 </div>
             </div>
         </div>
