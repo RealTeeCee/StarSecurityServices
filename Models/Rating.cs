@@ -19,10 +19,10 @@ namespace Models
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
-        public long ServiceId { get; set; }
+        public long ProjectId { get; set; }
       
-        [ForeignKey("ServiceId")]
-        public virtual Service Service { get; set; }
+        [ForeignKey("ProjectId")]
+        public virtual Project Project { get; set; }
 
         public int RatingPoint { get; set; }
         public string? UpdatedBy { get; set; }

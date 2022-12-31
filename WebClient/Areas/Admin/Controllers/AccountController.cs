@@ -337,6 +337,8 @@ namespace WebClient.Areas.Admin.Controllers
         {
             var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == id);
             var model = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == id, includeProperties: "User");
+            var client = await unitOfWork.ClientDetail.GetFirstOrDefault(x => x.UserId == id);
+             
             if (model == null)
             {
                 UserDetailViewModel userDetails = new UserDetailViewModel();
@@ -469,6 +471,7 @@ namespace WebClient.Areas.Admin.Controllers
                 }
                 TempData["msg"] = "User Profile has been Updated.";
                 TempData["msg_type"] = "success";
+                
             }
 
             return RedirectToAction("Profile", "Account", new { id = model.UserId });

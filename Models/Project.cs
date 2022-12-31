@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Models
 {
@@ -30,6 +31,12 @@ namespace Models
 
         [ForeignKey("ServiceId")]
         public virtual Service Service { get; set; }
+
+        public string? Image { get; set; } = "default.jpg";
+
+        [NotMapped]
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; }
 
         public int Priority { get; set; } = 0;
 

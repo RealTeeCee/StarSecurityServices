@@ -270,6 +270,7 @@ namespace WebClient.Areas.Admin.Controllers
                                         ViewBag.AspSubAction = "Edit";
                                         ViewBag.Action = "Edit Service";
 
+                                        ViewBag.Category = new SelectList(_context.Categories.Where(x => x.Slug != "vacancy-service").ToList(), "Id", "Name", service.CategoryId);
                                         return View(service);
                                     }
                                 }

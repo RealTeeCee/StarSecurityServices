@@ -1,13 +1,13 @@
-﻿@model Models.ClientDetail
+﻿@model Models.Project
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-
-<form asp-action="Create" style="width:100%;" enctype="multipart/form-data">
+<form asp-action="Edit" enctype="multipart/form-data" style="width:100%">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" class="form-control" />
 
     <div class="form-row">
         <div class="form-group col-md-6">
@@ -17,9 +17,28 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <label asp-for="Priority" class="control-label"></label>
+            <select asp-for="Priority" class="form-control">
+                <option value="0">Low</option>
+                <option value="1">Medium</option>
+                <option value="2">High</option>
+            </select>
+            <span asp-validation-for="Priority" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input type="hidden" asp-for="Image" />
+            <label asp-for="Image" class="control-label">Current Image</label>
+            <img src="~/media/projects/@Model.Image" width="200" alt="" />
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="Image" class="control-label">New Image</label>
+            <input asp-for="ImageUpload" class="form-control" />
+            <img src="" id="imgUpload" alt="" />
+            <span asp-validation-for="ImageUpload" class="text-danger"></span>
         </div>
     </div>
 
@@ -35,7 +54,7 @@
         <div class="form-group col-md-6">
             <label asp-for="User" class="control-label"></label>
             <select asp-for="UserId" asp-items="@ViewBag.User" class="form-control">
-                <option value="@(ViewBag.NoUser != null ? -1 : 0)">@(ViewBag.NoUser != null ? "No User Available" : "Choose User")</option>
+                <option value="0">Choose User</option>
             </select>
             <span asp-validation-for="UserId" class="text-danger"></span>
         </div>
@@ -43,18 +62,17 @@
 
     <div class="form-row">
         <div class="form-group col-md-12">
-            <label asp-for="Address" class="control-label"></label>
-            <input asp-for="Address" class="form-control" />
-            <span asp-validation-for="Address" class="text-danger"></span>
+            <label asp-for="DueDate" class="control-label"></label>
+            <input asp-for="DueDate" class="form-control" />
+            <span asp-validation-for="DueDate" class="text-danger"></span>
         </div>
     </div>
 
     <div class="form-group d-flex justify-content-between">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <input type="submit" value="Save" class="btn btn-primary" />
         <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
     </div>
 </form>
-
 
 
 @section Scripts {

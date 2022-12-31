@@ -62,6 +62,20 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     if (!await userManager.IsInRoleAsync(user, "GeneralAdmin") && !await userManager.IsInRoleAsync(user, "SuperAdmin"))
                     {
+                        bool checkAssignedUserExist = false;
+                        var isAssignedUsers = await _context.ClientDetails.Select(x => x.UserId).ToListAsync();
+                        foreach (var item in isAssignedUsers)
+                        {
+                            if (item == user.Id)
+                            {
+                                checkAssignedUserExist = true;
+                            }
+                        }
+                        if (checkAssignedUserExist == true)
+                        {
+                            ViewBag.NoUser = "No User Available";
+                            continue;
+                        }
                         list.Add(user);
                     }
                 }
@@ -108,6 +122,60 @@ namespace WebClient.Areas.Admin.Controllers
                     {
                         if (!await userManager.IsInRoleAsync(user, "GeneralAdmin") && !await userManager.IsInRoleAsync(user, "SuperAdmin"))
                         {
+                            bool checkAssignedUserExist = false;
+                            var isAssignedUsers = await _context.ClientDetails.Select(x => x.UserId).ToListAsync();
+                            foreach (var item in isAssignedUsers)
+                            {
+                                if (item == user.Id)
+                                {
+                                    checkAssignedUserExist = true;
+                                }
+                            }
+                            if (checkAssignedUserExist == true)
+                            {
+                                ViewBag.NoUser = "No User Available";
+                                continue;
+                            }
+                            list.Add(user);
+                        }
+                    }
+
+                    ViewBag.User = new SelectList(list, "Id", "UserName");
+                    ViewBag.Service = new SelectList(await _unitOfWork.Service.GetAll(), "Id", "Name");
+
+                    return View(model);
+                }
+
+                if (model.UserId == "-1")
+                {
+                    TempData["msg"] = "There is no user Available!.";
+                    TempData["msg_type"] = "danger";
+
+                    ViewBag.List = "List Clients";
+                    ViewBag.Controller = "Client";
+                    ViewBag.AspAction = "Index";
+                    ViewBag.AspSubAction = "Create";
+                    ViewBag.Action = "Create Client Information";
+
+                    List<User> list = new List<User>();
+                    foreach (var user in users)
+                    {
+                        if (!await userManager.IsInRoleAsync(user, "GeneralAdmin") && !await userManager.IsInRoleAsync(user, "SuperAdmin"))
+                        {
+                            bool checkAssignedUserExist = false;
+                            var isAssignedUsers = await _context.ClientDetails.Select(x => x.UserId).ToListAsync();
+                            foreach (var item in isAssignedUsers)
+                            {
+                                if (item == user.Id)
+                                {
+                                    checkAssignedUserExist = true;
+                                }
+                            }
+                            if (checkAssignedUserExist == true)
+                            {
+                                ViewBag.NoUser = "No User Available";
+                                continue;
+                            }
                             list.Add(user);
                         }
                     }
@@ -134,6 +202,20 @@ namespace WebClient.Areas.Admin.Controllers
                     {
                         if (!await userManager.IsInRoleAsync(user, "GeneralAdmin") && !await userManager.IsInRoleAsync(user, "SuperAdmin"))
                         {
+                            bool checkAssignedUserExist = false;
+                            var isAssignedUsers = await _context.ClientDetails.Select(x => x.UserId).ToListAsync();
+                            foreach (var item in isAssignedUsers)
+                            {
+                                if (item == user.Id)
+                                {
+                                    checkAssignedUserExist = true;
+                                }
+                            }
+                            if (checkAssignedUserExist == true)
+                            {
+                                ViewBag.NoUser = "No User Available";
+                                continue;
+                            }
                             list.Add(user);
                         }
                     }
@@ -152,6 +234,37 @@ namespace WebClient.Areas.Admin.Controllers
                     TempData["msg"] = "ClientDetail has been Created.";
                     TempData["msg_type"] = "success";
 
+                    ViewBag.List = "List Services";
+                    ViewBag.Controller = "Service";
+                    ViewBag.AspAction = "Index";
+                    ViewBag.AspSubAction = "Create";
+                    ViewBag.Action = "Create Service";
+
+                    List<User> list = new List<User>();
+                    foreach (var user in users)
+                    {
+                        if (!await userManager.IsInRoleAsync(user, "GeneralAdmin") && !await userManager.IsInRoleAsync(user, "SuperAdmin"))
+                        {
+                            bool checkAssignedUserExist = false;
+                            var isAssignedUsers = await _context.ClientDetails.Select(x => x.UserId).ToListAsync();
+                            foreach (var item in isAssignedUsers)
+                            {
+                                if (item == user.Id)
+                                {
+                                    checkAssignedUserExist = true;
+                                }
+                            }
+                            if (checkAssignedUserExist == true)
+                            {
+                                ViewBag.NoUser = "No User Available";
+                                continue;
+                            }
+                            list.Add(user);
+                        }
+                    }
+
+                    ViewBag.User = new SelectList(list, "Id", "UserName");
+                    ViewBag.Service = new SelectList(await _unitOfWork.Service.GetAll(), "Id", "Name");
                 }
                 return View();
             }
@@ -287,7 +400,7 @@ namespace WebClient.Areas.Admin.Controllers
                         ViewBag.Controller = "Service";
                         ViewBag.AspAction = "Index";
                         ViewBag.AspSubAction = "Edit";
-                        ViewBag.Action = "Edit Service";
+                        ViewBag.Action = "Edit Client Information";
 
                         List<User> list = new List<User>();
                         foreach (var user in users)
@@ -308,6 +421,56 @@ namespace WebClient.Areas.Admin.Controllers
 
                     if (clientDetail != null)
                     {
+                        var clientDetails = await _context.ClientDetails.ToListAsync();
+                        bool deleted = false;                        
+                        string itemUserId = "";
+                        long itemId = 0;
+                        string clientDetailUserIdBeforeDetele = "";
+                        foreach (var item in clientDetails)
+                        {
+                            //Check trong Db neu co UserId == model vua Edit UserId va Model vua edit UserId khac voi  Model truoc khi Edit UserId
+
+                            if (item.UserId == clientDetail.UserId && model.UserId != clientDetail.UserId)
+                            {
+                                clientDetailUserIdBeforeDetele = clientDetail.UserId;
+                                //Xoa Model truoc khi Edit UserId
+                                _context.Remove(clientDetail);
+                                //Them Model sau khi Edit UserId
+                                await _unitOfWork.ClientDetail.Add(model);
+                                await _unitOfWork.Save();
+                                deleted = true;                                
+                                itemUserId = item.UserId;
+                                itemId = item.Id;
+                                //TempData["msg"] = "Client Detail has been Updated.";
+                                //TempData["msg_type"] = "success";
+
+                                //return RedirectToAction("Index");
+                            }
+                        }
+
+                        //Kiem tra trong Db neu co UserId == voi Model vua add UserId vao thi xoa Model chua' UserId do'
+
+                        if (deleted == true)
+                        {                                                        
+
+                            var switchClientDetail = await _unitOfWork.ClientDetail.GetFirstOrDefault(x => x.UserId == model.UserId && x.Id != itemId);
+                            _context.Remove(switchClientDetail);
+                            ClientDetail newClientDetail = new ClientDetail();
+                            newClientDetail.Name = switchClientDetail.Name;
+                            newClientDetail.Address = switchClientDetail.Address;
+                            newClientDetail.ServiceId = switchClientDetail.ServiceId;
+                            newClientDetail.Email = switchClientDetail.Email;
+                            newClientDetail.UserId = clientDetailUserIdBeforeDetele;
+                            newClientDetail.UpdatedAt = DateTime.Now;
+                            await _unitOfWork.ClientDetail.Add(newClientDetail);
+                            await _unitOfWork.Save();
+
+                            TempData["msg"] = "Client Detail has been Updated.";
+                            TempData["msg_type"] = "success";
+
+                            return RedirectToAction("Index");
+                        }
+
                         clientDetail.UserId = model.UserId;
                         clientDetail.ServiceId = model.ServiceId;
                         clientDetail.Address = model.Address;
@@ -320,6 +483,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                         TempData["msg"] = "Client Detail has been Updated.";
                         TempData["msg_type"] = "success";
+
                     }
                 }
                 return RedirectToAction("Index");
