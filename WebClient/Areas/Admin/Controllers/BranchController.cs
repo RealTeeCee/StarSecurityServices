@@ -60,6 +60,7 @@ namespace WebClient.Areas.Admin.Controllers
                     //ViewBag.Role = new SelectList(_context.Roles.Where(x => x.Id == 2), "Id", "Name");
                     ViewBag.BranchId = id;
                     var branch = await _unitOfWork.Branch.GetFirstOrDefault(x => x.Id == id);
+                    ViewBag.BranchName = branch.Name;
 
                     if (branch == null)
                     {
@@ -70,12 +71,23 @@ namespace WebClient.Areas.Admin.Controllers
                     var model = new List<BranchUsersViewModel>();
 
                     
+                    
+                    
+                    
 
                     foreach (var user in userManager.Users)
                     {   
                         var roleNames = userManager.GetRolesAsync(user).Result;
                         // lay ra tat ca userId = v
                         var usersBranch = await _unitOfWork.UserBranch.GetAll(x => x.UserId == user.Id);
+
+                        bool checkExistUserInAnotherBranch = false;
+                        bool notAddToList = false;
+                        var userAlsoInAnotherBranch = await _unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == user.Id && x.BranchId != id);
+                        if(userAlsoInAnotherBranch != null)
+                        {                            
+                            checkExistUserInAnotherBranch = true;    
+                        }
 
                         foreach (var roleName in roleNames)
                         {
@@ -86,13 +98,15 @@ namespace WebClient.Areas.Admin.Controllers
                                 UserName = user.UserName,
                                 RoleName = roleName
                             };
-
-                                           
-                            
-                                                                                    
+                                                                                                                                                           
                             foreach (var userBranch in usersBranch)
                             {
                                 //Neu User da co branch (tuc la trong UsersBranches co BranchId = thisRecordBranchid da co UserId nay roi ) thi true
+                                if(checkExistUserInAnotherBranch == true)
+                                {
+                                    notAddToList = true;   
+                                }
+
                                 if ( userBranch.BranchId == id)
                                 {
                                     branchUsersViewModel.IsSelected = true;
@@ -102,6 +116,11 @@ namespace WebClient.Areas.Admin.Controllers
                                     branchUsersViewModel.IsSelected = false;
                                 }
                                 
+                            }
+
+                            if(notAddToList == true)
+                            {
+                                continue;
                             }
 
                             model.Add(branchUsersViewModel);

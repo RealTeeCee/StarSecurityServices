@@ -433,6 +433,8 @@ namespace WebClient.Areas.Admin.Controllers
                             if (item.UserId == clientDetail.UserId && model.UserId != clientDetail.UserId)
                             {
                                 clientDetailUserIdBeforeDetele = clientDetail.UserId;
+                                model.CreatedAt = clientDetail.CreatedAt;
+                                model.UpdatedAt = DateTime.Now;
                                 //Xoa Model truoc khi Edit UserId
                                 _context.Remove(clientDetail);
                                 //Them Model sau khi Edit UserId
@@ -461,6 +463,7 @@ namespace WebClient.Areas.Admin.Controllers
                             newClientDetail.ServiceId = switchClientDetail.ServiceId;
                             newClientDetail.Email = switchClientDetail.Email;
                             newClientDetail.UserId = clientDetailUserIdBeforeDetele;
+                            newClientDetail.CreatedAt = switchClientDetail.CreatedAt;
                             newClientDetail.UpdatedAt = DateTime.Now;
                             await _unitOfWork.ClientDetail.Add(newClientDetail);
                             await _unitOfWork.Save();

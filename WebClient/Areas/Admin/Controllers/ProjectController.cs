@@ -72,7 +72,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                 ViewBag.User = new SelectList(list, "Id", "UserName");
                 //ViewBag.Service = new SelectList(await unitOfWork.Service.GetAll(), "Id", "Name");
-                ViewBag.Service = new SelectList(context.Services.Where(x => x.Status == 1).ToList(), "Id", "Name");
+                //
 
                 // Mẫu join 2 bảng
                 //var entryPoint = (from ep in dbContext.tbl_EntryPoint
@@ -88,18 +88,34 @@ namespace WebClient.Areas.Admin.Controllers
                 //                  }).Take(10); // nó lấy ra Take 10 là 10 record, tui nghĩ chỗ này là ToList là get All Record
 
                 // Get BranchId của Admin đang đăng nhập trong bảng UserBranch
-                // var userBrand = ....
-                // Mở comment dưới ra làm tiếp cái userBrand.BrandId giùm t nha, xong xem ViewBag lấy đc đúng Service thuộc về Admin đang đăng nhập ko
-                //ViewBag.Service = new SelectList((from s in context.Services
-                //                                  join c in context.Categories on s.CategoryId equals c.Id
-                //                                  join cb in context.CategoryBranches on c.Id equals cb.CategoryId
-                //                                  where s.Status == 1
-                //                                  where cb.BranchId == userBrand.BrandId
-                //                                  select new
-                //                                  {
-                //                                      Id = s.Id,
-                //                                      Name = s.Name,
-                //                                  }).ToList(), "Id", "Name");
+
+                // Get Current User Model
+                var curretUser = await userManager.GetUserAsync(User);
+                var checkRoleCurrent = await userManager.IsInRoleAsync(curretUser, "Admin");                
+
+                if (checkRoleCurrent)
+                {
+                    var userBrand = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == curretUser.Id);
+                    ViewBag.Service = new SelectList((from s in context.Services
+                                                      join c in context.Categories on s.CategoryId equals c.Id
+                                                      join cb in context.CategoryBranches on c.Id equals cb.CategoryId
+                                                      where s.Status == 1
+                                                      where cb.BranchId == userBrand.BranchId
+                                                      select new
+                                                      {
+                                                          Id = s.Id,
+                                                          Name = s.Name,
+                                                      }).ToList(), "Id", "Name");
+                }
+                else
+                {
+                    ViewBag.Service = new SelectList(context.Services.Where(x => x.Status == 1).ToList(), "Id", "Name");
+                }
+
+                
+               // Mở comment dưới ra làm tiếp cái userBrand.BrandId giùm t nha, xong xem ViewBag lấy đc đúng Service thuộc về Admin đang đăng nhập ko
+
+
 
 
                 ViewBag.Priority = new SelectList(priority, new String[] { "Low", "Medium", "High" });

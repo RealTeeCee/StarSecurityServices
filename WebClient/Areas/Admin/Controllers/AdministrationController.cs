@@ -45,7 +45,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = this.pageSize;
-                ViewBag.TotalPages = (int)Math.Ceiling((decimal)context.Categories.Count() / this.pageSize);
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)context.Users.Count() / this.pageSize);
 
                 ViewBag.List = "List Users";
                 ViewBag.Controller = "Administration";
@@ -510,7 +510,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = this.pageSize;
-                ViewBag.TotalPages = (int)Math.Ceiling((decimal)context.Categories.Count() / this.pageSize);
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)context.Roles.Count() / this.pageSize);
 
                 ViewBag.List = "List Roles";
                 ViewBag.Controller = "Administration";

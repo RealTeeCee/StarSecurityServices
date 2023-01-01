@@ -35,6 +35,8 @@
 
     <link href="~/admin/assets/css/style.css" rel="stylesheet" />
 
+    @await RenderSectionAsync("Styles", required: false)
+
     <style>
         .img-avatar {
             object-fit: cover;
@@ -42,6 +44,7 @@
             max-height: 30px;
         }
     </style>
+
 </head>
 <body class="">
      
@@ -73,10 +76,20 @@
                         </div>
                         <div class="collapse" id="nav-user-link">
                             <ul class="list-unstyled">
-                            <li class="list-group-item"><a asp-controller="account" asp-action="profile" asp-route-id=@currentUserId><i class="feather icon-user m-r-5"></i>View Profile</a></li>
-                                    <form method="post" asp-controller="account" asp-action="logout">
+                            @if(currentRoleNames.Count > 0 && currentRoleNames[0] == "SuperAdmin"){
+                                <form method="post" asp-controller="account" asp-action="logout">
+                                <li class="list-group-item"><button style="background:#2c3e50; color:#d0dcda; border: none;" type="submit"><i class="feather icon-log-out m-r-5"></i>Logout</button></li>
+                                </form>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <a asp-controller="account" asp-action="profile" asp-route-id=@currentUserId><i class="feather icon-user m-r-5"></i>View Profile</a>
+                                </li>
+                                <form method="post" asp-controller="account" asp-action="logout">
                                     <li class="list-group-item"><button style="background:#2c3e50; color:#d0dcda; border: none;" type="submit"><i class="feather icon-log-out m-r-5"></i>Logout</button></li>
                                 </form>
+                            }                            
                             </ul>
                         </div>
                     </div>
@@ -309,7 +322,14 @@
                                 </div>
                              </form>
                             <ul class="pro-body">
+                                @if(currentRoleNames.Count > 0 && currentRoleNames[0] == "SuperAdmin")
+                                {
+
+                                }
+                                else
+                                {
                                     <li><a asp-controller="account" asp-action="Profile" asp-route-id=@currentUserId class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                                }                                    
                             </ul>
                         </div>
                     </div>

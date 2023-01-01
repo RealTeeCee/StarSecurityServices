@@ -1,4 +1,6 @@
-﻿@*
+﻿@model Models.ViewModel.DashBoardViewModel;
+@inject UserManager<User> userManager;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -126,6 +128,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- widget-success-card start -->
                 <div class="card flat-card widget-purple-card">
                     <div class="row-table">
@@ -197,98 +200,58 @@
                                         <th>
                                             <div class="chk-option">
                                                 <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
+                                                    <input type="checkbox" class="custom-control-input" checked>
                                                     <span class="custom-control-label"></span>
                                                 </label>
                                             </div>
-                                            Assigned
+                                            Employee Assigned
                                         </th>
-                                        <th>Name</th>
+                                        <th>Project Name</th>
                                         <th>Due Date</th>
                                         <th class="text-right">Priority</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="chk-option">
-                                                <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-label"></span>
-                                                </label>
-                                            </div>
-                                    <div class="d-inline-block align-middle">
-                                                <img src="~/admin/assets/images/user/avatar-4.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                                <div class="d-inline-block">
-                                                    <h6>John Deo</h6>
-                                                    <p class="text-muted m-b-0">Graphics Designer</p>
+                                    @foreach (var item in Model.Projects)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="chk-option">
+                                                    <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
+                                                        <input type="checkbox" class="custom-control-input" checked>
+                                                        <span class="custom-control-label"></span>
+                                                    </label>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>Able Pro</td>
-                                        <td>Jun, 26</td>
-                                        <td class="text-right"><label class="badge badge-light-danger">Low</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="chk-option">
-                                                <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-label"></span>
-                                                </label>
-                                            </div>
-                                            <div class="d-inline-block align-middle">
-                                                <img src="~/admin/assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                                <div class="d-inline-block">
-                                                    <h6>Jenifer Vintage</h6>
-                                                    <p class="text-muted m-b-0">Web Designer</p>
+                                        <div class="d-inline-block align-middle">
+                                                    <img src="~/media/profiles/@item.User.Image" alt="user image" class="img-radius wid-40 align-top m-r-15">
+                                                    <div class="d-inline-block">
+                                                        <h6>@item.User.Name</h6>
+                                                        @{
+                                                            var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(item.User.Id));
+                                                        }
+                                                        <p class="text-muted m-b-0">@currentRoleNames[0]</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>Mashable</td>
-                                        <td>March, 31</td>
-                                        <td class="text-right"><label class="badge badge-light-primary">high</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="chk-option">
-                                                <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-label"></span>
-                                                </label>
-                                            </div>
-                                    <div class="d-inline-block align-middle">                                        
-                                                <img src="~/admin/assets/images/user/avatar-3.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                                <div class="d-inline-block">
-                                                    <h6>William Jem</h6>
-                                                    <p class="text-muted m-b-0">Developer</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Flatable</td>
-                                        <td>Aug, 02</td>
-                                        <td class="text-right"><label class="badge badge-light-success">medium</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="chk-option">
-                                                <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-label"></span>
-                                                </label>
-                                            </div>
-                                            <div class="d-inline-block align-middle">
-                                                <img src="~/admin/assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                                <div class="d-inline-block">
-                                                    <h6>David Jones</h6>
-                                                    <p class="text-muted m-b-0">Developer</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Guruable</td>
-                                        <td>Sep, 22</td>
-                                        <td class="text-right"><label class="badge badge-light-primary">high</label></td>
-                                    </tr>
+                                            </td>
+                                            <td>@item.Name</td>
+                                            <td>@item.DueDate</td>                                          
+                                            
+                                            <td class="text-right">
+                                                 @if (item.Priority == 0)
+                                                {
+                                                    <label class="badge badge-light-danger">Low</label>
+                                                }
+                                                @if (item.Priority == 1)
+                                                {
+                                                    <label class="badge badge-light-primary">Medium</label>
+                                                }
+                                                @if (item.Priority == 2)
+                                                {
+                                                    <label class="badge badge-light-success">High</label>
+                                                }
+                                            </td>
+                                        </tr>    
+                                    }                                                                                    
                                 </tbody>
                             </table>
                         </div>

@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Client";
+    int no = 0;
+    int page = ViewBag.PageNumber;
+    int pageGreater = (page - 1) * 6;
+
 }
 
 <div class="col-md-12">
@@ -20,7 +24,7 @@
                         <tr>
 
                             <th>
-                                NO
+                                No
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Name)
@@ -52,7 +56,7 @@
                         @foreach (var item in Model)
                         {
                             <tr class="bg-dark">
-                                <td>@item.Id</td>
+                                <td>@(page > 1 ? ++pageGreater : ++no)</td>
                                 <td>@item.Name</td>
                                 <td>@item.Email</td>
                                 <td>@item.Service.Name</td>

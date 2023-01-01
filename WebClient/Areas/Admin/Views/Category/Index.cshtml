@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int no = 0;
+    int page = ViewBag.PageNumber;
+    int pageGreater = (page - 1) * 6;
 }
 
 
@@ -31,7 +34,7 @@
                         @foreach (var item in Model)
                         {
                             <tr class="bg-dark">
-                                <td>@item.Id</td>
+                                <td>@(page > 1 ? ++pageGreater : ++no)</td>
                                 <td>@item.Name</td>
                                 <td>
                                     <img src="~/media/categories/@item.Image" width="200" alt="" />
