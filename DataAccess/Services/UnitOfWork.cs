@@ -37,6 +37,8 @@ namespace DataAccess.Services
 
         public IProject Project { get; private set; }
 
+        public IRating Rating { get; private set; }
+
         public UnitOfWork(StarSecurityDbContext context)
         {
             _context = context;
@@ -53,6 +55,7 @@ namespace DataAccess.Services
             ClientDetail = new ClientDetailService(_context);
             UserBranch = new UserBranchService(_context);
             Project = new ProjectService(_context);
+            Rating = new RatingService(_context);
         }
 
         public void ClearTracking()

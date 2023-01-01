@@ -28,6 +28,7 @@
         Add New Project
     </a>
 </div>
+
 @if (Model.Any())
 {
     <table class="table table-dark">
@@ -57,7 +58,9 @@
                     <td>
                         <img src="~/media/projects/@item.Image" width="100" height="100" alt="@item.Name">
                     </td>
-                    <td>@item.User.UserName @item.User.Name</td>
+                    <td>
+                        <button type="button" class="btn  btn-outline-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.User.Name">@item.User.UserName</button>
+                    </td>
                     <td>@item.Service.Name</td>
                     <td>@item.UpdatedBy</td>
                     @{
@@ -101,7 +104,7 @@
                     <td>
                         @if (checkFinishDate == true)
                         {
-                            <a class="btn btn-warning btn-finish" asp-controller="Project" asp-action="Rating" asp-area="Admin">Rating</a>
+                            <a class="btn btn-warning btn-finish" asp-controller="Project" asp-action="Rating" asp-area="Admin" asp-route-projectId="@item.Id">Rating</a>
                         }
                         else
                         {

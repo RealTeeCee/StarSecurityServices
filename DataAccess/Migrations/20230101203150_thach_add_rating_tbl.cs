@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class thach_db : Migration
+    public partial class thach_add_rating_tbl : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -438,6 +438,7 @@ namespace DataAccess.Migrations
                     ServiceId = table.Column<long>(type: "bigint", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Priority = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -465,43 +466,43 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "010ef18e-de0f-4212-8775-1b736d4a3b63", "16445d1b-200c-4c28-ae4a-4dd01a8dbdc2", "SuperAdmin", "SUPERADMIN" },
-                    { "474288a2-ae8e-49b0-8aea-a9567f2a4741", "84117c8f-2e90-4c2e-8245-b0cf7eb34d6d", "Admin", "ADMIN" },
-                    { "655be0e7-03fc-4029-aaec-0916e74a980b", "0ae5eb00-827c-43de-9203-cefad0f0b84e", "GeneralAdmin", "GENERALADMIN" },
-                    { "71d3929d-66fa-41d7-a982-4231494b63cb", "5d19a2f2-bef7-4759-bf8e-76e3a06a3c85", "Employee", "EMPLOYEE" }
+                    { "33998a91-30d8-4bf6-9c81-5a0678e4879a", "7f299d26-378d-49d5-b615-31f1a387afef", "Admin", "ADMIN" },
+                    { "3c18d331-87fd-452e-b66e-33f4e4af7263", "8b72aacf-b1f3-4498-8286-ea4fb7f7fc02", "GeneralAdmin", "GENERALADMIN" },
+                    { "8399be78-ffbd-4702-8ac2-88b248dfb829", "48b218c4-c8fa-4715-909f-1fd7d16ff9e1", "Employee", "EMPLOYEE" },
+                    { "abe36ea9-4f1f-42de-b70b-247ca026682a", "b11031a2-ab52-4591-8d04-4dbccd71fb84", "SuperAdmin", "SUPERADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedAt", "Discriminator", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UpdatedAt", "UserName" },
-                values: new object[] { "dcd4d16e-ee14-4bfd-b34f-7830422fe361", 0, "Some Address", "1b7a0726-3544-4a4e-8a03-f878e0bb86bb", new DateTime(2023, 1, 1, 11, 23, 35, 416, DateTimeKind.Local).AddTicks(4548), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "Nguyễn Ngọc Nguyên", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "TEECEE", "AQAAAAEAACcQAAAAEIwy+iGsnbH6SSB+lZ19FsH1KdczWVy0Wi6Ow4fBSak4E4r0ImytGzlruk2sSVs9CQ==", null, null, false, "b70a953a-0bad-4644-b51c-669d51f02ef1", (byte)1, false, null, "TeeCee" });
+                values: new object[] { "1532cef1-9ee8-4a40-8272-ba1a8199963b", 0, "Some Address", "8bfeddf1-d209-4789-b757-b5fe98e63499", new DateTime(2023, 1, 2, 3, 31, 50, 15, DateTimeKind.Local).AddTicks(8120), "User", "nguyenngocnguyen.rtc@starsec.com", false, "default.jpg", false, null, "Nguyễn Ngọc Nguyên", "NGUYENNGOCNGUYEN.RTC@STARSEC.COM", "TEECEE", "AQAAAAEAACcQAAAAENBWGK/GhU+nu3R1KUw5pYlOiAFVLges3mI7f5iih7hjeiBIN1QDG/pQpplXXBE5AA==", null, null, false, "f0d236c8-b13c-4b6a-a9b8-5e383ad7488b", (byte)1, false, null, "TeeCee" });
 
             migrationBuilder.InsertData(
                 table: "Branches",
                 columns: new[] { "Id", "Address", "CreatedAt", "Email", "Facebook", "GoogleMap", "Image", "Instagram", "Latitude", "Longitude", "Name", "Phone", "TimeOpen", "Twitter", "UpdatedAt", "Youtube" },
-                values: new object[] { 1L, "590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3, Thành phố Hồ Chí Minh", new DateTime(2023, 1, 1, 11, 23, 35, 418, DateTimeKind.Local).AddTicks(219), "hcm@gmail.com", "https://www.facebook.com/", "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3919.3236076453527!2d106.6645791!3d10.7865081!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ed2392c44df%3A0xd2ecb62e0d050fe9!2zRlBUIEFwdGVjaCBIQ00gLSBI4buHIFRo4buRbmcgxJDDoG8gVOG6oW8gTOG6rXAgVHLDrG5oIFZpw6puIFF14buRYyBU4bq_IChTaW5jZSAxOTk5KQ!5e0!3m2!1svi!2s!4v1672237519769!5m2!1svi!2s", "security-branch1.jpg", "https://www.instagram.com/", "10.787249", "106.666595", "Hồ Chí Minh", "0987654321", "Mon - Fri : 8:00 AM to 5:00 PM", "https://www.twitter.com/", null, "https://www.youtube.com/" });
+                values: new object[] { 1L, "590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3, Thành phố Hồ Chí Minh", new DateTime(2023, 1, 2, 3, 31, 50, 17, DateTimeKind.Local).AddTicks(8145), "hcm@gmail.com", "https://www.facebook.com/", "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3919.3236076453527!2d106.6645791!3d10.7865081!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ed2392c44df%3A0xd2ecb62e0d050fe9!2zRlBUIEFwdGVjaCBIQ00gLSBI4buHIFRo4buRbmcgxJDDoG8gVOG6oW8gTOG6rXAgVHLDrG5oIFZpw6puIFF14buRYyBU4bq_IChTaW5jZSAxOTk5KQ!5e0!3m2!1svi!2s!4v1672237519769!5m2!1svi!2s", "security-branch1.jpg", "https://www.instagram.com/", "10.787249", "106.666595", "Hồ Chí Minh", "0987654321", "Mon - Fri : 8:00 AM to 5:00 PM", "https://www.twitter.com/", null, "https://www.youtube.com/" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CreatedAt", "Image", "Name", "ShortDescription", "Slug", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2023, 1, 1, 11, 23, 35, 418, DateTimeKind.Local).AddTicks(434), "default.jpg", "Security Service", null, "security-service", null },
-                    { 2L, new DateTime(2023, 1, 1, 11, 23, 35, 418, DateTimeKind.Local).AddTicks(435), "default.jpg", "Vacancy Service", null, "vacancy-service", null },
-                    { 3L, new DateTime(2023, 1, 1, 11, 23, 35, 418, DateTimeKind.Local).AddTicks(436), "default.jpg", "Cash Service", null, "cash-service", null },
-                    { 4L, new DateTime(2023, 1, 1, 11, 23, 35, 418, DateTimeKind.Local).AddTicks(438), "default.jpg", "Train Service", null, "train-service", null },
-                    { 5L, new DateTime(2023, 1, 1, 11, 23, 35, 418, DateTimeKind.Local).AddTicks(439), "default.jpg", "Electronic Service", null, "electronic-service", null }
+                    { 1L, new DateTime(2023, 1, 2, 3, 31, 50, 17, DateTimeKind.Local).AddTicks(8264), "default.jpg", "Security Service", null, "security-service", null },
+                    { 2L, new DateTime(2023, 1, 2, 3, 31, 50, 17, DateTimeKind.Local).AddTicks(8266), "default.jpg", "Vacancy Service", null, "vacancy-service", null },
+                    { 3L, new DateTime(2023, 1, 2, 3, 31, 50, 17, DateTimeKind.Local).AddTicks(8268), "default.jpg", "Cash Service", null, "cash-service", null },
+                    { 4L, new DateTime(2023, 1, 2, 3, 31, 50, 17, DateTimeKind.Local).AddTicks(8269), "default.jpg", "Train Service", null, "train-service", null },
+                    { 5L, new DateTime(2023, 1, 2, 3, 31, 50, 17, DateTimeKind.Local).AddTicks(8270), "default.jpg", "Electronic Service", null, "electronic-service", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "010ef18e-de0f-4212-8775-1b736d4a3b63", "dcd4d16e-ee14-4bfd-b34f-7830422fe361" });
+                values: new object[] { "abe36ea9-4f1f-42de-b70b-247ca026682a", "1532cef1-9ee8-4a40-8272-ba1a8199963b" });
 
             migrationBuilder.InsertData(
                 table: "UserBranchs",
                 columns: new[] { "Id", "BranchId", "UserId" },
-                values: new object[] { 1L, 1L, "dcd4d16e-ee14-4bfd-b34f-7830422fe361" });
+                values: new object[] { 1L, 1L, "1532cef1-9ee8-4a40-8272-ba1a8199963b" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

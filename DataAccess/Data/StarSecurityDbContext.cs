@@ -39,5 +39,6 @@ namespace DataAccess.Data
 
         public DbSet<Session> Sessions { get; set; }
         public DbSet<ClientDetail> ClientDetails { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
     }
 }

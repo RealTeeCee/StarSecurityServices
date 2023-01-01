@@ -697,5 +697,29 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
+
+        //[Authorize(Policy = ("CreatePolicy"))]
+        public async Task<IActionResult> Rating(int projectId)
+        {
+            try
+            {
+                var model = new Rating();
+                model.ProjectId = projectId;
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Policy = ("EditPolicy"))]
+        //public async Task<IActionResult> Rating(Project model)
+        //{
+
+        //}
     }
 }
