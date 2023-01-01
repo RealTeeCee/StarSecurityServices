@@ -30,6 +30,8 @@ namespace WebClient.Areas.Admin.Controllers
 			model.Vacancies = await unitOfWork.Vacancy.GetAll(x => x.Status == 1);
 			ViewBag.ActiveService = model.Services.Count() + model.Vacancies.Count();
 			ViewBag.Resources = Directory.GetFiles(env.WebRootPath, "*", SearchOption.AllDirectories).Length;
+			model.Contacts = await unitOfWork.Contact.GetAll();
+			ViewBag.Contact = model.Contacts.Count();
             return View(model);
 		}
 	}

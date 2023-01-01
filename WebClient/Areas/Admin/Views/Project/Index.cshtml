@@ -68,19 +68,13 @@
 
                             string relationship = "";
                             
-                            @if(result == 0)
-                            {
-                                @item.DueDate.Equals(null);
-                            }
+                            
                             @if (result > 0)
                             {
                                 checkFinishDate = true;
                                                                 
                             }
-                            else
-                            {                               
-                                @item.DueDate.Equals(@item.DueDate);
-                            }
+                            
                         }
                     }
                     @if(checkFinishDate == true){

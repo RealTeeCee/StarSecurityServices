@@ -39,7 +39,7 @@ namespace Models
         public IFormFile? ImageUpload { get; set; }
 
         public int Priority { get; set; } = 0;
-
+        public string? CreatedBy { get; set; }
         public string? UpdatedBy { get; set; }
 
         public DateTime? DueDate { get; set; }
