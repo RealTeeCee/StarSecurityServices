@@ -57,30 +57,21 @@
                     <td>
                         <img src="~/media/projects/@item.Image" width="100" height="100" alt="@item.Name">
                     </td>
-                    <td>@item.User.Name</td>
+                    <td>@item.User.UserName @item.User.Name</td>
                     <td>@item.Service.Name</td>
                     <td>@item.UpdatedBy</td>
                     @{
                         var date1 = DateTime.Now;
                         bool checkFinishDate = false;
                         @if(item.DueDate != null) {
-                            int result = DateTime.Compare(date1, (item.DueDate ?? DateTime.Now));
-
-                            string relationship = "";
+                            int result = DateTime.Compare(date1, (item.DueDate ?? DateTime.Now));                                                        
                             
-                            @if(result == 0)
-                            {
-                                @item.DueDate.Equals(null);
-                            }
                             @if (result > 0)
                             {
                                 checkFinishDate = true;
                                                                 
                             }
-                            else
-                            {                               
-                                @item.DueDate.Equals(@item.DueDate);
-                            }
+                            
                         }
                     }
                     @if(checkFinishDate == true){

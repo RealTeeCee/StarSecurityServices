@@ -360,7 +360,7 @@ namespace WebClient.Areas.Admin.Controllers
                     }
                     
                     model.Image = imageName;
-                    model.UpdatedBy = User.FindFirstValue(ClaimTypes.Name);
+                    model.CreatedBy = User.FindFirstValue(ClaimTypes.Name);                    
                     model.CreatedAt = DateTime.Now;
 
                     await unitOfWork.Project.Add(model);
@@ -466,7 +466,8 @@ namespace WebClient.Areas.Admin.Controllers
                 
 
                 if (model != null)
-                {
+                {                    
+                    
                     var project = await unitOfWork.Project.GetFirstOrDefault(x => x.Id == model.Id);
 
                     if (model.UserId == "0")
@@ -526,6 +527,36 @@ namespace WebClient.Areas.Admin.Controllers
                     if (project != null)
                     {
                         project.Slug = SlugService.Create(model.Name).ToLower();
+
+                        var userCreated = await unitOfWork.User.GetFirstOrDefault(x => x.UserName == model.CreatedBy);
+                        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
+                        if (currentRoleNames[0] == "Admin" && userCreated.Id != currentUserId)
+                        {
+                            var users = await unitOfWork.User.GetAll();
+                            List<User> list = new List<User>();
+                            foreach (var user in users)
+                            {
+                                if (!await userManager.IsInRoleAsync(user, "Employee"))
+                                {
+                                    list.Add(user);
+                                }
+                            }
+
+                            ViewBag.User = new SelectList(list, "Id", "UserName");
+                            ViewBag.Service = new SelectList(await unitOfWork.Service.GetAll(), "Id", "Name");
+
+                            TempData["msg"] = $"Only [{userCreated.UserName}] and Higher Level User can Edit this Project";
+                            TempData["msg_type"] = "danger";
+
+                            ViewBag.List = "List Projects";
+                            ViewBag.Controller = "Project";
+                            ViewBag.AspAction = "Index";
+                            ViewBag.AspSubAction = "Edit";
+                            ViewBag.Action = "Edit Project";
+
+                            return View(project);
+                        }
 
                         var projectDb = await unitOfWork.Project.GetAll(x => x.Id != model.Id);
 
