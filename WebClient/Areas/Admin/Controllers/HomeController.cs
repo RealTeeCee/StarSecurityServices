@@ -14,10 +14,12 @@ namespace WebClient.Areas.Admin.Controllers
     public class HomeController : Controller
 	{
 		private readonly IUnitOfWork unitOfWork;
+		private readonly IWebHostEnvironment env;
 
-		public HomeController(IUnitOfWork unitOfWork)
+		public HomeController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
         {
-            this.unitOfWork = unitOfWork;			
+            this.unitOfWork = unitOfWork;
+			this.env = env;
 		}
 
         public async Task<IActionResult> Index()
@@ -27,7 +29,7 @@ namespace WebClient.Areas.Admin.Controllers
 			model.Services = await unitOfWork.Service.GetAll(x => x.Status == 1);
 			model.Vacancies = await unitOfWork.Vacancy.GetAll(x => x.Status == 1);
 			ViewBag.ActiveService = model.Services.Count() + model.Vacancies.Count();
-			ViewBag.FileCount = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length;
+			ViewBag.Resources = Directory.GetFiles(env.WebRootPath, "*", SearchOption.AllDirectories).Length;
             return View(model);
 		}
 	}

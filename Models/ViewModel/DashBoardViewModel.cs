@@ -12,5 +12,6 @@ namespace Models.ViewModel
         public IEnumerable<Project> Projects { get; set; }
         public IEnumerable<Service> Services { get; set; }
         public IEnumerable<Vacancy> Vacancies { get; set; }
+        public IEnumerable<Contact> Contacts { get; set; }
     }
 }
