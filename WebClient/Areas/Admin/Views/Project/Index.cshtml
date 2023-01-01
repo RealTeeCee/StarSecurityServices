@@ -46,7 +46,27 @@
                     <td>@item.User.Name</td>
                     <td>@item.Service.Name</td>
                     <td>@item.UpdatedBy</td>
-                    <td>@item.DueDate</td>
+                    @{
+                        DateTime date1 = new DateTime();
+                        var check item.DueDate 
+                        @if(item.DueDate != null) {
+                            int result = DateTime.Compare(date1, item.DueDate != null ? item.DueDate : "");
+
+                            string relationship;
+
+                            @if (result >= 0)
+                            {
+                                relationship = "is later than";
+                            }
+                            else
+                            {
+                                relationship = "is earlier than";
+                            }
+                        }
+                    }
+                    <td>
+                        @item.DueDate
+                    </td>
                     <td>@item.CreatedAt</td>
                     <td>@item.UpdatedAt</td>
 
