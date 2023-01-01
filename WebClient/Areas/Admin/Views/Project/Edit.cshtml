@@ -8,6 +8,7 @@
 <form asp-action="Edit" enctype="multipart/form-data" style="width:100%">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" class="form-control" />
+    <input type="hidden" asp-for="CreatedBy" class="form-control" />
 
     <div class="form-row">
         <div class="form-group col-md-6">

@@ -187,4 +187,5 @@ app.Run();
 public class Programs
 {
     public static string pathRoot =  "https://localhost:7273";
+    public static Int32 UserCount = 0;
 }
