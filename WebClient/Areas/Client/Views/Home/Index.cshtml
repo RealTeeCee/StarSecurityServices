@@ -11,6 +11,10 @@
         img.new-format{            
             height:225px;
         }
+
+        img.new-format2{            
+            height:325px;
+        }
     </style>
 }
     <!-- Carousel Start -->
@@ -174,7 +178,7 @@
                 <div class="bg-primary mb-3 mx-auto" style="width: 60px; height: 2px;"></div>
                 <h1 class="display-5 mb-5">Our Services</h1>
             </div>
-            <div class="row g-0 service-row">
+            <div class="row g-4 service-row">
             @{
                 int i = 1;
                 int serviceDivide = 1;
@@ -299,114 +303,34 @@
                 </div>
             </div>
             <div class="row g-4 portfolio-container">
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="portfolio-inner">
-                        <img class="img-fluid w-100" src="~/img/portfolio-1.jpg" alt="">
-                        <!-- thêm div123 -->
-                        <div class="text-center p-4 div123">
-                            <p class="text-primary mb-2">Business Security</p>
-                            <h5 class="lh-base mb-0">Smart CCTV Security Systems That Fits Your Business</h5>
-                        </div>
-                        <div class="portfolio-text text-center bg-white p-4">
-                            <p class="text-dark mb-2">Business Security</p>
-                            <h5 class="lh-base text-dark mb-3">Smart CCTV Security Systems That Fits Your Business</h5>
-                            <div class="d-flex justify-content-center">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="~/img/portfolio-1.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="portfolio-inner">
-                        <img class="img-fluid w-100" src="~/img/portfolio-2.jpg" alt="">
-                        <!-- thêm div123 -->
-                        <div class="text-center p-4 div123">
-                            <p class="text-primary mb-2">Fire Detection</p>
-                            <h5 class="lh-base mb-0">Smart CCTV Security Systems That Fits Your Business</h5>
-                        </div>
-                        <div class="portfolio-text text-center bg-white p-4">
-                            <p class="text-dark mb-2">Fire Detection</p>
-                            <h5 class="lh-base text-dark mb-3">Smart CCTV Security Systems That Fits Your Business</h5>
-                            <div class="d-flex justify-content-center">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="~/img/portfolio-2.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fa fa-link"></i></a>
-                            </div>
+                @foreach (var item in Model.Projects)
+                {
+                    <div class="col-lg-4 col-md-6 portfolio-item @(DateTime.Now.CompareTo(item.DueDate)>0 ?"first":"second") wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="portfolio-inner">
+
+                        
+                                 <img class="img-fluid new-format2 w-100" src="~/media/projects/@item.Image" alt="">
+                                <!-- thêm div123 -->
+                                <div class="text-center p-4 div123">
+                                    <p class="text-primary mb-2">@item.Service.Name</p>
+                                    <h5 class="lh-base mb-0">@item.Name</h5>
+                                </div>
+                                <div class="portfolio-text text-center bg-white p-4">
+                                    <p class="text-dark mb-2">@item.Service.Name</p>
+                                    <h5 class="lh-base text-dark mb-3">@item.Name</h5>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-square btn-primary rounded-circle mx-1" href="~/media/projects/@item.Image" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
+                                        <a class="btn btn-square btn-primary rounded-circle mx-1" asp-area="Client" asp-action="DetailProject" asp-controller="Project" asp-route-serviceSlug="@item.Service.Slug" asp-route-projectSlug="@item.Slug">
+                                            <i class="fa fa-info"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                      
+                       
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="portfolio-inner">
-                        <img class="img-fluid w-100" src="~/img/portfolio-3.jpg" alt="">
-                        <!-- thêm div123 -->
-                        <div class="text-center p-4 div123">
-                            <p class="text-primary mb-2">Access Control</p>
-                            <h5 class="lh-base mb-0">Smart CCTV Security Systems That Fits Your Business</h5>
-                        </div>
-                        <div class="portfolio-text text-center bg-white p-4">
-                            <p class="text-dark mb-2">Access Control</p>
-                            <h5 class="lh-base text-dark mb-3">Smart CCTV Security Systems That Fits Your Business</h5>
-                            <div class="d-flex justify-content-center">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="~/img/portfolio-3.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="portfolio-inner">
-                        <img class="img-fluid w-100" src="~/img/portfolio-4.jpg" alt="">
-                        <!-- thêm div123 -->
-                        <div class="text-center p-4 div123">
-                            <p class="text-primary mb-2">Alarm Systems</p>
-                            <h5 class="lh-base mb-0">Smart CCTV Security Systems That Fits Your Business</h5>
-                        </div>
-                        <div class="portfolio-text text-center bg-white p-4">
-                            <p class="text-dark mb-2">Alarm Systems</p>
-                            <h5 class="lh-base text-dark mb-3">Smart CCTV Security Systems That Fits Your Business</h5>
-                            <div class="d-flex justify-content-center">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="~/img/portfolio-4.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="portfolio-inner project-card">
-                        <img class="img-fluid w-100" src="~/img/portfolio-5.jpg" alt="">
-                        <!-- thêm div123 -->
-                        <div class="text-center p-4 div123">
-                            <p class="text-primary mb-2">CCTV & Video</p>
-                            <h5 class="lh-base mb-0">Smart CCTV Security Systems That Fits Your Business</h5>
-                        </div>
-                        <div class="portfolio-text text-center bg-white p-4">
-                            <p class="text-dark mb-2">CCTV & Video</p>
-                            <h5 class="lh-base text-dark mb-3">Smart CCTV Security Systems That Fits Your Business</h5>
-                            <div class="d-flex justify-content-center">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="~/img/portfolio-5.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="portfolio-inner">
-                        <img class="img-fluid w-100" src="~/img/portfolio-6.jpg" alt="">
-                        <!-- thêm div123 -->
-                        <div class="text-center p-4 div123">
-                            <p class="text-primary mb-2">Smart Home</p>
-                            <h5 class="lh-base mb-0">Smart CCTV Security Systems That Fits Your Business</h5>
-                        </div>
-                        <div class="portfolio-text text-center bg-white p-4">
-                            <p class="text-dark mb-2">Smart Home</p>
-                            <h5 class="lh-base text-dark mb-3">Smart CCTV Security Systems That Fits Your Business</h5>
-                            <div class="d-flex justify-content-center">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="~/img/portfolio-6.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                  }
+             
             </div>
         </div>
     </div>

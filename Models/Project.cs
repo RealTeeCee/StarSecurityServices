@@ -38,6 +38,13 @@ namespace Models
         [FileExtension]
         public IFormFile? ImageUpload { get; set; }
 
+        [Column(TypeName = "nvarchar")]
+        [StringLength(255)]
+        public string? ShortDescription { get; set; }
+
+        [Column(TypeName = "text")]
+        public string? Description { get; set; }
+
         public int Priority { get; set; } = 0;
         public string? CreatedBy { get; set; }
         public string? UpdatedBy { get; set; }

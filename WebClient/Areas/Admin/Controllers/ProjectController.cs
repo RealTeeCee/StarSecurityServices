@@ -650,6 +650,8 @@ namespace WebClient.Areas.Admin.Controllers
                         project.Priority = model.Priority;
                         project.UserId = model.UserId;
                         project.ServiceId = model.ServiceId;
+                        project.ShortDescription = model.ShortDescription;
+                        project.Description = model.Description;
 
                         // Get Current user UserName
                         project.UpdatedBy = User.FindFirstValue(ClaimTypes.Name);

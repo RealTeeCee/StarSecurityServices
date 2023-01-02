@@ -4,7 +4,67 @@
     ViewData["Title"] = "Rating";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+@section Styles
+{
+    <style>
+        /*Rating Start*/
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
 
+            .rating > input {
+                display: none
+            }
+
+            .rating > label {
+                position: relative;
+                width: 1em;
+                font-size: 30px;
+                font-weight: 300;
+                color: #FFD600;
+                cursor: pointer;
+            }
+
+                .rating > label::before {
+                    content: "\2605"; 
+                    position: absolute;
+                    opacity: 0
+                }
+
+                .rating > label:hover:before,
+                .rating > label:hover ~ label:before {
+                    opacity: 1 !important
+                }
+
+            .rating > input:checked ~ label:before {
+                opacity: 1;
+            }
+
+            .rating:hover > input:checked ~ label:before {
+                opacity: 0.4
+            }
+
+        /*Ratings*/
+        .ratings {
+            margin-right: 10px;
+        }
+
+            .ratings i {
+                color: #cecece;
+                font-size: 32px;
+            }
+
+        .rating-color {
+            color: #fbc634 !important;
+        }
+
+        .small-ratings i {
+            color: #cecece;
+        }
+    </style>
+}
 
 <div class="col-md-12">
     <form asp-action="Rating">
@@ -14,14 +74,14 @@
 
         <span asp-validation-for="Id" class="text-danger"></span>
         </div>*@
-        <input asp-for="Id" type="text" readonly class="form-control" />
+        <input asp-for="Id" type="hidden" readonly class="form-control" />
 
         @*            <div class="form-group">
         <label asp-for="UserId" class="control-label"></label>
         <input asp-for="UserId" class="form-control" />
         <span asp-validation-for="UserId" class="text-danger"></span>
         </div>*@
-        <div class="form-group">
+        <div class="form-group col-md-12">
             <label asp-for="ProjectId" class="control-label"></label>
             <input asp-for="ProjectId" class="form-control" readonly />
             <span asp-validation-for="ProjectId" class="text-danger"></span>
@@ -38,11 +98,21 @@
                 <option value="4">4 Stars</option>
                 <option value="5">5 Stars</option>
             </select>
+
+            <div class="rating mb10">
+                <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="5" name="ratingProduct5" value="5" id="5"><label for="5">☆</label>
+                <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="4" name="ratingProduct4" value="4" id="4"><label for="4">☆</label>
+                <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="3" name="ratingProduct3" value="3" id="3"><label for="3">☆</label>
+                <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="2" name="ratingProduct2" value="2" id="2"><label for="2">☆</label>
+                <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="1" name="ratingProduct1" value="1" id="1"><label for="1">☆</label>
+            </div>
+
             <span asp-validation-for="RatingPoint" class="text-danger"></span>
         </div>
+      
 
         <div class="form-group d-flex justify-content-between">
-            <input type="submit" value="Rating" class="btn btn-primary" />
+            <input type="submit" id="submitReview" value="Rating" class="btn btn-primary" />
             <a asp-action="Index" asp-controller="Project" class="btn btn-outline-dark">Back</a>
         </div>
     </form>
@@ -51,4 +121,153 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var rating_product = $('[data-rating = "ratingProduct"]');
+        var globalRating = 0;
+
+        $('.ratingProduct').on("click", function () {
+            let id = $(this).data("id");
+            globalRating = id;
+            for (var i = 0; i < rating_product.length; i++) {
+                rating_product[i].checked = false;
+            }
+            $("#" + id).prop("checked", true);
+        });
+        $("#submitEditReviewBtn").on("click", function () {
+
+            let newRatingPoint = $("#newRatingPoint").val();
+            let ProductId = $("#ProductId").val();
+            let newFeedback = $("#newFeedback").val();
+            $.ajax({
+                url: "/Customer/FeedbackAndRating/EditReview",
+                type: "POST",
+                data: { newRatingPoint: newRatingPoint, newFeedback: newFeedback, ProductId: ProductId },
+                success: function (response) {
+                    window.location.href = "https://localhost:7166/Customer/Product/Details?id=" + ProductId;
+                }
+            });
+        })
+
+        $("#submitReview").on("click", function (e) {
+            e.preventDefault();
+            let isChecked = false;
+            var content = $.trim($('#feedbackContent').val());
+            var productId = $("#ProductId").val();
+            for (var i = 0; i < rating_product.length; i++) {
+                if (rating_product[i].checked == true) {
+                    isChecked = true;
+                }
+            }
+            if (!isChecked) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please rate product before submit!',
+                });
+            } else if (content == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Feedback cannot be blank!',
+                });
+
+            } else {
+                let id = globalRating;
+                $.ajax({
+                    url: "/Customer/FeedbackAndRating/SubmitReview",
+                    type: "POST",
+                    data: { content: content, ratingPoint: id, productId: productId },
+                    success: function (response) {
+                        console.log(response)
+                        if (response.statusCode == 401 || response.statusCode == 400) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.message,
+                            });
+                            return false;
+                        } else {
+                            let data = `
+                                         <div class="mbp_first d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                          <img src="${response.content.customer.customerAvatar}" class="mr-3" alt="reviewer1.png">
+                                        </div>
+                                        <div class="flex-grow-1 ms-4">
+                                          <h4 class="sub_title mt20">${response.content.customer.fullName}</h4>
+                                        <div class="sspd_postdate mb15">${response.content.postedDate}
+                                            <div class="sspd_review pull-right">
+                                              <div class="small-ratings">
+                                          `
+                            for (var i = 0; i < response.content.ratingPoint; i++) {
+                                data += `<i class="fa fa-star rating-color"></i>`
+                            }
+                            for (var i = 0; i < 5 - response.content.ratingPoint; i++) {
+                                data += `<i class="fa fa-star"></i>`
+                            }
+                            data +=
+                                `
+                                        </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <p class="mt15 mb30">${response.content.content}</p>
+                                      <hr>
+                                    `;
+
+                            $("#listUserFeedback").prepend(data);
+
+                            $("#comments_formDetail").html(`
+                                        <h3>You have already reviewed this product ! Do you want to edit your review ? </h3>
+                                                <div>
+                                                    <form>
+                                                        <input type="hidden" name="ProductId" id="ProductId" value="${productId}" />
+                                                        <div class="mb-3">
+                                                        <label for="newRatingPoint" class="form-label">Rating Point</label>
+                                                        <input name="newRatingPoint" required  class="form-control" type='text' id="newRatingPoint" value="${response.content.ratingPoint}" placeholder="Rating Point must be between 1-5">
+
+                                                        </div>
+                                                        <div class="mb-3">
+                                                        <label for="newFeedback" class="form-label">Your Feedback</label>
+                                                        <input type="text" name="newFeedback" required class="form-control" id="newFeedback" value="${content}">
+                                                        </div>
+                                                        <button type="button" id="submitEditReviewBtn" class="btn btn-primary">Submit</button>
+                                                    </form>
+                                                </div>
+                                `);
+
+                            //$("#submitEditReviewBtn").on("click", function () {
+                            //    let newRatingPoint = $("#newRatingPoint").val();
+                            //    let ProductId = $("#ProductId").val();
+                            //    let newFeedback = $("#newFeedback").val();
+                            //    $.ajax({
+                            //        url: "/Customer/FeedbackAndRating/EditReview",
+                            //        type: "POST",
+                            //        data: { newRatingPoint: newRatingPoint, newFeedback: newFeedback, ProductId: ProductId },
+                            //        success: function (response) {
+                            //            window.location.href = "https://localhost:7166/Customer/Product/Details?id=" + ProductId;
+                            //        }
+                            //    });
+                            //})
+
+                            let numOfReview = $("#numberOfReview").text();
+                            $("#numberOfReview").text(parseInt(numOfReview) + 1);
+
+                            for (var i = 0; i < rating_product.length; i++) {
+                                $("#" + i).prop("checked", false);
+                            }
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Your feedback has has been sent',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+                    }
+                });
+                globalRating = 0;
+            }
+        });
+    </script>    
 }
