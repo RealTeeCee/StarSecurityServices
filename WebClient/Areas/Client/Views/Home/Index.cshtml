@@ -303,7 +303,7 @@
                 </div>
             </div>
             <div class="row g-4 portfolio-container">
-                @foreach (var item in Model.Projects)
+                @foreach (var item in Model.Projects.Take(6))
                 {
                     <div class="col-lg-4 col-md-6 portfolio-item @(DateTime.Now.CompareTo(item.DueDate)>0 ?"first":"second") wow fadeInUp" data-wow-delay="0.1s">
                         <div class="portfolio-inner">                        
