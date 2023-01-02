@@ -1,14 +1,14 @@
 ﻿    using DataAccess.Data;
 using DataAccess.Repositories.IRepositories;
-using DataAccess.Services;
+//using DataAccess.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
+//using MimeKit;
 using Models;
-using Org.BouncyCastle.Bcpg;
+//using Org.BouncyCastle.Bcpg;
 using Services;
 using System.Data;
 using System.Security.Claims;
@@ -85,16 +85,18 @@ namespace WebClient.Areas.Admin.Controllers
                         ViewBag.Service = null; 
                     }else
                     {
-                        ViewBag.Service = new SelectList((from s in context.Services
-                                                          join c in context.Categories on s.CategoryId equals c.Id
-                                                          join cb in context.CategoryBranches on c.Id equals cb.CategoryId
-                                                          where s.Status == 1
-                                                          where cb.BranchId == userBrand.BranchId
-                                                          select new
-                                                          {
-                                                              Id = s.Id,
-                                                              Name = s.Name,
-                                                          }).ToList(), "Id", "Name");
+                        //ViewBag.Service = new SelectList((from s in context.Services
+                        //                                  join c in context.Categories on s.CategoryId equals c.Id
+                        //                                  join cb in context.CategoryBranches on c.Id equals cb.CategoryId
+                        //                                  where s.Status == 1
+                        //                                  where cb.BranchId == userBrand.BranchId
+                        //                                  select new
+                        //                                  {
+                        //                                      Id = s.Id,
+                        //                                      Name = s.Name,
+                        //                                  }).ToList(), "Id", "Name");
+
+                        ViewBag.Service = new SelectList(context.Services.Where(x => x.Status == 1).ToList(), "Id", "Name");
                     }
                     
                 }
@@ -186,24 +188,7 @@ namespace WebClient.Areas.Admin.Controllers
                         ViewBag.Service = new SelectList(context.Services.Where(x => x.Status == 1).ToList(), "Id", "Name");
                     }
 
-                    // Mở comment dưới ra làm tiếp cái userBrand.BrandId giùm t nha, xong xem ViewBag lấy đc đúng Service thuộc về Admin đang đăng nhập ko
-
-
                     ViewBag.Priority = new SelectList(priority, new String[] { "Low", "Medium", "High" });
-
-                    //return RedirectToAction("Create");
-
-                    //List<User> list = new List<User>();
-                    //foreach (var user in users)
-                    //{
-                    //    if (await userManager.IsInRoleAsync(user, "Employee"))
-                    //    {
-                    //        list.Add(user);
-                    //    }
-                    //}
-
-                    //ViewBag.User = new SelectList(list, "Id", "UserName");
-                    //ViewBag.Service = new SelectList(await unitOfWork.Service.GetAll(), "Id", "Name");
 
                     return View(model);
                 }
@@ -230,7 +215,6 @@ namespace WebClient.Areas.Admin.Controllers
                     var priority = new List<int> { 0, 1, 2 };
 
                     ViewBag.User = new SelectList(list, "Id", "UserName");
-                    //ViewBag.Service = new SelectList(await unitOfWork.Service.GetAll(), "Id", "Name");
 
                     // Get Current User Model
                     var curretUser = await userManager.GetUserAsync(User);
@@ -265,22 +249,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                     // Mở comment dưới ra làm tiếp cái userBrand.BrandId giùm t nha, xong xem ViewBag lấy đc đúng Service thuộc về Admin đang đăng nhập ko
 
-
                     ViewBag.Priority = new SelectList(priority, new String[] { "Low", "Medium", "High" });
-
-                    //return RedirectToAction("Create");
-
-                    //List<User> list = new List<User>();
-                    //foreach (var user in users)
-                    //{
-                    //    if (await userManager.IsInRoleAsync(user, "Employee"))
-                    //    {
-                    //        list.Add(user);
-                    //    }
-                    //}
-
-                    //ViewBag.User = new SelectList(list, "Id", "UserName");
-                    //ViewBag.Service = new SelectList(await unitOfWork.Service.GetAll(), "Id", "Name");
 
                     return View(model);
                 }
@@ -716,12 +685,33 @@ namespace WebClient.Areas.Admin.Controllers
             }
         }
 
-        //[HttpPost]
+        [HttpPost]
         //[ValidateAntiForgeryToken]
-        //[Authorize(Policy = ("EditPolicy"))]
-        //public async Task<IActionResult> Rating(Project model)
-        //{
+        [Authorize(Policy = ("EditPolicy"))]
+        public async Task<IActionResult> Rating(Rating model)
+        {
+            try
+            {
+                var project = await unitOfWork.Project.GetFirstOrDefault(x => x.Id == model.ProjectId, includeProperties:"User");
+                if(project == null) return RedirectToAction("NotFound", "Error", new { area = "Admin" });
 
-        //}
+                //Employee
+                model.UserId = project.UserId;
+
+                model.UpdatedBy = User.FindFirstValue(ClaimTypes.Name);
+
+                await unitOfWork.Rating.Add(model);
+                await unitOfWork.Save();
+
+                TempData["msg"] = "Rating successfull";
+                TempData["msg_type"] = "success";
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
+        }
     }
 }

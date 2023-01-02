@@ -338,6 +338,11 @@ namespace WebClient.Areas.Admin.Controllers
             var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == id);
             var model = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == id, includeProperties: "User");
             var client = await unitOfWork.ClientDetail.GetFirstOrDefault(x => x.UserId == id);
+            var grade = context.Ratings.Where(x => x.UserId == user.Id).ToList();
+            
+            
+
+
             if(client != null)
             {
                 ViewBag.Client = client.Name;
@@ -360,6 +365,18 @@ namespace WebClient.Areas.Admin.Controllers
 
                 return View(userDetails);
             }
+
+            if (grade.Any())
+            {
+                double rating = 0;
+                rating = grade.Average(i => i.RatingPoint);
+
+                model.Grade = rating;
+                // get ra UserId, rồi save rating vào model.Grade
+                context.UserDetails.Update(model);
+                await unitOfWork.Save();
+            }
+
             UserDetailViewModel userDetailsFetchData = new UserDetailViewModel();
             userDetailsFetchData.UserId = id;
             userDetailsFetchData.Email = user.Email;

@@ -50,7 +50,7 @@ namespace Models.ViewModel
         [StringLength(100)]
         public string? Department { get; set; }
 
-        public byte? Grade { get; set; }
+        public double? Grade { get; set; }
 
         [StringLength(255)]
         public string? Client { get; set; }

@@ -74,7 +74,7 @@
 
         <span asp-validation-for="Id" class="text-danger"></span>
         </div>*@
-        <input asp-for="Id" type="hidden" readonly class="form-control" />
+        @*<input asp-for="Id" type="text" readonly class="form-control" />*@
 
         @*            <div class="form-group">
         <label asp-for="UserId" class="control-label"></label>
@@ -99,20 +99,20 @@
                 <option value="5">5 Stars</option>
             </select>
 
-            <div class="rating mb10">
+@*            <div class="rating mb10">
                 <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="5" name="ratingProduct5" value="5" id="5"><label for="5">☆</label>
                 <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="4" name="ratingProduct4" value="4" id="4"><label for="4">☆</label>
                 <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="3" name="ratingProduct3" value="3" id="3"><label for="3">☆</label>
                 <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="2" name="ratingProduct2" value="2" id="2"><label for="2">☆</label>
                 <input type="radio" data-rating="ratingProduct" class="ratingProduct" data-id="1" name="ratingProduct1" value="1" id="1"><label for="1">☆</label>
-            </div>
+            </div>*@
 
             <span asp-validation-for="RatingPoint" class="text-danger"></span>
         </div>
       
 
         <div class="form-group d-flex justify-content-between">
-            <input type="submit" id="submitReview" value="Rating" class="btn btn-primary" />
+            <input type="submit" value="Rating" class="btn btn-primary" />
             <a asp-action="Index" asp-controller="Project" class="btn btn-outline-dark">Back</a>
         </div>
     </form>
@@ -170,7 +170,6 @@
                     title: 'Oops...',
                     text: 'Feedback cannot be blank!',
                 });
-
             } else {
                 let id = globalRating;
                 $.ajax({
