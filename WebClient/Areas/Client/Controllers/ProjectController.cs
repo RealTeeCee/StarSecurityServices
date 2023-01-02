@@ -26,12 +26,16 @@ namespace WebClient.Areas.Client.Controllers
                 modelNoBranch.CategoriesBranches = (List<CategoryBranch>)await unitOfWork.CategoryBranch.GetAll(x => x.BranchId == 1, includeProperties: "Category,Branch");
                 modelNoBranch.Projects = new List<Project>();
 
-                foreach (var projects in modelNoBranch.CategoriesBranches)
+                var projects = await unitOfWork.Project.GetAll(includeProperties: "Service.Category,Service");
+
+                foreach (var project in projects)
                 {
-                    var project = await unitOfWork.Project.GetFirstOrDefault(x => x.Service.Category.Id == projects.CategoryId, includeProperties: "Service.Category,Service");
-                    if (project != null)
+                    foreach (var item in modelNoBranch.CategoriesBranches)
                     {
-                        modelNoBranch.Projects.Add((Project)project);
+                        if (project.Service.CategoryId == item.Category.Id)
+                        {
+                            modelNoBranch.Projects.Add((Project)project);
+                        }
                     }
                 }
                 //Lay ra tat ca project thuoc service co categorybranch.category.BranchId = 1
@@ -44,21 +48,26 @@ namespace WebClient.Areas.Client.Controllers
             model.CategoriesBranches = (List<global::Models.CategoryBranch>)await unitOfWork.CategoryBranch.GetAll(x => x.BranchId == localeId, includeProperties: "Category,Branch");
             model.Projects = new List<Project>();
 
-            foreach (var projects in model.CategoriesBranches)
+            var allProjects = await unitOfWork.Project.GetAll(includeProperties: "Service.Category,Service");
+            //Project in Service in SecurityService in HCM , HN
+            foreach (var project in allProjects)
             {
-                var project = await unitOfWork.Project.GetFirstOrDefault(x => x.Service.Category.Id == projects.CategoryId, includeProperties: "Service.Category,Service");
-                if (project != null)
+                foreach (var item in model.CategoriesBranches)
                 {
-                    model.Projects.Add((Project)project);
+                    if (project.Service.CategoryId == item.Category.Id)
+                    {
+                        model.Projects.Add((Project)project);
+                    }
                 }
             }
 
             return View(model);
         }
+
         [HttpGet("{projectSlug?}")]
         public async Task<IActionResult> DetailProject(string serviceSlug, string projectSlug)
         {
-            var project = await unitOfWork.Project.GetFirstOrDefault(x => x.Slug == projectSlug);
+            var project = await unitOfWork.Project.GetFirstOrDefault(x => x.Slug == projectSlug, includeProperties:"Service");
             if (project == null)
             {
                 return RedirectToAction("PageNotFound", "Error", new { area = "Client" });

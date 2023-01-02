@@ -1,7 +1,9 @@
 ﻿@using System.Security.Claims
+@using WebClient.Manager
 @model IEnumerable<Project>
-@*@inject UserManager<User> userManager;
-@inject SignInManager<User> signInManager;*@
+@inject LayoutManager layoutManager;
+
+@*@inject SignInManager<User> signInManager;*@
 @{
     ViewData["Title"] = "List Projects";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -9,7 +11,7 @@
     //var currentRolesName = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
     int no = 0;
     int page = ViewBag.PageNumber;
-    int pageGreater = (page - 1) * 6;
+    int pageGreater = (page - 1) * 6;    
 }
 @section Styles {
     <style>
@@ -104,7 +106,13 @@
                     <td>
                         @if (checkFinishDate == true)
                         {
-                            <a class="btn btn-warning btn-finish" asp-controller="Project" asp-action="Rating" asp-area="Admin" asp-route-projectId="@item.Id">Rating</a>
+                            @if(await layoutManager.IsRated(item.Id)){
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-warning btn-finish" asp-controller="Project" asp-action="Rating" asp-area="Admin" asp-route-projectId="@item.Id">Rating</a>
+                            }                            
                         }
                         else
                         {

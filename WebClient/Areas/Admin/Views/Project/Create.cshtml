@@ -45,7 +45,7 @@
         <div class="form-group col-md-6">
             <label asp-for="Service" class="control-label"></label>
             <select asp-for="ServiceId" asp-items="@ViewBag.Service" class="form-control">
-                <option value="0">Choose Service</option>
+                <option value="0">@(ViewBag.NoBranch != null ? ViewBag.NoBranch : "Choose Service")</option>
             </select>
             <span asp-validation-for="ServiceId" class="text-danger"></span>
         </div>

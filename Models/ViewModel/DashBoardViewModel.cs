@@ -15,6 +15,8 @@ namespace Models.ViewModel
         public IEnumerable<Service> Services { get; set; }
         public IEnumerable<Vacancy> Vacancies { get; set; }
         public IEnumerable<Contact> Contacts { get; set; }
-        public IEnumerable<Branch> Branches { get; set; }        
+        public IEnumerable<Branch> Branches { get; set; }
+        public IEnumerable<Rating> Ratings { get; set; }
+        public IEnumerable<UserDetail> UserDetails { get; set; }
     }
 }

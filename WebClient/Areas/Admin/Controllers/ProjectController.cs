@@ -36,7 +36,7 @@ namespace WebClient.Areas.Admin.Controllers
         {
             try
             {
-                var listProject = await unitOfWork.Project.GetAll(includeProperties:"User,Service");
+                var listProject = await unitOfWork.Project.GetAll(includeProperties:"User,Service");                
 
                 ViewBag.PageNumber = p;
                 ViewBag.PageRange = this.pageSize;
@@ -82,21 +82,24 @@ namespace WebClient.Areas.Admin.Controllers
                     var userBrand = await unitOfWork.UserBranch.GetFirstOrDefault(x => x.UserId == curretUser.Id);
                     if(userBrand == null)
                     {
+                        ViewBag.NoBranch = $"Current User [{curretUser.UserName}] not in any Branch";
                         ViewBag.Service = null; 
                     }else
                     {
-                        //ViewBag.Service = new SelectList((from s in context.Services
-                        //                                  join c in context.Categories on s.CategoryId equals c.Id
-                        //                                  join cb in context.CategoryBranches on c.Id equals cb.CategoryId
-                        //                                  where s.Status == 1
-                        //                                  where cb.BranchId == userBrand.BranchId
-                        //                                  select new
-                        //                                  {
-                        //                                      Id = s.Id,
-                        //                                      Name = s.Name,
-                        //                                  }).ToList(), "Id", "Name");
+                        ViewBag.Service = new SelectList((from s in context.Services
+                                                          join c in context.Categories on s.CategoryId equals c.Id
+                                                          join cb in context.CategoryBranches on c.Id equals cb.CategoryId
+                                                          where (s.Status == 1) &&
+                                                                (cb.BranchId == userBrand.BranchId)
+                                                          select new
+                                                          {
+                                                              Id = s.Id,
+                                                              Name = s.Name,
+                                                          }).ToList(), "Id", "Name");
 
-                        ViewBag.Service = new SelectList(context.Services.Where(x => x.Status == 1).ToList(), "Id", "Name");
+
+                        //Truoc khi lam thi an cai nay di
+                        //ViewBag.Service = new SelectList(context.Services.Where(x => x.Status == 1).ToList(), "Id", "Name");
                     }
                     
                 }
@@ -173,8 +176,8 @@ namespace WebClient.Areas.Admin.Controllers
                             ViewBag.Service = new SelectList((from s in context.Services
                                                               join c in context.Categories on s.CategoryId equals c.Id
                                                               join cb in context.CategoryBranches on c.Id equals cb.CategoryId
-                                                              where s.Status == 1
-                                                              where cb.BranchId == userBrand.BranchId
+                                                              where (s.Status == 1) &&
+                                                                    (cb.BranchId == userBrand.BranchId)
                                                               select new
                                                               {
                                                                   Id = s.Id,
@@ -232,8 +235,8 @@ namespace WebClient.Areas.Admin.Controllers
                             ViewBag.Service = new SelectList((from s in context.Services
                                                               join c in context.Categories on s.CategoryId equals c.Id
                                                               join cb in context.CategoryBranches on c.Id equals cb.CategoryId
-                                                              where s.Status == 1
-                                                              where cb.BranchId == userBrand.BranchId
+                                                              where (s.Status == 1) &&
+                                                                    (cb.BranchId == userBrand.BranchId)
                                                               select new
                                                               {
                                                                   Id = s.Id,
@@ -703,7 +706,7 @@ namespace WebClient.Areas.Admin.Controllers
                 await unitOfWork.Rating.Add(model);
                 await unitOfWork.Save();
 
-                TempData["msg"] = "Rating successfull";
+                TempData["msg"] = "Rating Successful!";
                 TempData["msg_type"] = "success";
 
                 return RedirectToAction("Index");

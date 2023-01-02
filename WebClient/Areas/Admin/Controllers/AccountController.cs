@@ -338,7 +338,7 @@ namespace WebClient.Areas.Admin.Controllers
             var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == id);
             var model = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == id, includeProperties: "User");
             var client = await unitOfWork.ClientDetail.GetFirstOrDefault(x => x.UserId == id);
-            var grade = context.Ratings.Where(x => x.UserId == user.Id).ToList();
+            var grade = await unitOfWork.Rating.GetAll(x=>x.UserId == id);
             
             
 
@@ -464,7 +464,7 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     // Generate UserCode
                     string templateUserCode = "STAR_";
-                    var lastUserDetail = context.UserDetails.OrderByDescending(x => x.Id).FirstOrDefault();
+                    var lastUserDetail = await context.UserDetails.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
                     if (lastUserDetail != null && lastUserDetail.UserCode != null)
                     {
                         int index;
