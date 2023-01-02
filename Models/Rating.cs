@@ -14,15 +14,15 @@ namespace Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
-        public long ProjectId { get; set; }
+        public long? ProjectId { get; set; }
       
         [ForeignKey("ProjectId")]
-        public virtual Project Project { get; set; }
+        public virtual Project? Project { get; set; }
 
         public int RatingPoint { get; set; }
         public string? UpdatedBy { get; set; }
