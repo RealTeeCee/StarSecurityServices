@@ -291,7 +291,7 @@
                                 </thead>
                                 <tbody>
                                     @{int no = 1;}
-                                    @foreach (var item in Model.UserDetails)
+                                    @foreach (var item in Model.UserDetails.Take(5))
                                     {
                                         @if(item.Grade > 0)
                                         {                                            
@@ -324,22 +324,42 @@
 
                                                     @if(item.Grade >= 2 && item.Grade < 3)
                                                     {                                                        
-                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i>                                        
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>                                        
                                                     }
 
                                                      @if(item.Grade >= 3 && item.Grade < 4)
                                                     {                                                        
-                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i>                                                                                            
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>                                                                                            
                                                     }
 
                                                     @if(item.Grade >= 4 && item.Grade < 5)
                                                     {                                                        
-                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i>                                                                                                     
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>                                                                                                     
                                                     }
 
                                                     @if(item.Grade == 5)
                                                     {                                                        
-                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-yellow"></i><i class="feather icon-star-on f-18 text-c-purple"></i>                                                                                                           
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-purple"></i>                                                                                                           
                                                     }
                                                 </td>
                                                 <td>                                                    
