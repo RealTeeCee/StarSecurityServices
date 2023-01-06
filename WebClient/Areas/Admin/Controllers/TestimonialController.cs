@@ -66,6 +66,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Create(Testimonial testimonial)
         {
             try
@@ -159,6 +160,7 @@ namespace WebClient.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = ("EditPolicy"))]
         public async Task<IActionResult> Edit(Testimonial model)
         {
             try
@@ -221,7 +223,7 @@ namespace WebClient.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
         }
-
+        [Authorize(Policy = ("DeletePolicy"))]
         public async Task<IActionResult> Delete(int id)
         {
             try

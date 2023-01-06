@@ -43,7 +43,7 @@
             {
                     <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-localeId="@branchIdSession" asp-route-categorySlug="vacancy-service" class="nav-item nav-link">Vacancies</a>
             }
-            <a href="@Url.ActionLink("Index", "Project")" class="nav-item nav-link">Project</a>
+                <a asp-area="Client" asp-action="Index" asp-controller="Project" asp-route-localeId="@branchIdSession" class="nav-item nav-link">Project</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu rounded-0 rounded-bottom m-0">

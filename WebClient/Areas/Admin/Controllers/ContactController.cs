@@ -2,7 +2,9 @@
 using DataAccess.Repositories.IRepositories;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using System.Data;
 
 namespace WebClient.Areas.Admin.Controllers
@@ -14,13 +16,15 @@ namespace WebClient.Areas.Admin.Controllers
         private readonly StarSecurityDbContext _context;
         private readonly IUnitOfWork unitOfWork;
         private readonly IWebHostEnvironment env;
+        private readonly IEmailSender emailSender;
         private int pageSizes = 6;
 
-        public ContactController(IUnitOfWork unitOfWork, StarSecurityDbContext context, IWebHostEnvironment env)
+        public ContactController(IUnitOfWork unitOfWork, StarSecurityDbContext context, IWebHostEnvironment env, IEmailSender emailSender)
         {
             this.unitOfWork = unitOfWork;
             this._context = context;
             this.env = env;
+            this.emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index(int p = 1)
@@ -71,6 +75,48 @@ namespace WebClient.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
             }
+        }
+
+        public async Task<IActionResult> SendMail(int id)
+        {
+
+            return View();
+        }
+
+
+        
+        [HttpPost]
+        [Authorize(Roles = "SuperAdmin ,GeneralAdmin ,Admin,Employee")]
+        public async Task<IActionResult> SendMail(Contact model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    var contact = await unitOfWork.Contact.GetFirstOrDefault(x => x.Id == model.Id);
+                    await emailSender.SendEmailAsync(
+                        contact.Email,
+                        $"Dear {contact.Name}!",
+                        $"{model.ReplyMessage}");
+
+                    
+                    contact.ReplyMessage = model.ReplyMessage;
+                    _context.Update(contact);
+                    await unitOfWork.Save();
+
+                    TempData["msg"] = $"An Email Has Send To {model.Email} Successfully.";
+                    TempData["msg_type"] = "success";
+                    
+                }
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Index", "Error", new { area = "Admin" });
+            }
+            
         }
     }
 }

@@ -35,6 +35,8 @@
 
     <link href="~/admin/assets/css/style.css" rel="stylesheet" />
 
+    @await RenderSectionAsync("Styles", required: false)
+
     <style>
         .img-avatar {
             object-fit: cover;
@@ -42,6 +44,7 @@
             max-height: 30px;
         }
     </style>
+
 </head>
 <body class="">
      
@@ -73,10 +76,20 @@
                         </div>
                         <div class="collapse" id="nav-user-link">
                             <ul class="list-unstyled">
-                            <li class="list-group-item"><a asp-controller="account" asp-action="profile" asp-route-id=@currentUserId><i class="feather icon-user m-r-5"></i>View Profile</a></li>
-                                    <form method="post" asp-controller="account" asp-action="logout">
+                            @if(currentRoleNames.Count > 0 && currentRoleNames[0] == "SuperAdmin"){
+                                <form method="post" asp-controller="account" asp-action="logout">
+                                <li class="list-group-item"><button style="background:#2c3e50; color:#d0dcda; border: none;" type="submit"><i class="feather icon-log-out m-r-5"></i>Logout</button></li>
+                                </form>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <a asp-controller="account" asp-action="profile" asp-route-id=@currentUserId><i class="feather icon-user m-r-5"></i>View Profile</a>
+                                </li>
+                                <form method="post" asp-controller="account" asp-action="logout">
                                     <li class="list-group-item"><button style="background:#2c3e50; color:#d0dcda; border: none;" type="submit"><i class="feather icon-log-out m-r-5"></i>Logout</button></li>
                                 </form>
+                            }                            
                             </ul>
                         </div>
                     </div>
@@ -157,6 +170,15 @@
                         </a>
                     </li>
 
+                      <li class="nav-item">
+                        <a asp-controller="Project" asp-action="Index" asp-area="Admin" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-target"></i>
+                            </span>
+                            <span class="pcoded-mtext">Manage Project</span>
+                        </a>
+                    </li>
+
                 </ul>
 
                 <ul class="nav pcoded-inner-navbar ">
@@ -179,6 +201,15 @@
                             <span class="pcoded-mtext">Customer Contacts</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a asp-controller="ClientDetail" asp-action="Index" asp-area="Admin" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-users"></i>
+                            </span>
+                            <span class="pcoded-mtext">Customer Information</span>
+                        </a>
+                    </li>
+                  
                 </ul>
             </div>
         </div>
@@ -293,7 +324,14 @@
                                 </div>
                              </form>
                             <ul class="pro-body">
+                                @if(currentRoleNames.Count > 0 && currentRoleNames[0] == "SuperAdmin")
+                                {
+
+                                }
+                                else
+                                {
                                     <li><a asp-controller="account" asp-action="Profile" asp-route-id=@currentUserId class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                                }                                    
                             </ul>
                         </div>
                     </div>
@@ -328,9 +366,10 @@
     <!-- [ Main Content ] end -->
 
     <!-- Required Js -->
-    
+
+
     <script src="~/admin/assets/js/vendor-all.min.js"></script>
-  
+
     <script src="~/admin/assets/js/plugins/bootstrap.min.js"></script>
 
     <script src="~/admin/assets/js/pcoded.min.js"></script>
@@ -341,12 +380,13 @@
     
     <script src="~/admin/assets/js/pages/dashboard-main.js"></script>
 
-    <script src="~/lib/jqueryui/jquery-ui.js"></script>    
+    @*<script src="~/lib/jqueryui/jquery-ui.js"></script>    *@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>    <!-- jquery validate se xu ly validate hien ra ngay sau khi type ma ko can submit (with ajax) -->
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>      
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>      *@
     <script src="~/lib/ckeditor/ckeditor.js"></script>
     <script src="~/admin/assets/js/site.js" asp-append-version="true"></script>
+
 
     @await RenderSectionAsync("Scripts", required: false)
     

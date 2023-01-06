@@ -11,7 +11,7 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="card">
         <div class="card-header">
-            <h2>Manage Users In Branch: <span class="text-danger">@branchId</span></h2>
+            <h2>Manage Users In Branch: <span class="text-danger">@ViewBag.BranchName</span></h2>
         </div>
         <div class="card-body">
             @for (int i = 0; i < Model.Count; i++)
@@ -43,7 +43,7 @@
                         <input class="custom-control-input" asp-for="@Model[i].IsSelected" />
                         <label class="custom-control-label" asp-for="@Model[i].IsSelected">
                             <!-- Now when click on label it checked status toggle as expected -->
-                    @Model[i].UserName
+                    @Model[i].UserName - <strong>[@Model[i].RoleName]</strong>
                         </label>
 
                     </div>

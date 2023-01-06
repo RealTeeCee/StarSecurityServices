@@ -11,7 +11,7 @@
 }
 
 <div class="w-100">
-    <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Account" asp-action="Register">
+    <a class="btn btn-success mb-3" style="width:auto" asp-controller="Account" asp-action="Register">
         Add New User
     </a>
 </div>
@@ -59,7 +59,7 @@
         </tbody>
     </table>
     <div class="d-flex w-100 justify-content-center">
-        <pagination page-count="@ViewBag.TotalPages" page-target="/admin/administration/listusers" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+        <pagination page-count="@ViewBag.TotalPages" page-target="/Admin/Administration/ListUsers" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
     </div>
 
 @*    foreach (var user in Model)

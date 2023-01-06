@@ -54,18 +54,19 @@ namespace WebClient.Areas.Admin.Controllers
             catch (Exception)
             {
                 return RedirectToAction("Index", "Error", new { area = "Admin" });
-            }  
-        }      
+            }
+        }
 
         [HttpPost]
         [Authorize(Policy = ("CreatePolicy"))]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var user = new User {
+                var user = new User
+                {
                     UserName = model.UserName,
-                    Email = model.Email ,
+                    Email = model.Email,
                     Address = model.Address,
                     Name = model.Name
                 };
@@ -73,10 +74,10 @@ namespace WebClient.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
-                    if(signInManager.IsSignedIn(User))
+                    if (signInManager.IsSignedIn(User))
                     {
                         TempData["msg"] = "Create new User Successfully.";
-                        TempData["msg_type"] = "success";                        
+                        TempData["msg_type"] = "success";
                         return RedirectToAction("ListUsers", "Administration");
                     }
                     //Login
@@ -90,16 +91,16 @@ namespace WebClient.Areas.Admin.Controllers
             }
 
             return View();
-        } 
+        }
 
-        [AcceptVerbs("Get","Post")] //if we type email to Email field,the client-side issues and get request to server 
-        
+        [AcceptVerbs("Get", "Post")] //if we type email to Email field,the client-side issues and get request to server 
+
         public async Task<IActionResult> IsEmailInUse(string email) //call by jquery-validate method => issues an ajax call => expect a JSON  response return from this method
         {
             var user = await userManager.FindByEmailAsync(email);
-            if(user == null) //this mean we dont have validation errors
+            if (user == null) //this mean we dont have validation errors
             {
-                return Json(true); 
+                return Json(true);
             }
             else //Email already in use
             {
@@ -125,8 +126,8 @@ namespace WebClient.Areas.Admin.Controllers
         {
 
             if (ModelState.IsValid)
-            {                
-                var result = await signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password,model.RememberMe, true);//tham so rememberMe = isPersistent(rememberMe.value)                               
+            {
+                var result = await signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, true);//tham so rememberMe = isPersistent(rememberMe.value)                               
 
                 if (!result.Succeeded)
                 {
@@ -148,7 +149,7 @@ namespace WebClient.Areas.Admin.Controllers
                         TempData["msg"] = "Login Successfully.";
                         TempData["msg_type"] = "success";
                         return RedirectToAction("Index", "Home");
-                    }                    
+                    }
                 }
 
                 if (result.IsLockedOut)
@@ -159,8 +160,8 @@ namespace WebClient.Areas.Admin.Controllers
 
                 TempData["msg"] = "Username or Password incorrect !";
                 TempData["msg_type"] = "danger";
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt") ;
-                
+                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+
             }
 
             return View();
@@ -180,7 +181,7 @@ namespace WebClient.Areas.Admin.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
@@ -190,8 +191,8 @@ namespace WebClient.Areas.Admin.Controllers
                 var user = await userManager.FindByEmailAsync(model.Email);
                 string[] strings = model.Email.Split('@');
                 var gmailDomain = strings[0] + "@gmail.com";
-                
-                if(user != null )
+
+                if (user != null)
                 {
 
                     // Phát sinh Token để reset password
@@ -214,7 +215,7 @@ namespace WebClient.Areas.Admin.Controllers
 
                     return View("ForgotPasswordConfirmation");
 
-                    
+
                     //var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
                     //var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = model.Email, token = token }, Request.Scheme);
@@ -234,7 +235,7 @@ namespace WebClient.Areas.Admin.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(string token, string email)
         {
-            if(token == null || email == null)
+            if (token == null || email == null)
             {
                 ModelState.AddModelError("", "Invalid password reset token");
             }
@@ -246,19 +247,19 @@ namespace WebClient.Areas.Admin.Controllers
                 Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token))
             };
 
-            return View(encodeToken); 
+            return View(encodeToken);
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model) 
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
-                    var result = await userManager.ResetPasswordAsync(user,model.Token,model.Password);
+                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
 
                     if (result.Succeeded)
                     {
@@ -283,7 +284,7 @@ namespace WebClient.Areas.Admin.Controllers
 
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -311,7 +312,7 @@ namespace WebClient.Areas.Admin.Controllers
                 await signInManager.RefreshSignInAsync(user);
                 TempData["msg"] = "Change password Successfully.";
                 TempData["msg_type"] = "success";
-                
+
                 return View("ChangePasswordConfirmation");
             }
 
@@ -334,8 +335,18 @@ namespace WebClient.Areas.Admin.Controllers
         [Authorize]
         public async Task<IActionResult> Profile(string id)
         {
-            var user = await unitOfWork.User.GetFirstOrDefault(x=>x.Id == id);
+            var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == id);
             var model = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == id, includeProperties: "User");
+            var client = await unitOfWork.ClientDetail.GetFirstOrDefault(x => x.UserId == id);
+            var grade = await unitOfWork.Rating.GetAll(x=>x.UserId == id);
+            
+            
+
+
+            if(client != null)
+            {
+                ViewBag.Client = client.Name;
+            }
             if (model == null)
             {
                 UserDetailViewModel userDetails = new UserDetailViewModel();
@@ -354,6 +365,18 @@ namespace WebClient.Areas.Admin.Controllers
 
                 return View(userDetails);
             }
+
+            if (grade.Any())
+            {
+                double rating = 0;
+                rating = grade.Average(i => i.RatingPoint);
+
+                model.Grade = rating;
+                // get ra UserId, rồi save rating vào model.Grade
+                context.UserDetails.Update(model);
+                await unitOfWork.Save();
+            }
+
             UserDetailViewModel userDetailsFetchData = new UserDetailViewModel();
             userDetailsFetchData.UserId = id;
             userDetailsFetchData.Email = user.Email;
@@ -385,18 +408,18 @@ namespace WebClient.Areas.Admin.Controllers
             if (model != null)
             {
                 //var model = User user    
-                var userDetails = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == model.UserId,includeProperties:"User");          
-                    
+                var userDetails = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == model.UserId, includeProperties: "User");                
+
                 var user = await unitOfWork.User.GetFirstOrDefault(x => x.Id == model.UserId);
                 user.Name = model.Name;
                 user.Address = model.Address;
-                user.Phone = model.Phone;                        
+                user.Phone = model.Phone;
 
                 if (model.ImageUpload != null)
                 {
                     foreach (var item in ModelState)
                     {
-                        if(item.Key == "ImageUpload")
+                        if (item.Key == "ImageUpload")
                         {
                             if (item.Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
                             {
@@ -406,7 +429,7 @@ namespace WebClient.Areas.Admin.Controllers
                             }
                         }
                     }
-                            
+
                     string uploadDir = Path.Combine(env.WebRootPath, "media/profiles");
                     if (!string.Equals(user.Image, "default.jpg"))
                     {
@@ -424,9 +447,9 @@ namespace WebClient.Areas.Admin.Controllers
                     user.Image = imageName;
                 }
                 context.Users.Update(user);
-                await unitOfWork.Save();                        
-                        
-                if(userDetails != null)
+                await unitOfWork.Save();
+
+                if (userDetails != null)
                 {
                     userDetails.Award = model.Award;
                     userDetails.Client = model.Client;
@@ -441,8 +464,8 @@ namespace WebClient.Areas.Admin.Controllers
                 {
                     // Generate UserCode
                     string templateUserCode = "STAR_";
-                    var lastUserDetail = context.UserDetails.OrderByDescending(x => x.Id).FirstOrDefault();
-                    if(lastUserDetail != null && lastUserDetail.UserCode != null)
+                    var lastUserDetail = await context.UserDetails.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+                    if (lastUserDetail != null && lastUserDetail.UserCode != null)
                     {
                         int index;
                         string[] codeNumber = lastUserDetail.UserCode.Split("_");
@@ -454,8 +477,8 @@ namespace WebClient.Areas.Admin.Controllers
                     {
                         templateUserCode = "STAR_1";
                     }
-                    
-                    UserDetail newUserDetails = new UserDetail();                            
+
+                    UserDetail newUserDetails = new UserDetail();
                     newUserDetails.UserId = model.UserId;
                     newUserDetails.Award = model.Award;
                     newUserDetails.UserCode = templateUserCode;
@@ -465,13 +488,23 @@ namespace WebClient.Areas.Admin.Controllers
                     newUserDetails.UpdatedAt = DateTime.Now;
                     await unitOfWork.UserDetail.Add(newUserDetails);
                     await unitOfWork.Save();
-                }                       
+                }
                 TempData["msg"] = "User Profile has been Updated.";
                 TempData["msg_type"] = "success";
-            }
                 
+            }
+
             return RedirectToAction("Profile", "Account", new { id = model.UserId });
         }
 
+        //public async Task<IActionResult> ClientDetail(string id)
+        //{
+        //    var client = await unitOfWork.Cl.GetFirstOrDefault(x => x.Id == id);
+        //    var model = await unitOfWork.UserDetail.GetFirstOrDefault(x => x.UserId == id, includeProperties: "User");
+        //    if (model == null)
+        //    {
+
+        //    }
+        //}
     }
 }

@@ -1,9 +1,16 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Models.ViewModel.DashBoardViewModel;
+@using Microsoft.AspNetCore.Http;
+@inject UserManager<User> userManager;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewData["Title"] = "Home";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    @if(HttpContextAccessor.HttpContext.Session.GetInt32("UserCount") == null)
+    {
+        HttpContextAccessor.HttpContext.Session.SetInt32("UserCount",1);
+        Programs.UserCount++;
+    }
 }
         <!-- [ Main Content ] start -->
         <div class="row">
@@ -17,19 +24,21 @@
                                     <i class="icon feather icon-eye text-c-green mb-1 d-block"></i>
                                 </div>
                                 <div class="col-sm-8 text-md-center">
-                                    <h5>10k</h5>
-                                    <span>Visitors</span>
+                                    <h5>
+                                         @Programs.UserCount
+                                    </h5>
+                                    <span>Users Online</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6 card-body">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <i class="icon feather icon-music text-c-red mb-1 d-block"></i>
+                                    <i class="icon feather icon-clock text-c-red mb-1 d-block"></i>
                                 </div>
                                 <div class="col-sm-8 text-md-center">
-                                    <h5>100%</h5>
-                                    <span>Volume</span>
+                                    <h5>@DateTime.Now</h5>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -41,8 +50,8 @@
                                     <i class="icon feather icon-file-text text-c-blue mb-1 d-block"></i>
                                 </div>
                                 <div class="col-sm-8 text-md-center">
-                                    <h5>2000 +</h5>
-                                    <span>Files</span>
+                                    <h5>@ViewBag.Resources</h5>
+                                    <span>Resources</span>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +61,7 @@
                                     <i class="icon feather icon-mail text-c-yellow mb-1 d-block"></i>
                                 </div>
                                 <div class="col-sm-8 text-md-center">
-                                    <h5>120</h5>
+                                    <h5>@ViewBag.Contact</h5>
                                     <span>Mails</span>
                                 </div>
                             </div>
@@ -78,25 +87,17 @@
             <div class="col-md-12 col-xl-4">
                 <div class="card flat-card">
                     <div class="row-table">
-                        <div class="col-sm-6 card-body br">
+                        <div class="col-sm-12 card-body">
                             <div class="row">
-                                <div class="col-sm-4">
-                                    <i class="icon feather icon-share-2 text-c-blue mb-1 d-block"></i>
-                                </div>
-                                <div class="col-sm-8 text-md-center">
-                                    <h5>1000</h5>
-                                    <span>Shares</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 card-body">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <i class="icon feather icon-wifi text-c-blue mb-1 d-block"></i>
-                                </div>
-                                <div class="col-sm-8 text-md-center">
-                                    <h5>600</h5>
-                                    <span>Network</span>
+                                <div class="col-sm-6 text-md-center">
+                                    <i class="icon feather icon-users text-c-blue mb-1 d-block"></i>
+                                </div>                                
+                                              
+                          
+                         
+                                <div class="col-sm-6 text-md-center">
+                                    <h5>@ViewBag.Users</h5>
+                                    <span>Human Resources</span>
                                 </div>
                             </div>
                         </div>
@@ -105,27 +106,28 @@
                         <div class="col-sm-6 card-body br">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <i class="icon feather icon-rotate-ccw text-c-blue mb-1 d-block"></i>
+                                    <i class="icon feather icon-user-check text-c-blue mb-1 d-block"></i>
                                 </div>
                                 <div class="col-sm-8 text-md-center">
-                                    <h5>3550</h5>
-                                    <span>Returns</span>
+                                    <h5>@ViewBag.Managers</h5>
+                                    <span>Managers</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6 card-body">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <i class="icon feather icon-shopping-cart text-c-blue mb-1 d-blockz"></i>
+                                    <i class="icon feather icon-user text-c-blue mb-1 d-blockz"></i>
                                 </div>
                                 <div class="col-sm-8 text-md-center">
-                                    <h5>100%</h5>
-                                    <span>Order</span>
+                                    <h5>@ViewBag.Employees</h5>
+                                    <span>Employees & Interns</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- widget-success-card start -->
                 <div class="card flat-card widget-purple-card">
                     <div class="row-table">
@@ -197,108 +199,71 @@
                                         <th>
                                             <div class="chk-option">
                                                 <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
+                                                    <input type="checkbox" class="custom-control-input" checked>
                                                     <span class="custom-control-label"></span>
                                                 </label>
                                             </div>
-                                            Assigned
+                                            Employee Assigned
                                         </th>
-                                        <th>Name</th>
+                                        <th>Project Name</th>
                                         <th>Due Date</th>
                                         <th class="text-right">Priority</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="chk-option">
-                                                <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-label"></span>
-                                                </label>
-                                            </div>
-                                    <div class="d-inline-block align-middle">
-                                                <img src="~/admin/assets/images/user/avatar-4.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                                <div class="d-inline-block">
-                                                    <h6>John Deo</h6>
-                                                    <p class="text-muted m-b-0">Graphics Designer</p>
+                                    @foreach (var item in Model.Projects.Take(5))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="chk-option">
+                                                    <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
+                                                        <input type="checkbox" class="custom-control-input" checked>
+                                                        <span class="custom-control-label"></span>
+                                                    </label>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>Able Pro</td>
-                                        <td>Jun, 26</td>
-                                        <td class="text-right"><label class="badge badge-light-danger">Low</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="chk-option">
-                                                <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-label"></span>
-                                                </label>
-                                            </div>
-                                            <div class="d-inline-block align-middle">
-                                                <img src="~/admin/assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                                <div class="d-inline-block">
-                                                    <h6>Jenifer Vintage</h6>
-                                                    <p class="text-muted m-b-0">Web Designer</p>
+                                        <div class="d-inline-block align-middle">
+                                                    <img src="~/media/profiles/@item.User.Image" alt="user image" class="img-radius wid-40 align-top m-r-15">
+                                                    <div class="d-inline-block">
+                                                        <h6>@item.User.Name</h6>
+                                                        @{
+                                                            var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(item.User.Id));
+                                                        }
+                                                        <p class="text-muted m-b-0">@currentRoleNames[0]</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>Mashable</td>
-                                        <td>March, 31</td>
-                                        <td class="text-right"><label class="badge badge-light-primary">high</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="chk-option">
-                                                <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-label"></span>
-                                                </label>
-                                            </div>
-                                    <div class="d-inline-block align-middle">                                        
-                                                <img src="~/admin/assets/images/user/avatar-3.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                                <div class="d-inline-block">
-                                                    <h6>William Jem</h6>
-                                                    <p class="text-muted m-b-0">Developer</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Flatable</td>
-                                        <td>Aug, 02</td>
-                                        <td class="text-right"><label class="badge badge-light-success">medium</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="chk-option">
-                                                <label class="check-task custom-control custom-checkbox d-flex justify-content-center done-task">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <span class="custom-control-label"></span>
-                                                </label>
-                                            </div>
-                                            <div class="d-inline-block align-middle">
-                                                <img src="~/admin/assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                                                <div class="d-inline-block">
-                                                    <h6>David Jones</h6>
-                                                    <p class="text-muted m-b-0">Developer</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Guruable</td>
-                                        <td>Sep, 22</td>
-                                        <td class="text-right"><label class="badge badge-light-primary">high</label></td>
-                                    </tr>
+                                            </td>
+                                            <td>@item.Name</td>
+                                            <td>@item.DueDate</td>                                          
+                                            
+                                            <td class="text-right">
+                                                 @if (item.Priority == 0)
+                                                {
+                                                    <label class="badge badge-light-danger">Low</label>
+                                                }
+                                                @if (item.Priority == 1)
+                                                {
+                                                    <label class="badge badge-light-primary">Medium</label>
+                                                }
+                                                @if (item.Priority == 2)
+                                                {
+                                                    <label class="badge badge-light-success">High</label>
+                                                }
+                                            </td>
+                                        </tr>    
+                                    }                                                                                    
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+            
+
+            <!-- prject ,team member start -->
             <div class="col-xl-6 col-md-12">
-                <div class="card latest-update-card">
+                <div class="card table-card">
                     <div class="card-header">
-                        <h5>Latest Updates</h5>
+                        <h5>Top Grade Employee</h5>
                         <div class="card-header-right">
                             <div class="btn-group card-option">
                                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -313,62 +278,171 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="latest-update-box">
-                            <div class="row p-t-30 p-b-30">
-                                <div class="col-auto text-right update-meta">
-                                    <p class="text-muted m-b-0 d-inline-flex">2 hrs ago</p>
-                                    <i class="feather icon-twitter bg-twitter update-icon"></i>
-                                </div>
-                                <div class="col">
-                                    <a href="#!">
-                                        <h6>+ 1652 Followers</h6>
-                                    </a>
-                                    <p class="text-muted m-b-0">You’re getting more and more followers, keep it up!</p>
-                                </div>
-                            </div>
-                            <div class="row p-b-30">
-                                <div class="col-auto text-right update-meta">
-                                    <p class="text-muted m-b-0 d-inline-flex">4 hrs ago</p>
-                                    <i class="feather icon-briefcase bg-c-red update-icon"></i>
-                                </div>
-                                <div class="col">
-                                    <a href="#!">
-                                        <h6>+ 5 New Products were added!</h6>
-                                    </a>
-                                    <p class="text-muted m-b-0">Congratulations!</p>
-                                </div>
-                            </div>
-                            <div class="row p-b-0">
-                                <div class="col-auto text-right update-meta">
-                                    <p class="text-muted m-b-0 d-inline-flex">2 day ago</p>
-                                    <i class="feather icon-facebook bg-facebook update-icon"></i>
-                                </div>
-                                <div class="col">
-                                    <a href="#!">
-                                        <h6>+1 Friend Requests</h6>
-                                    </a>
-                                    <p class="text-muted m-b-10">This is great, keep it up!</p>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <tbody><tr>
-                                                <td class="b-none">
-                                                    <a href="#!" class="align-middle">
-                                                        <img src="~/admin/assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>Employee</th>
+                                        <th>Rating</th>
+                                        <th>Grade</th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int no = 1;}
+                                    @foreach (var item in Model.UserDetails.Take(5))
+                                    {
+                                        @if(item.Grade > 0)
+                                        {                                            
+
+                                             @if(no == 1){
+                                            <tr style="background-color: #00DBDE; background-image: linear-gradient(90deg, #00DBDE 0%, #FC00FF 100%);">
+                                                <td>@(no++)</td>
+                                                <td>                                                
+                                                    <div class="d-inline-block align-middle">
+                                                        <img src="~/media/profiles/@item.User.Image" alt="user image" class="img-radius wid-40 align-top m-r-15">
                                                         <div class="d-inline-block">
-                                                            <h6>Jeny William</h6>
-                                                            <p class="text-muted m-b-0">Graphic Designer</p>
+                                                            <h6>@item.User.Name</h6>
+                                                            @{
+                                                                var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(item.User.Id));
+                                                            }
+                                                            <p class="text-muted m-b-0">@currentRoleNames[0]</p>
                                                         </div>
-                                                    </a>
+                                                    </div>
                                                 </td>
-                                            </tr>
-                                        </tbody></table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <a href="#!" class="b-b-primary text-primary">View all Projects</a>
+                                                <td>
+                                                    @if(item.Grade >= 0 && item.Grade < 1)
+                                                    {                                                        
+                                                        <i class="feather icon-star-on f-18 text-primary"></i>                       
+                                                    }
+
+                                                    @if(item.Grade >= 1 && item.Grade < 2)
+                                                    {                                                        
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>                                                        
+                                                    }
+
+                                                    @if(item.Grade >= 2 && item.Grade < 3)
+                                                    {                                                        
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>                                        
+                                                    }
+
+                                                     @if(item.Grade >= 3 && item.Grade < 4)
+                                                    {                                                        
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>                                                                                            
+                                                    }
+
+                                                    @if(item.Grade >= 4 && item.Grade < 5)
+                                                    {                                                        
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>                                                                                                     
+                                                    }
+
+                                                    @if(item.Grade == 5)
+                                                    {                                                        
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                        <i class="feather icon-star-on f-18 text-c-purple"></i>                                                                                                           
+                                                    }
+                                                </td>
+                                                <td>                                                    
+                                                    @String.Format("{0:0.00}",item.Grade)
+                                                </td>                                               
+                                            </tr>    
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td>@(no++)</td>
+                                                    <td>                                                
+                                                        <div class="d-inline-block align-middle">
+                                                            <img src="~/media/profiles/@item.User.Image" alt="user image" class="img-radius wid-40 align-top m-r-15">
+                                                            <div class="d-inline-block">
+                                                                <h6>@item.User.Name</h6>
+                                                                @{
+                                                                    var currentRoleNames = await userManager.GetRolesAsync(await userManager.FindByIdAsync(item.User.Id));
+                                                                }
+                                                                <p class="text-muted m-b-0">@currentRoleNames[0]</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                            <td>
+                                                @if (item.Grade >= 0 && item.Grade < 1)
+                                                {
+                                                    <i class="feather icon-star-on f-18 text-primary"></i>
+                                                }
+
+                                                @if (item.Grade >= 1 && item.Grade < 2)
+                                                {
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+                                                }
+
+                                                @if (item.Grade >= 2 && item.Grade < 3)
+                                                {
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+                                                }
+
+                                                @if (item.Grade >= 3 && item.Grade < 4)
+                                                {
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+                                                }
+
+                                                @if (item.Grade >= 4 && item.Grade < 5)
+                                                {
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+                                                }
+
+                                                @if (item.Grade == 5)
+                                                {
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-yellow"></i>
+
+                                                    <i class="feather icon-star-on f-18 text-c-purple"></i>
+                                                }
+                                            </td>
+                                            <td>
+                                                @String.Format("{0:0.00}",item.Grade)
+                                            </td>
+                                        </tr>    
+                                            }
+                                        }                                       
+                                    }                                                                                    
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -423,7 +497,7 @@
             <!-- seo end -->
 
             <!-- Latest Customers start -->
-            <div class="col-lg-8 col-md-12">
+            <div class="col-lg-12 col-md-12">
                 <div class="card table-card review-card">
                     <div class="card-header borderless ">
                         <h5>Customer Reviews</h5>
@@ -484,142 +558,45 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body" style="position: relative;">
-                                <h5 class="mb-3">Power</h5>
-                                <h2>2789<span class="text-muted m-l-5 f-14">kw</span></h2>
-                                <div id="power-card-chart1" style="min-height: 75px;"><div id="apexchartslxs8yz01" class="apexcharts-canvas apexchartslxs8yz01 light" style="width: 254px; height: 75px;"><svg id="SvgjsSvg1308" width="254" height="75" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1310" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)"><defs id="SvgjsDefs1309"><clipPath id="gridRectMasklxs8yz01"><rect id="SvgjsRect1314" width="257" height="78" x="-1.5" y="-1.5" rx="0" ry="0" fill="#ffffff" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect></clipPath><clipPath id="gridRectMarkerMasklxs8yz01"><rect id="SvgjsRect1315" width="256" height="77" x="-1" y="-1" rx="0" ry="0" fill="#ffffff" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect></clipPath></defs><line id="SvgjsLine1313" x1="0" y1="0" x2="0" y2="75" stroke="#b6b6b6" stroke-dasharray="3" class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="75" fill="#b1b9c4" filter="none" fill-opacity="0.9" stroke-width="1"></line><g id="SvgjsG1322" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1323" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g></g><g id="SvgjsG1326" class="apexcharts-grid"><line id="SvgjsLine1328" x1="0" y1="75" x2="254" y2="75" stroke="transparent" stroke-dasharray="0"></line><line id="SvgjsLine1327" x1="0" y1="1" x2="0" y2="75" stroke="transparent" stroke-dasharray="0"></line></g><g id="SvgjsG1317" class="apexcharts-line-series apexcharts-plot-series"><g id="SvgjsG1318" class="apexcharts-series" seriesName="series1" data:longestSeries="true" rel="1" data:realIndex="0"><path id="apexcharts-line-0" d="M 0 37.49999999999999C 17.779999999999998 37.49999999999999 33.019999999999996 54.16666666666666 50.8 54.16666666666666C 68.58 54.16666666666666 83.82 20.83333333333333 101.6 20.83333333333333C 119.38 20.83333333333333 134.62 41.66666666666666 152.4 41.66666666666666C 170.18 41.66666666666666 185.42 8.333333333333329 203.2 8.333333333333329C 220.98 8.333333333333329 236.22 41.66666666666666 254 41.66666666666666" fill="none" fill-opacity="1" stroke="rgba(231,76,60,0.85)" stroke-opacity="1" stroke-linecap="butt" stroke-width="3" stroke-dasharray="0" class="apexcharts-line" index="0" clip-path="url(#gridRectMasklxs8yz01)" pathTo="M 0 37.49999999999999C 17.779999999999998 37.49999999999999 33.019999999999996 54.16666666666666 50.8 54.16666666666666C 68.58 54.16666666666666 83.82 20.83333333333333 101.6 20.83333333333333C 119.38 20.83333333333333 134.62 41.66666666666666 152.4 41.66666666666666C 170.18 41.66666666666666 185.42 8.333333333333329 203.2 8.333333333333329C 220.98 8.333333333333329 236.22 41.66666666666666 254 41.66666666666666" pathFrom="M -1 83.33333333333333L -1 83.33333333333333L 50.8 83.33333333333333L 101.6 83.33333333333333L 152.4 83.33333333333333L 203.2 83.33333333333333L 254 83.33333333333333"></path><g id="SvgjsG1319" class="apexcharts-series-markers-wrap"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1334" r="0" cx="0" cy="0" class="apexcharts-marker wcxu30qzd no-pointer-events" stroke="#ffffff" fill="#e74c3c" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g><g id="SvgjsG1320" class="apexcharts-datalabels"></g></g></g><line id="SvgjsLine1329" x1="0" y1="0" x2="254" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1330" x1="0" y1="0" x2="254" y2="0" stroke-dasharray="0" stroke-width="0" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1331" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1332" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1333" class="apexcharts-point-annotations"></g></g><rect id="SvgjsRect1312" width="0" height="0" x="0" y="0" rx="0" ry="0" fill="#fefefe" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect><g id="SvgjsG1324" class="apexcharts-yaxis" rel="0" transform="translate(-21, 0)"><g id="SvgjsG1325" class="apexcharts-yaxis-texts-g"></g></g></svg><div class="apexcharts-legend"></div><div class="apexcharts-tooltip dark"><div class="apexcharts-tooltip-series-group"><span class="apexcharts-tooltip-marker" style="background-color: rgb(231, 76, 60);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-label"></span><span class="apexcharts-tooltip-text-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div></div></div>
-                                <div class="row">
-                                    <div class="col col-auto">
-                                        <div class="map-area">
-                                            <h6 class="m-0">2876 <span> kw</span></h6>
-                                            <p class="text-muted m-0">month</p>
-                                        </div>
-                                    </div>
-                                    <div class="col col-auto">
-                                        <div class="map-area">
-                                            <h6 class="m-0">234 <span> kw</span></h6>
-                                            <p class="text-muted m-0">Today</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 295px; height: 236px;"></div></div><div class="contract-trigger"></div></div></div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body" style="position: relative;">
-                                <h5 class="mb-3">Temperature</h5>
-                                <h2>7.3<span class="text-muted m-l-10 f-14">deg</span></h2>
-                                <div id="power-card-chart3" style="min-height: 75px;"><div id="apexchartsh5yu2407" class="apexcharts-canvas apexchartsh5yu2407 light" style="width: 254px; height: 75px;"><svg id="SvgjsSvg1338" width="254" height="75" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1340" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)"><defs id="SvgjsDefs1339"><clipPath id="gridRectMaskh5yu2407"><rect id="SvgjsRect1344" width="257" height="78" x="-1.5" y="-1.5" rx="0" ry="0" fill="#ffffff" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect></clipPath><clipPath id="gridRectMarkerMaskh5yu2407"><rect id="SvgjsRect1345" width="256" height="77" x="-1" y="-1" rx="0" ry="0" fill="#ffffff" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect></clipPath></defs><line id="SvgjsLine1343" x1="0" y1="0" x2="0" y2="75" stroke="#b6b6b6" stroke-dasharray="3" class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="75" fill="#b1b9c4" filter="none" fill-opacity="0.9" stroke-width="1"></line><g id="SvgjsG1352" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1353" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g></g><g id="SvgjsG1356" class="apexcharts-grid"><line id="SvgjsLine1358" x1="0" y1="75" x2="254" y2="75" stroke="transparent" stroke-dasharray="0"></line><line id="SvgjsLine1357" x1="0" y1="1" x2="0" y2="75" stroke="transparent" stroke-dasharray="0"></line></g><g id="SvgjsG1347" class="apexcharts-line-series apexcharts-plot-series"><g id="SvgjsG1348" class="apexcharts-series" seriesName="series1" data:longestSeries="true" rel="1" data:realIndex="0"><path id="apexcharts-line-0" d="M 0 37.49999999999999C 17.779999999999998 37.49999999999999 33.019999999999996 54.16666666666666 50.8 54.16666666666666C 68.58 54.16666666666666 83.82 20.83333333333333 101.6 20.83333333333333C 119.38 20.83333333333333 134.62 41.66666666666666 152.4 41.66666666666666C 170.18 41.66666666666666 185.42 8.333333333333329 203.2 8.333333333333329C 220.98 8.333333333333329 236.22 41.66666666666666 254 41.66666666666666" fill="none" fill-opacity="1" stroke="rgba(241,196,15,0.85)" stroke-opacity="1" stroke-linecap="butt" stroke-width="3" stroke-dasharray="0" class="apexcharts-line" index="0" clip-path="url(#gridRectMaskh5yu2407)" pathTo="M 0 37.49999999999999C 17.779999999999998 37.49999999999999 33.019999999999996 54.16666666666666 50.8 54.16666666666666C 68.58 54.16666666666666 83.82 20.83333333333333 101.6 20.83333333333333C 119.38 20.83333333333333 134.62 41.66666666666666 152.4 41.66666666666666C 170.18 41.66666666666666 185.42 8.333333333333329 203.2 8.333333333333329C 220.98 8.333333333333329 236.22 41.66666666666666 254 41.66666666666666" pathFrom="M -1 83.33333333333333L -1 83.33333333333333L 50.8 83.33333333333333L 101.6 83.33333333333333L 152.4 83.33333333333333L 203.2 83.33333333333333L 254 83.33333333333333"></path><g id="SvgjsG1349" class="apexcharts-series-markers-wrap"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1364" r="0" cx="0" cy="0" class="apexcharts-marker wy501fnsb no-pointer-events" stroke="#ffffff" fill="#f1c40f" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g><g id="SvgjsG1350" class="apexcharts-datalabels"></g></g></g><line id="SvgjsLine1359" x1="0" y1="0" x2="254" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1360" x1="0" y1="0" x2="254" y2="0" stroke-dasharray="0" stroke-width="0" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1361" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1362" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1363" class="apexcharts-point-annotations"></g></g><rect id="SvgjsRect1342" width="0" height="0" x="0" y="0" rx="0" ry="0" fill="#fefefe" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect><g id="SvgjsG1354" class="apexcharts-yaxis" rel="0" transform="translate(-21, 0)"><g id="SvgjsG1355" class="apexcharts-yaxis-texts-g"></g></g></svg><div class="apexcharts-legend"></div><div class="apexcharts-tooltip dark"><div class="apexcharts-tooltip-series-group"><span class="apexcharts-tooltip-marker" style="background-color: rgb(241, 196, 15);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-label"></span><span class="apexcharts-tooltip-text-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div></div></div>
-                                <div class="row">
-                                    <div class="col col-auto">
-                                        <div class="map-area">
-                                            <h6 class="m-0">4.5 <span> deg</span></h6>
-                                            <p class="text-muted m-0">month</p>
-                                        </div>
-                                    </div>
-                                    <div class="col col-auto">
-                                        <div class="map-area">
-                                            <h6 class="m-0">0.5 <span> deg</span></h6>
-                                            <p class="text-muted m-0">Today</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 295px; height: 236px;"></div></div><div class="contract-trigger"></div></div></div>
-                        </div>
-                    </div>
                 </div>
+        <div class="col-lg-12">
+            <div class="row">
+            <h2 class="col-lg-12 text-center" style="background-color: #17a689; color: #fff;margin: 2px;">
+                    <i class="feather icon-share-2 f-18 text-c-yellow"></i> Total Branches
+                </h2>
+               
             </div>
-            <div class="col-lg-4 col-md-12">
-                <div class="card chat-card">
-                    <div class="card-header">
-                        <h5>Chat</h5>
-                        <div class="card-header-right">
-                            <div class="btn-group card-option">
-                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="feather icon-more-horizontal"></i>
-                                </button>
-                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
-                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
-                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
-                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
-                                </ul>
+            <div class="row">
+                <h2 class="col-lg-12 text-center" style="background-color: #1abc9c; color: #fff;">
+                @ViewBag.Branches
+                </h2>
+            </div>
+            <div class="row">
+                
+                @foreach (var item in Model.Branches)
+                {
+                    @if (item.GoogleMap != null && item.GoogleMap.StartsWith("https://www.google.com/maps/embed"))
+                    {
+                        <div class="col-lg-3 pe-lg-0 p-1" style="min-height: 400px">
+                            <p class="text-gray-500 hover:text-white duration-300 transition-all w-full text-center hover:bg-black p-3 font-bold">@item.Name</p>
+                            <div class="position-relative h-80">
+                                <iframe class="position-absolute w-100 h-100"
+                                style="min-height: 330px; object-fit: cover"
+                                src="@item.GoogleMap"
+                                frameborder="0"
+                                allowfullscreen=""
+                                aria-hidden="false"
+                                tabindex="0"></iframe>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row m-b-20 received-chat">
-                            <div class="col-auto p-r-0">
-                                <img src="~/admin/assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40">
-                            </div>
-                            <div class="col">
-                                <div class="msg">
-                                    <p class="m-b-0">Nice to meet you!</p>
-                                </div>
-                                <p class="text-muted m-b-0"><i class="fa fa-clock-o m-r-10"></i>10:20am</p>
-                            </div>
-                        </div>
-                        <div class="row m-b-20 send-chat">
-                            <div class="col">
-                                <div class="msg">
-                                    <p class="m-b-0">Nice to meet you!</p>
-                                </div>
-                                <p class="text-muted m-b-0"><i class="fa fa-clock-o m-r-10"></i>10:20am</p>
-                            </div>
-                            <div class="col-auto p-l-0">
-                                <img src="~/admin/assets/images/user/avatar-3.jpg" alt="user image" class="img-radius wid-40">
-                            </div>
-                        </div>
-                        <div class="row m-b-20 received-chat">
-                            <div class="col-auto p-r-0">
-                                <img src="~/admin/assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40">
-                            </div>
-                            <div class="col">
-                                <div class="msg">
-                                    <p class="m-b-0">Nice to meet you!</p>
-                                    <img src="~/admin/assets/images/widget/dashborad-1.jpg" alt="">
-                                    <img src="~/admin/assets/images/widget/dashborad-3.jpg" alt="">
-                                </div>
-                                <p class="text-muted m-b-0"><i class="fa fa-clock-o m-r-10"></i>10:20am</p>
-                            </div>
-                        </div>
-                        <div class="input-group m-t-15">
-                            <input type="text" name="task-insert" class="form-control" id="Project" placeholder="Send message">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary">
-                                    <i class="feather icon-message-circle"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                        <div class="card-body">
-                            <h5 class="mb-3">Total Leads</h5>
-                            <p class="text-c-green f-w-500"><i class="fa fa-caret-up m-r-15"></i> 18% High than last month</p>
-                            <div class="row">
-                                <div class="col-4 b-r-default">
-                                    <p class="text-muted m-b-5">Overall</p>
-                                    <h5>76.12%</h5>
-                                </div>
-                                <div class="col-4 b-r-default">
-                                    <p class="text-muted m-b-5">Monthly</p>
-                                    <h5>16.40%</h5>
-                                </div>
-                                <div class="col-4">
-                                    <p class="text-muted m-b-5">Day</p>
-                                    <h5>4.56%</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tot-lead" style="height: 150px; min-height: 150px;"><div id="apexchartsx2qdkzrll" class="apexcharts-canvas apexchartsx2qdkzrll light" style="width: 294px; height: 150px;"><svg id="SvgjsSvg1368" width="294" height="150" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1370" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)"><defs id="SvgjsDefs1369"><clipPath id="gridRectMaskx2qdkzrll"><rect id="SvgjsRect1374" width="297" height="153" x="-1.5" y="-1.5" rx="0" ry="0" fill="#ffffff" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect></clipPath><clipPath id="gridRectMarkerMaskx2qdkzrll"><rect id="SvgjsRect1375" width="296" height="152" x="-1" y="-1" rx="0" ry="0" fill="#ffffff" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect></clipPath></defs><line id="SvgjsLine1373" x1="0" y1="0" x2="0" y2="150" stroke="#b6b6b6" stroke-dasharray="3" class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="150" fill="#b1b9c4" filter="none" fill-opacity="0.9" stroke-width="1"></line><g id="SvgjsG1383" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1384" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g></g><g id="SvgjsG1387" class="apexcharts-grid"><line id="SvgjsLine1389" x1="0" y1="150" x2="294" y2="150" stroke="transparent" stroke-dasharray="0"></line><line id="SvgjsLine1388" x1="0" y1="1" x2="0" y2="150" stroke="transparent" stroke-dasharray="0"></line></g><g id="SvgjsG1377" class="apexcharts-area-series apexcharts-plot-series"><g id="SvgjsG1378" class="apexcharts-series" seriesName="series1" data:longestSeries="true" rel="1" data:realIndex="0"><path id="apexcharts-area-0" d="M 0 150L 0 112.5L 22.615384615384617 51L 45.23076923076923 88.5L 67.84615384615384 16.5L 90.46153846153847 112.5L 113.07692307692308 84L 135.69230769230768 132L 158.3076923076923 96L 180.92307692307693 136.5L 203.53846153846155 69L 226.15384615384616 112.5L 248.76923076923077 51L 271.38461538461536 88.5L 294 16.5L 294 150M 294 16.5z" fill="rgba(26,188,156,0.3)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-area" index="0" clip-path="url(#gridRectMaskx2qdkzrll)" pathTo="M 0 150L 0 112.5L 22.615384615384617 51L 45.23076923076923 88.5L 67.84615384615384 16.5L 90.46153846153847 112.5L 113.07692307692308 84L 135.69230769230768 132L 158.3076923076923 96L 180.92307692307693 136.5L 203.53846153846155 69L 226.15384615384616 112.5L 248.76923076923077 51L 271.38461538461536 88.5L 294 16.5L 294 150M 294 16.5z" pathFrom="M -1 150L -1 150L 22.615384615384617 150L 45.23076923076923 150L 67.84615384615384 150L 90.46153846153847 150L 113.07692307692308 150L 135.69230769230768 150L 158.3076923076923 150L 180.92307692307693 150L 203.53846153846155 150L 226.15384615384616 150L 248.76923076923077 150L 271.38461538461536 150L 294 150"></path><path id="apexcharts-area-0" d="M 0 112.5L 22.615384615384617 51L 45.23076923076923 88.5L 67.84615384615384 16.5L 90.46153846153847 112.5L 113.07692307692308 84L 135.69230769230768 132L 158.3076923076923 96L 180.92307692307693 136.5L 203.53846153846155 69L 226.15384615384616 112.5L 248.76923076923077 51L 271.38461538461536 88.5L 294 16.5" fill="none" fill-opacity="1" stroke="#1abc9c" stroke-opacity="1" stroke-linecap="butt" stroke-width="3" stroke-dasharray="0" class="apexcharts-area" index="0" clip-path="url(#gridRectMaskx2qdkzrll)" pathTo="M 0 112.5L 22.615384615384617 51L 45.23076923076923 88.5L 67.84615384615384 16.5L 90.46153846153847 112.5L 113.07692307692308 84L 135.69230769230768 132L 158.3076923076923 96L 180.92307692307693 136.5L 203.53846153846155 69L 226.15384615384616 112.5L 248.76923076923077 51L 271.38461538461536 88.5L 294 16.5" pathFrom="M -1 150L -1 150L 22.615384615384617 150L 45.23076923076923 150L 67.84615384615384 150L 90.46153846153847 150L 113.07692307692308 150L 135.69230769230768 150L 158.3076923076923 150L 180.92307692307693 150L 203.53846153846155 150L 226.15384615384616 150L 248.76923076923077 150L 271.38461538461536 150L 294 150"></path><g id="SvgjsG1379" class="apexcharts-series-markers-wrap"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1395" r="0" cx="0" cy="0" class="apexcharts-marker w8n81s60t no-pointer-events" stroke="#ffffff" fill="#1abc9c" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g><g id="SvgjsG1380" class="apexcharts-datalabels"></g></g></g><line id="SvgjsLine1390" x1="0" y1="0" x2="294" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1391" x1="0" y1="0" x2="294" y2="0" stroke-dasharray="0" stroke-width="0" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1392" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1393" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1394" class="apexcharts-point-annotations"></g></g><rect id="SvgjsRect1372" width="0" height="0" x="0" y="0" rx="0" ry="0" fill="#fefefe" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"></rect><g id="SvgjsG1385" class="apexcharts-yaxis" rel="0" transform="translate(-21, 0)"><g id="SvgjsG1386" class="apexcharts-yaxis-texts-g"></g></g></svg><div class="apexcharts-legend"></div><div class="apexcharts-tooltip light"><div class="apexcharts-tooltip-series-group"><span class="apexcharts-tooltip-marker" style="background-color: rgb(26, 188, 156);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-label"></span><span class="apexcharts-tooltip-text-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div></div></div>
-                    <div class="resize-triggers"><div class="expand-trigger"><div style="width: 295px; height: 313px;"></div></div><div class="contract-trigger"></div></div></div>
+                    }
+                }
+
+            </div>
+        </div>
             </div>
             <!-- Latest Customers end -->
         </div>
         <!-- [ Main Content ] end -->
 
+</div>

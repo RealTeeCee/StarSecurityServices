@@ -4,6 +4,9 @@
 @{
     ViewData["Title"] = "List Contacts";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int no = 0;
+    int page = ViewBag.PageNumber;
+    int pageGreater = (page - 1) * 6;
 }
 
 <div class="col-md-12">
@@ -30,7 +33,7 @@
                         @foreach (var item in Model)
                         {
                             <tr class="bg-dark">
-                                <td>@item.Id</td>
+                                <td>@(page > 1 ? ++pageGreater : ++no)</td>
                                 <td>@item.Name</td>
                                 <td>@item.Email</td>
                                 <td>@item.Subject</td>
@@ -38,7 +41,7 @@
                                 <td>
                                     @*@Html.ActionLink("Edit", "Edit", new {  id = item.Id }) |*@
                                     @*@Html.ActionLink("Details", "Details", new {  id = item.Id }) |*@
-                                    @*<a class="confirmDeletion btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                                    <a style="background-color: #287ecb;" class="btn btn-dark" asp-action="SendMail" asp-route-id="@item.Id">Reply</a>
                                 </td>
                             </tr>
                         }

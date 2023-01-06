@@ -10,5 +10,6 @@ namespace Models.ViewModel
     {
         public List<Category> Categories { get; set; }                
         public List<CategoryBranch> CategoriesBranches { get; set; }
+        public List<Project> Projects { get; set; }
     }
 }

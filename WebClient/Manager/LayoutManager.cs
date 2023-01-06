@@ -29,5 +29,15 @@ namespace WebClient.Manager
             }
             return false;
         }
+
+        public async Task<bool> IsRated(long projectId)
+        {
+            var rating = await unitOfWork.Rating.GetFirstOrDefault(x => x.ProjectId == projectId);
+            if(rating != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

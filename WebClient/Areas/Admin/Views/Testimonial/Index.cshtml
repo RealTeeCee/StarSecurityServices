@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<Models.Testimonial>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Testimonial";
+    int no = 0;
+    int page = ViewBag.PageNumber;
+    int pageGreater = (page - 1) * 6;
 }
 
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <h3>List Testimonials</h3>
+            
             <span class="d-block m-t-5">
-                <a asp-action="Create">Create New</a>
+                <a class="btn btn-primary" asp-action="Create">Create New</a>
             </span>
         </div>
         <div class="card-body table-border-style">
@@ -46,16 +49,16 @@
                         @foreach (var item in Model)
                         {
                             <tr class="bg-dark">
-                                <td>@item.Id</td>
+                                <td>@(page > 1 ? ++pageGreater : ++no)</td>
                                 <td>@item.Name</td>
                                 <td>@item.Title</td>                                
                                 <td><img src="~/media/testimonials/@item.Image" width="200" alt="" /></td>
                                 <td>@item.CreatedAt</td>
                                 <td>@item.UpdatedAt</td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new {  id = item.Id }) |
-                                    @Html.ActionLink("Details", "Details", new {  id = item.Id }) |
-                                    <a class="confirmDeletion" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                    <a class="confirmDeletion btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                 </td>
                             </tr>
                         }

@@ -26,6 +26,9 @@ namespace Models
         [Column(TypeName = "nvarchar")]
         [StringLength(400)]
         public string Message { get; set; }
+        [Column(TypeName = "text")]
+
+        public string? ReplyMessage { get; set; }
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
     }

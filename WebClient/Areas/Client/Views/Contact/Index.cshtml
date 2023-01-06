@@ -7,7 +7,20 @@
 @section Styles {
     <link href="~/css/tailwind.css" rel="stylesheet" />
 }
-
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">About Us</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">About</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
 <!-- Contact Start -->
 <div class="container-fluid bg-light overflow-hidden px-lg-0">
     <div class="container contact px-lg-0">
@@ -77,7 +90,7 @@
                         <div style="margin-block-start: -100px;" class="col-lg-12 bg-dark contact-text py-5 px-5 wow fadeIn"
                              data-wow-delay="0.5s">
                             <div class="p-lg-5 ps-lg-0">                                
-                                    <h2 class="mb-4">Find The <a href="#" class="duration-300 transition-all">Closest Store :</a> </h2>
+                                    <h2 class="mb-4">Find The <a href="#" class="duration-300 transition-all">Closest Branch :</a> </h2>
                                 <div id="showResult">
                                         <button id="calDistance" class="btn btn-warning hover:opacity-60 duration-300 transition-all">Click here</button>
                                 </div>
@@ -95,8 +108,8 @@
             {
                 @if (item.GoogleMap != null && item.GoogleMap.StartsWith("https://www.google.com/maps/embed"))
                 {
-                        <div class="col-lg-3 pe-lg-0 p-1" style="min-height: 400px">
-                            <p class="text-gray-500 hover:text-white duration-300 transition-all w-full text-center hover:bg-black p-3 font-bold">@item.Name</p>
+                    <div class="col-lg-3 pe-lg-0 p-1" style="min-height: 400px">
+                        <p class="text-gray-500 hover:text-white duration-300 transition-all w-full text-center hover:bg-black p-3 font-bold">@item.Name</p>
                         <div class="position-relative h-80">
                                 <iframe class="position-absolute w-100 h-100"
                             style="min-height: 330px; object-fit: cover"
