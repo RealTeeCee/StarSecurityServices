@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
     public class Testimonial
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+        [Column(TypeName = "nvarchar")]
+        [StringLength(255)]
+        public string? Name { get; set; }
+        [Column(TypeName = "nvarchar")]
+        [StringLength(255)]
+        public string? Title { get; set; }
+        [Column(TypeName = "text")]
+        [StringLength(255)]
+        public string? Description { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? UpdatedAt { get; set; }
     }
 }

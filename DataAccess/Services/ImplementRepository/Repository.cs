@@ -19,36 +19,80 @@ namespace DataAccess.Services.ImplementRepository
         {
             this._context = context;
             this._dbSet = _context.Set<T>();
+        }             
+
+        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, string? thenIncludeProperties = null)
+        {
+            IQueryable<T> query = _dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter).AsNoTracking();
+            }
+            if (includeProperties != null && thenIncludeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    foreach (var thenInclude in thenIncludeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp + "." + thenInclude).AsNoTracking();
+                    }
+                }
+            }
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp).AsNoTracking();
+                }
+            }
+            return await query.ToListAsync();
         }
 
-        public Task<T> Add(T entity)
+        public async Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, string? thenIncludeProperties = null)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = _dbSet;
+            query = query.Where(filter);
+
+
+            if (includeProperties != null && thenIncludeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    foreach (var thenInclude in thenIncludeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProp + "." + thenInclude);
+                    }
+                }
+            }
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return await query.FirstOrDefaultAsync();
+        }
+        public async Task<T> Add(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+            return entity;
         }
 
-        public Task<IEnumerable<T>> AddRange(IEnumerable<T> entities)
+        public async Task<IEnumerable<T>> AddRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, string? thenIncludeProperties = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, string? thenIncludeProperties = null)
-        {
-            throw new NotImplementedException();
+            await _dbSet.AddRangeAsync(entities);
+            return entities;
         }
 
         public void Remove(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            _dbSet.RemoveRange(entities);
         }
     }
 }

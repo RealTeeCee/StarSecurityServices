@@ -8,7 +8,7 @@ namespace DataAccess.Repositories.IRepositories
 {
     public interface IUnitOfWork
     {
-
+        IBranch Branch { get; }
         Task<int> Save();
         void ClearTracking();
     }
