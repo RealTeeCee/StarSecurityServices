@@ -291,7 +291,7 @@
                                 </thead>
                                 <tbody>
                                     @{int no = 1;}
-                                    @foreach (var item in Model.UserDetails.Take(5))
+                                    @foreach (var item in Model.UserDetails.OrderByDescending(x=>x.Grade))
                                     {
                                         @if(item.Grade > 0)
                                         {                                            

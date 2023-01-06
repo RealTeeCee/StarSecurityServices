@@ -39,7 +39,7 @@ namespace WebClient.Areas.Admin.Controllers
 			model.Users = await unitOfWork.User.GetAll();
 
 			model.UserDetails = await unitOfWork.UserDetail.GetAll(includeProperties: "User");
-			model.UserDetails.OrderBy(x => x.Grade);
+			model.UserDetails.OrderBy(x => x.Grade.Value);
 
 			model.Employees = new List<User>();
 
