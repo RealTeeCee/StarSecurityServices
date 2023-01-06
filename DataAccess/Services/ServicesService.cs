@@ -18,7 +18,7 @@ namespace DataAccess.Services
             this._context = context;
         }
 
-        public void Update(Branch obj)
+        public void Update(Service obj)
         {
             throw new NotImplementedException();
         }

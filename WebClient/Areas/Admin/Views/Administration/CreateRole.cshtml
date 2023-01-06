@@ -1,0 +1,39 @@
+﻿@model Models.ViewModel.CreateRoleViewModel
+
+@{
+    ViewData["Title"] = "Create New Role";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-6">
+    <form asp-action="CreateRole">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@*        <div class="form-group">
+            <label asp-for="RoleName" class="control-label">
+                Role Name
+            </label>
+            <input asp-for="RoleName" class="form-control" />
+            <span asp-validation-for="RoleName" class="text-danger"></span>
+        </div>*@
+
+        <div class="form-group">
+            <label asp-for="RoleName" class="control-label">
+                Role Name
+            </label>
+            <select asp-for="RoleName"  class="form-control">
+                <option value="">Choose a Role</option>
+                <option value="GeneralAdmin">GeneralAdmin</option>
+                <option value="Admin">Admin</option>
+                <option value="Employee">Employee</option>
+            </select>
+            <span asp-validation-for="RoleName" class="text-danger"></span>
+        </div>
+        <div class="form-group d-flex justify-content-between">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <a asp-action="listroles" class="btn btn-outline-dark">Back to List</a>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

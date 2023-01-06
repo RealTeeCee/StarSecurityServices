@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,10 +15,48 @@ namespace Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         [Column(TypeName = "nvarchar")]
+        [StringLength(255)]        
+        public string Name { get; set; }
+        [Column(TypeName = "nvarchar")]
         [StringLength(255)]
-        [Required]
-        public string? Name { get; set; }
+        
+        public string? Latitude { get; set; }
+
+        public string? Longitude { get; set; }
+
+        public string? Image { get; set; }
+        [NotMapped]
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; }
+        public string? Address { get; set; }
+        
+        [StringLength(100)]
+        public string? Email { get; set; }
+        [StringLength(15)]
+        public string? Phone { get; set; }
+        [StringLength(100)]
+        public string? TimeOpen { get; set; }
+        [StringLength(255)]
+        public string? Facebook { get; set; }
+        [StringLength(255)]
+        public string? Twitter { get; set; }
+        [StringLength(255)]
+        public string? Youtube { get; set; }
+        [StringLength(255)]
+        public string? Instagram { get; set; }
+
+        [Column(TypeName = "text")]
+        public string? GoogleMap { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
+    }
+
+    public class Location
+    {
+        public string BranchName { get; set; }
+        public int BranchId { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double DistanceToUser { get; set; }
     }
 }

@@ -1,0 +1,96 @@
+﻿@model Models.ViewModel.EditUserViewModel
+
+@{
+    ViewData["Title"] = "Edit User";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-6">
+    <form asp-action="EditUser" class="mt-3">
+        <div asp-validation-summary="All" class="text-danger"></div>
+@*        <div class="form-group row">
+            <label asp-for="Id" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Id" disabled class="form-control" />
+            </div>
+        </div>*@
+
+        <input type="hidden" asp-for="Id" disabled class="form-control" />
+
+        <div class="form-group row">
+            <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="UserName" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Address" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a asp-action="ListUsers" type="submit" class="btn btn-outline-danger">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+    
+@if(ViewBag.UserRole != "GeneralAdmin"){
+    <div class="col-md-6">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h3>User Permission</h3>
+            </div>
+            <div class="card-body">
+                @if (Model.Claims.Any())
+                {
+                    @foreach (var claim in Model.Claims)
+                    {
+                        @if(claim != "All"){
+                            <h5 class="card-title">@claim</h5>
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    <h5 class="card-title">None at the moment</h5>
+                }
+            </div>
+            <div class="card-footer">
+                <a asp-route-userId="@Model.Id" asp-action="ManageUserClaims" class="btn btn-primary" style="width:auto">Update Permission</a>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

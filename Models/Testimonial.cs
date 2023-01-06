@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
@@ -17,6 +18,13 @@ namespace Models
         [Column(TypeName = "text")]
         [StringLength(255)]
         public string? Description { get; set; }
+
+        public string Image { get; set; }
+
+        [NotMapped]
+        [FileExtension]
+        public IFormFile? ImageUpload { get; set; }
+
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }

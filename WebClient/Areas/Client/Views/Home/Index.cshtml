@@ -1,0 +1,465 @@
+﻿@model Models.ViewModel.HomeViewModel;
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
+    @using Microsoft.AspNetCore.Http
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    var branchIdSession = HttpContextAccessor.HttpContext.Session.GetString("branchId");
+}
+@section Styles {
+    <style>
+        img.new-format{            
+            height:225px;
+        }
+
+        img.new-format2{            
+            height:325px;
+        }
+    </style>
+}
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0 pb-5 ">
+        <div class="owl-carousel header-carousel position-relative">
+            <div class="owl-carousel-item position-relative carousel-div">
+                <img class="img-fluid" src="~/img/carousel-11.jpg" alt="">
+                <div class="carousel-inner">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-8 text-center">
+                                <h1 class="display-3 text-white animated slideInDown mb-4">Best CCTV & Security Solution For You</h1>
+                                <p class="fs-5 text-white mb-4 pb-2">Breaking Down The Best Home Security Cameras.</p>
+                                <a href="" class="btn btn-primary rounded-pill py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
+                                <a href="" class="btn btn-light rounded-pill py-md-3 px-md-5 animated slideInRight">Free Quote</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="owl-carousel-item position-relative carousel-div">
+                <img class="img-fluid" src="~/img/carousel-22.jpg" alt="">
+                <div class="carousel-inner">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-8 text-center">
+                                <h1 class="display-3 text-white animated slideInDown mb-4">Smart Security Solution For All Business</h1>
+                                <p class="fs-5 text-white mb-4 pb-2">Our industry-leading outdoor perimeter security systems for the protection of critical infrastructure, high value assets and human life..</p>
+                                <a href="" class="btn btn-primary rounded-pill py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
+                                <a href="" class="btn btn-light rounded-pill py-md-3 px-md-5 animated slideInRight">Free Quote</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="owl-carousel-item position-relative carousel-div">
+                <img class="img-fluid" src="~/img/carousel-33.jpg" alt="">
+                <div class="carousel-inner">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-8 text-center">
+                                <h1 class="display-3 text-white animated slideInDown mb-4">Innovative Solution For Security System</h1>
+                                <p class="fs-5 fw-medium text-white mb-4 pb-2">Discover the innovative solutions for protection systems for efficient engineering!.</p>
+                                <a href="" class="btn btn-primary rounded-pill py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
+                                <a href="" class="btn btn-light rounded-pill py-md-3 px-md-5 animated slideInRight">Free Quote</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Carousel End -->
+    <!-- Facts Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4 wow fadeIn " data-wow-delay="0.1s">
+                    <!-- bỏ bg-dark, thêm div123 -->
+                    <div class="h-100 p-4 p-xl-5 div123">
+                        <div class="d-flex align-items-center justify-content-between mb-4 ">
+                            <div class="btn-square rounded-circle" style="width: 64px; height: 64px;">
+                                <img class="img-fluid" src="~/img/icon/icon-3.png" alt="Icon">
+                            </div>
+                            <h1 class="display-1 mb-0" style="color: #fff;">01</h1>
+                        </div>
+                        <h5 class="text-white">Home Security</h5>
+                        <hr class="w-25">
+                        <span>Home security includes both the security hardware placed on a property and individuals' personal security practices.</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.3s">
+                    <!-- bỏ bg-dark, thêm div123 -->
+                    <div class="h-100 p-4 p-xl-5 div123">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="btn-square rounded-circle" style="width: 64px; height: 64px;">
+                                <img class="img-fluid" src="~/img/icon/icon-4.png" alt="Icon">
+                            </div>
+                            <h1 class="display-1 mb-0" style="color: #fff;">02</h1>
+                        </div>
+                        <h5 class="text-white">Access Control</h5>
+                        <hr class="w-25">
+                        <span>Access control is a security technique that regulates who or what can view or use resources in a computing environment.</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.5s">
+                    <!-- bỏ bg-dark, thêm div123 -->
+                    <div class="h-100 p-4 p-xl-5 div123">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="btn-square rounded-circle" style="width: 64px; height: 64px;">
+                                <img class="img-fluid" src="~/img/icon/icon-2.png" alt="Icon">
+                            </div>
+                            <h1 class="display-1 mb-0" style="color: #fff;">03</h1>
+                        </div>
+                        <h5 class="text-white">24/7 Support</h5>
+                        <hr class="w-25">
+                        <span>The UK retail trade is confronted with an inventory-difference challenge every year due to theft and damage caused by vandalism in electronics stores, clothing stores, etc.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Facts Start -->
+
+
+    <!-- About Start -->
+    <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
+        <div class="container about px-lg-0">
+            <div class="row g-0 mx-lg-0">
+                <div class="col-lg-6 ps-lg-0" style="min-height: 400px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute img-fluid w-100 h-100" src="~/img/about1.jpg" style="object-fit: cover;" alt="">
+                    </div>
+                </div>
+                <!-- thêm div123 -->
+                <div class="col-lg-6 about-text py-5 wow fadeIn div123" data-wow-delay="0.5s">
+                    <div class="p-lg-5 pe-lg-0">
+                        <div class="bg-primary mb-3" style="width: 60px; height: 2px;"></div>
+                        <h1 class="display-5 mb-4">About Us</h1>
+                        <p><strong>Star Security Service</strong>&nbsp;is a fully licensed/insured <a href="#">private security</a> and protection agency owned and operated by certified law enforcement officers.</p>
+                        <p>We offer trained uniformed guards, available armed and unarmed, 24 hours a day, 7 days week. &nbsp;&nbsp;All of our guards are certified crowd manag<strong><a asp-area="client" asp-action="index" asp-controller="about"> ...</a></strong></p>
+                        <div class="row g-4 mb-4 pb-3">
+                            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
+                                <div class="d-flex align-items-center">
+                                    <!-- bỏ bg-white -->
+                                    <div class="btn-square rounded-circle" style="width: 64px; height: 64px;">
+                                        <img class="img-fluid" src="~/img/icon/icon-1.png" alt="Icon">
+                                    </div>
+                                    <div class="ms-4">
+                                        <h2 class="mb-1" data-toggle="counter-up">1234</h2>
+                                        <p class="fw-medium text-primary mb-0">Happy Clients</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
+                                <div class="d-flex align-items-center">
+                                    <!-- bỏ bg-white -->
+                                    <div class="btn-square rounded-circle" style="width: 64px; height: 64px;">
+                                        <img class="img-fluid" src="~/img/icon/icon-5.png" alt="Icon">
+                                    </div>
+                                    <div class="ms-4">
+                                        <h2 class="mb-1" data-toggle="counter-up">1234</h2>
+                                        <p class="fw-medium text-primary mb-0">Projects Done</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a asp-area="client" asp-action="index" asp-controller="about" class="btn btn-primary rounded-pill py-3 px-5">Explore More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center">
+                <div class="bg-primary mb-3 mx-auto" style="width: 60px; height: 2px;"></div>
+                <h1 class="display-5 mb-5">Our Services</h1>
+            </div>
+            <div class="row g-4 service-row">
+            @{
+                int i = 1;
+                int serviceDivide = 1;
+            }
+                @foreach(var categoryBranch in @Model.CategoriesBranches)
+                {                    
+                    if(categoryBranch.Category.Slug != "vacancy-service")
+                    {
+                        <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.@(i)s">
+                            <div class="service-item border h-100 p-5 service-div@(serviceDivide % 2 == 1 ? "1" : "2") ourservice-div">
+                                <!-- bỏ bg-light -->
+                                <div class="btn-square  rounded-circle mb-4" style="width: 200px;height: 200px">
+                                    <img class="img-fluid new-format" src="~/media/categories/@categoryBranch.Category.Image">
+                                </div>
+                                <div>
+
+                                <h4 class="mb-3">@categoryBranch.Category.Name</h4>
+                                <p class="mb-4">@categoryBranch.Category.ShortDescription</p>
+                                </div>
+                                <div class="btn-position">
+                                    <a class="btn" asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="@categoryBranch.Category.Slug"><i class="fa fa-arrow-right text-white me-3"></i>Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        i += 2;
+                        serviceDivide++;
+                    }
+                }                              
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+    <!-- Feature Start -->
+    <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
+        <div class="container feature px-lg-0">
+            <div class="row g-0 mx-lg-0 whychooseus">
+                <div class="col-lg-6 feature-text py-5 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="p-lg-5 ps-lg-0">
+                        <div class="bg-primary mb-3" style="width: 60px; height: 2px;"></div>
+                        <h1 class="display-5 mb-5">Why Choose Us</h1>
+                    <p class="mb-4 pb-2">While this may seem like a small detail at first, think about the priorities of some of the national<strong><a asp-area="client" asp-action="index" asp-controller="feature"> ...READ MORE</a></strong></p>
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- bỏ bg-white -->
+                                    <div class="btn-square  rounded-circle" style="width: 64px; height: 64px;">
+                                        <img class="img-fluid" src="~/img/icon/icon-7.png" alt="Icon">
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="text-primary mb-2">Trusted</p>
+                                        <h5 class="mb-0">Security</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- bỏ bg-white -->
+                                    <div class="btn-square  rounded-circle" style="width: 64px; height: 64px;">
+                                        <img class="img-fluid" src="~/img/icon/icon-10.png" alt="Icon">
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="text-primary mb-2">Quality</p>
+                                        <h5 class="mb-0">Services</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- bỏ bg-white -->
+                                    <div class="btn-square  rounded-circle" style="width: 64px; height: 64px;">
+                                        <img class="img-fluid" src="~/img/icon/icon-3.png" alt="Icon">
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="text-primary mb-2">Smart</p>
+                                        <h5 class="mb-0">Systems</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- bỏ bg-white -->
+                                    <div class="btn-square  rounded-circle" style="width: 64px; height: 64px;">
+                                        <img class="img-fluid" src="~/img/icon/icon-2.png" alt="Icon">
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="text-primary mb-2">24/7 Hours</p>
+                                        <h5 class="mb-0">Support</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 pe-lg-0" style="min-height: 400px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute img-fluid w-100 h-100" src="~/img/feature1.jpeg" style="object-fit: cover;" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Feature End -->
+
+
+    <!-- Projects Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <div class="bg-primary mb-3 mx-auto" style="width: 60px; height: 2px;"></div>
+                <h1 class="display-5 mb-5">Our Projects</h1>
+            </div>
+            <div class="row mt-n2 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="col-12 text-center">
+                    <ul class="list-inline mb-5" id="portfolio-flters">
+                        <li class="mx-2 active" data-filter="*">All</li>
+                        <li class="mx-2" data-filter=".first">Complete Projects</li>
+                        <li class="mx-2" data-filter=".second">Ongoing Projects</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row g-4 portfolio-container">
+                @foreach (var item in Model.Projects.Take(6))
+                {
+                    <div class="col-lg-4 col-md-6 portfolio-item @(DateTime.Now.CompareTo(item.DueDate)>0 ?"first":"second") wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="portfolio-inner">                        
+                                 <img class="img-fluid new-format2 w-100" src="~/media/projects/@item.Image" alt="">
+                                <!-- thêm div123 -->
+                                <div class="text-center p-4 div123">
+                                    <p class="text-primary mb-2">@item.Service.Name</p>
+                                    <h5 class="lh-base mb-0">@item.Name</h5>
+                                </div>
+                                <div class="portfolio-text text-center bg-white p-4">
+                                    <p class="text-dark mb-2">@item.Service.Name</p>
+                                    <h5 class="lh-base text-dark mb-3">@item.Name</h5>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-square btn-primary rounded-circle mx-1" href="~/media/projects/@item.Image" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
+                                        <a class="btn btn-square btn-primary rounded-circle mx-1" asp-area="Client" asp-action="DetailProject" asp-controller="Project" asp-route-serviceSlug="@item.Service.Slug" asp-route-projectSlug="@item.Slug">
+                                            <i class="fa fa-info"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                      
+                       
+                        </div>
+                    </div>
+                  }
+             
+            </div>
+        </div>
+    </div>
+    <!-- Projects End -->
+
+
+    <!-- Quote Start -->
+    <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
+        <div class="container quote px-lg-0">
+            <div class="row g-0 mx-lg-0">
+                <div class="col-lg-6 ps-lg-0" style="min-height: 400px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute img-fluid w-100 h-100" src="~/img/carousel-22.jpg" style="object-fit: cover;" alt="">
+                    </div>
+                </div>
+                <!-- thêm div123 -->
+                <div class="col-lg-6 quote-text py-5 wow fadeIn div123" data-wow-delay="0.5s">
+                    <div class="p-lg-5 pe-lg-0">
+                        <div class="bg-primary mb-3" style="width: 60px; height: 2px;"></div>
+                        <h1 class="display-5 mb-5">Free Quote</h1>
+                    <p class="mb-4 pb-2">If you have any query regarding our security services, feel free to contact us through provided mailing address or you can fill out the given form.</p>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" id="name" class="form-control border-0" placeholder="Your Name" style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                <input type="email" id="email" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-12">
+                                <input type="text" id="subject" class="form-control border-0" placeholder="Subject" style="height: 55px;">
+                                </div>
+@*                                <div class="col-12 col-sm-6">
+                                    <select class="form-select border-0" style="height: 55px;">
+                                        <option selected>Select A Service</option>
+                                        <option value="1">Service 1</option>
+                                        <option value="2">Service 2</option>
+                                        <option value="3">Service 3</option>
+                                    </select>
+                                </div>*@
+                                <div class="col-12">
+                                    <textarea class="form-control border-0" placeholder="Leave a message here" id="message"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit" onclick="sendMessage(event)">Get A Free Quote</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Quote End -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function sendMessage(event) {
+            event.preventDefault();
+
+            const Name = $("#name").val();
+            const Email = $("#email").val();
+            const Subject = $("#subject").val();
+            const Message = $("#message").val();
+
+            if (Name === "" || Email === "" || Subject === "" || Message === "") {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Please input your information in to the Form',
+                    showConfirmButton: false,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    timer: 2000
+                })
+            } else {
+                const data = {
+                    Name,
+                    Email,
+                    Subject,
+                    Message
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "@(Programs.pathRoot + "/contact/send-message")",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response, status) { }
+                });
+
+                Swal.fire({
+                    position: 'top-end',
+                    title: 'Sending...',
+                    html: 'Please waiting after <b></b> milliseconds.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                            b.textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        // After Success
+
+                        $("#name").val('');
+                        $("#email").val('');
+                        $("#subject").val('');
+                        $("#message").val('');
+
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                });
+            }
+        }
+    </script>
+}

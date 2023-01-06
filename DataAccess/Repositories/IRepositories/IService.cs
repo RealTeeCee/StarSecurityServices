@@ -1,4 +1,4 @@
-﻿using DataAccess.Repositories.GenericRepositories;
+﻿using DataAccess.Repositories.IRepositories.GenericRepositories;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,6 @@ namespace DataAccess.Repositories.IRepositories
 {
     public interface IService : IRepository<Service>
     {
-        void Update(Branch obj);
+        void Update(Service obj);
     }
 }

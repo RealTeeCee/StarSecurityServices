@@ -1,0 +1,45 @@
+﻿@model Models.Category
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+    <div class="container">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="Image" class="control-label">Current Image</label>
+                <img src="~/media/categories/@Model.Image" width="150" height="150" alt="" />
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="Name">Name</label>
+                <input type="text" class="form-control" asp-for="Name" readonly>
+            </div>
+    </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="CreatedAt">Created At</label>
+                <input type="text" class="form-control" asp-for="CreatedAt" readonly>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="UpdatedAt">Updated At</label>
+                <input type="text" class="form-control" asp-for="UpdatedAt" readonly>
+            </div>
+        </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="ShortDescription">ShortDescription</label>
+            <textarea type="text" class="form-control" asp-for="ShortDescription" readonly></textarea>
+        </div>        
+    </div>
+
+
+        <div class="form-row d-flex justify-content-center">
+            <a asp-action="Index" class="btn btn-primary">Back to List</a>
+        </div>
+    </div>
+

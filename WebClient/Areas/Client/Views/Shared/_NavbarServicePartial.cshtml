@@ -1,0 +1,68 @@
+﻿@using WebClient.Manager
+@using Microsoft.AspNetCore.Http
+@inject LayoutManager layoutManager
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var branchIdSession = (httpContextAccessor.HttpContext.Session.GetString("branchId") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchId")) : "1";
+    var branchFbSession = (httpContextAccessor.HttpContext.Session.GetString("branchFacebook") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchFacebook")) : "https://www.facebook.com/";
+    var branchIgSession = (httpContextAccessor.HttpContext.Session.GetString("branchInstagram") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchInstagram")) : "https://www.instagram.com/";
+    var branchYtbSession = (httpContextAccessor.HttpContext.Session.GetString("branchYoutube") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchYoutube")) : "https://www.youtube.com/";
+    var branchTwSession = (httpContextAccessor.HttpContext.Session.GetString("branchTwitter") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchTwitter")) : "https://www.twitter.com/";
+}
+
+<header>
+ <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 px-4 px-lg-5">
+    <a asp-area="client" asp-action="index" asp-controller="home" asp-route-localeId="@(branchIdSession != null ? branchIdSession : "1")" class="navbar-brand d-flex align-items-center">
+        <!-- <h2 class="m-0 text-primary">Securex</h2> -->
+        <img id="logo-img" src="~/img/logo.png" alt="Logo Star Security">
+    </a>
+    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto py-4 py-lg-0">
+            <a asp-area="client" asp-action="index" asp-controller="home" asp-route-localeId="@(branchIdSession != null ? branchIdSession : "1")" class="nav-item nav-link active">Home</a>
+            <a asp-area="client" asp-action="index" asp-controller="about" class="nav-item nav-link">About</a>
+
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Services</a>
+                <div class="dropdown-menu rounded-0 rounded-bottom m-0">
+                    @foreach (var item in await layoutManager.CategoryBranchList(int.Parse(branchIdSession != null ? branchIdSession : "1")))
+                    {
+                        <a class="dropdown-item" asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-localeId="@branchIdSession" asp-route-categorySlug="@item.Category.Slug"> @item.Category.Name</a>
+                    }
+                </div>
+            </div>
+
+
+            @if(await layoutManager.HasVacancy(int.Parse(branchIdSession != null ? branchIdSession : "1")))
+            {
+                    <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-localeId="@branchIdSession" asp-route-categorySlug="vacancy-service" class="nav-item nav-link">Vacancies</a>
+            }
+                <a asp-area="Client" asp-action="Index" asp-controller="Project" asp-route-localeId="@branchIdSession" class="nav-item nav-link">Project</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                <div class="dropdown-menu rounded-0 rounded-bottom m-0">
+                    <a href="@Url.ActionLink("Index", "Feature")" class="dropdown-item">Feature</a>
+                    @*<a href="@Url.ActionLink("Index", "FreeQuote")" class="dropdown-item">Free Quote</a>*@
+                    <a href="@Url.ActionLink("Index", "OurTeam")" class="dropdown-item">Our Team</a>
+                    <a href="@Url.ActionLink("Index", "Testimonial")" class="dropdown-item">Testimonial</a>
+                    
+                </div>
+            </div>
+            <a href="@Url.ActionLink("Index", "Contact")" class="nav-item nav-link">Contact</a>
+        </div>
+        <div class="h-100 d-lg-inline-flex align-items-center d-none">
+                <a class="btn btn-square rounded-circle bg-light text-primary me-2" target="_blank" href="@branchFbSession"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square rounded-circle bg-light text-primary me-2" target="_blank" href="@branchTwSession"><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-square rounded-circle bg-light text-primary me-2" target="_blank" href="@branchYtbSession"><i class="fab fa-youtube"></i></a>
+                <a class="btn btn-square rounded-circle bg-light text-primary me-0" target="_blank" href="@branchIgSession"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+</header>

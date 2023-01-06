@@ -1,0 +1,66 @@
+﻿@model Models.CategoryViewModel;
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
+    @using Microsoft.AspNetCore.Http
+    @inject IHttpContextAccessor httpContextAccessor
+    var brandIdSession = (httpContextAccessor.HttpContext.Session.GetString("branchId") != null) ? (httpContextAccessor.HttpContext.Session.GetString("branchId")) : "1";
+}
+@section Styles {
+       <style>
+           img.new-format{
+               width:300px;
+               height:300px;
+           }
+       </style>
+    }
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Our Services</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#">Services</a></li>                
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Team Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <div class="bg-primary mb-3 mx-auto" style="width: 60px; height: 2px;"></div>
+            <h1 class="display-5 mb-5">Service Categories</h1>
+        </div>
+        <div class="row g-4">
+            @{
+                int i = 1;                
+            }
+            @foreach (var item in Model.CategoriesBranches)
+            {
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.@(i)s">
+                    <!-- thêm div123 -->
+                    <div class="team-item div123">
+                        <div class="overflow-hidden position-relative">
+                            <img class="img-fluid new-format" src="~/media/categories/@item.Category.Image" alt="">
+                            <div class="team-social">
+                                <!-- thêm btn-hover -->
+                                <a asp-area="Client" asp-action="Detail" asp-controller="Category" asp-route-categorySlug="@item.Category.Slug" class="btn btn-primary">Read more</a>
+                            </div>
+                        </div>
+                        <div class="text-center p-4">
+                            <h5 class="mb-0">@item.Category.Name</h5>
+                            <span class="text-primary">@item.Category.ShortDescription</span>
+                        </div>
+                    </div>
+                </div>
+                    i += 2;
+                }
+            }          
+        </div>
+    </div>
+</div>
+<!-- Team End -->

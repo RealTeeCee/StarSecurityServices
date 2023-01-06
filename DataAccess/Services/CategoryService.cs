@@ -18,9 +18,17 @@ namespace DataAccess.Services
             this._context = context;
         }
 
-        public void Update(Branch obj)
+        public void Update(Category obj)
         {
-            throw new NotImplementedException();
+            var objFromDb = _context.Categories.FirstOrDefault(x => x.Id == obj.Id);            
+            if (objFromDb != null)
+            {
+
+                objFromDb.Image = obj.Image;
+                objFromDb.CreatedAt = obj.CreatedAt;
+                objFromDb.UpdatedAt = obj.UpdatedAt;
+                _context.Categories.Update(objFromDb);
+            }
         }
     }
 }

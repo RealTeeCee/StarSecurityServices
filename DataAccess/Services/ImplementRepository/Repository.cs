@@ -1,5 +1,5 @@
 ﻿using DataAccess.Data;
-using DataAccess.Repositories.GenericRepositories;
+using DataAccess.Repositories.IRepositories.GenericRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace DataAccess.Services.ImplementRepository
             this._context = context;
             this._dbSet = _context.Set<T>();
         }             
-
+        //x => x.id == id, _context.product.include("categories, tags").tolist();
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, string? thenIncludeProperties = null)
         {
             IQueryable<T> query = _dbSet;

@@ -1,0 +1,186 @@
+﻿@using System.Security.Claims
+@using WebClient.Manager
+@model IEnumerable<Project>
+@inject LayoutManager layoutManager;
+
+@*@inject SignInManager<User> signInManager;*@
+@{
+    ViewData["Title"] = "List Projects";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    //var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    //var currentRolesName = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
+    int no = 0;
+    int page = ViewBag.PageNumber;
+    int pageGreater = (page - 1) * 6;    
+}
+@section Styles {
+    <style>
+        a.btn.btn-warning.btn-finish 
+        {
+            background-color: #d40ce2;
+            border-color: #7c3b7c;
+            color: #ffffffed;
+        }
+    </style>
+}
+
+
+<div class="w-100">
+    <a class="btn btn-success mb-3" style="width:auto" asp-controller="Project" asp-action="Create">
+        Add New Project
+    </a>
+</div>
+
+@if (Model.Any())
+{
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Project Name</th>
+                <th>Image</th>
+                @*User Id*@
+                <th>Assignee</th>
+                @*Service ID*@
+                <th>Service</th>
+                <th>Updated By</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(page > 1 ? ++pageGreater : ++no)</td>
+                    <td>@item.Name</td>
+                    <td>
+                        <img src="~/media/projects/@item.Image" width="100" height="100" alt="@item.Name">
+                    </td>
+                    <td>
+                        <button type="button" class="btn  btn-outline-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.User.Name">@item.User.UserName</button>
+                    </td>
+                    <td>@item.Service.Name</td>
+                    <td>@item.UpdatedBy</td>
+                    @{
+                        var date1 = DateTime.Now;
+                        bool checkFinishDate = false;
+                        @if(item.DueDate != null) {
+                            int result = DateTime.Compare(date1, (item.DueDate ?? DateTime.Now));                                                        
+                            
+                            @if (result > 0)
+                            {
+                                checkFinishDate = true;
+                                                                
+                            }
+                            
+                        }
+                    }
+                    @if(checkFinishDate == true){
+                        <td class="text-danger">@item.DueDate</td>
+                    }
+                    else
+                    {
+                        <td>@item.DueDate</td>
+                    }
+                    <td class="text-right">
+                        @if (item.Priority == 0)
+                        {
+                            <label class="badge badge-light-danger">Low</label>
+                        }
+                        @if (item.Priority == 1)
+                        {
+                            <label class="badge badge-light-primary">Medium</label>
+                        }
+                        @if (item.Priority == 2)
+                        {
+                            <label class="badge badge-light-success">High</label>
+                        }
+                    </td>
+                    <td>@item.CreatedAt</td>
+                    <td>@item.UpdatedAt</td>
+
+                    <td>
+                        @if (checkFinishDate == true)
+                        {
+                            @if(await layoutManager.IsRated(item.Id)){
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-warning btn-finish" asp-controller="Project" asp-action="Rating" asp-area="Admin" asp-route-projectId="@item.Id">Rating</a>
+                            }                            
+                        }
+                        else
+                        {
+                            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        }
+                        
+                        <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        @if (checkFinishDate == true)
+                        {
+
+                        }
+                        else{
+                            <a class="confirmDeletion btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                        
+                    </td>
+                </tr>
+            }    
+            
+
+                      
+           @* @foreach (var user in Model)
+            {
+                @foreach (var currentRoleName in currentRolesName)
+                {
+                    @if ((!currentRoleName.Equals("GeneralAdmin") && !currentRoleName.Equals("SuperAdmin") && await userManager.IsInRoleAsync(user, "GeneralAdmin")) ||
+                   (currentRoleName.Equals("GeneralAdmin") && await userManager.IsInRoleAsync(user, "GeneralAdmin")) ||
+                   await userManager.IsInRoleAsync(user, "SuperAdmin") || currentUserId == user.Id)
+                    {
+                        continue;
+                    }
+                    <tr>
+                        <td>@(++no)</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.CreatedAt</td>
+                        <td>@user.UpdatedAt</td>
+                        <td>
+                            <form asp-action="DeleteUser" asp-route-id="@user.Id">
+                                <a class="btn btn-info" asp-area="Admin" asp-controller="Administration" asp-action="ListRoles">Edit Roles</a>
+                                <a class="btn btn-primary" asp-area="Admin" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">Edit User</a>
+                                <button type="submit" class="btn btn-danger confirmDeletion">Detete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }*@
+
+        </tbody>
+    </table>
+    <div class="d-flex w-100 justify-content-center">
+        <pagination page-count="@ViewBag.TotalPages" page-target="/admin/project" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No Project created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a user
+            </h5>
+            <a class="btn btn-primary" style="width:auto" asp-controller="Project" asp-action="Create">
+                Create Project
+            </a>
+        </div>
+    </div>
+    
+}

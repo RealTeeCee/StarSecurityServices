@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.11" />
+    <None Remove="Areas\Admin\Views\Administration\EditUsersInRole.cshtml~RF5a02241.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.11">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,8 +20,173 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\Service\Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\media\errors\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\admin\assets\fonts\fa-brands-400.svg" />
+    <None Include="wwwroot\admin\assets\fonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\fa-regular-400.svg" />
+    <None Include="wwwroot\admin\assets\fonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\fa-solid-900.svg" />
+    <None Include="wwwroot\admin\assets\fonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\feather.svg" />
+    <None Include="wwwroot\admin\assets\fonts\Flaticon.svg" />
+    <None Include="wwwroot\admin\assets\fonts\Flaticon.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOUehpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOVuhpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOX-hpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOXehpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOXOhpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem5YaGs126MiZpBA-UNirkOXuhpOqc.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFUZ0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFVp0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFVZ0b.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFW50bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFWJ0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFWp0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\opensans\mem8YaGs126MiZpBA-UFWZ0bbck.woff2" />
+    <None Include="wwwroot\admin\assets\fonts\pct.svg" />
+    <None Include="wwwroot\admin\assets\images\cd-arrow.svg" />
+    <None Include="wwwroot\admin\assets\images\hover-effect\triangle.svg" />
+    <None Include="wwwroot\admin\assets\images\hover-effect\triangle2.svg" />
+    <None Include="wwwroot\admin\assets\images\maintance\sark.svg" />
+    <None Include="wwwroot\admin\assets\images\maintance\ship.svg" />
+    <None Include="wwwroot\admin\assets\json\file-upload.php" />
+    <None Include="wwwroot\admin\assets\js\analytics.js" />
+    <None Include="wwwroot\admin\assets\js\analytics.min.js" />
+    <None Include="wwwroot\admin\assets\js\horizontal-menu.js" />
+    <None Include="wwwroot\admin\assets\js\pages\chart-apex.js" />
+    <None Include="wwwroot\admin\assets\js\pages\dashboard-main.js" />
+    <None Include="wwwroot\admin\assets\js\pages\google-maps.js" />
+    <None Include="wwwroot\admin\assets\js\pcoded.js" />
+    <None Include="wwwroot\admin\assets\js\pcoded.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\apexcharts.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\bootstrap.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\gmaps.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\jquery-ui.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\perfect-scrollbar.min.js" />
+    <None Include="wwwroot\admin\assets\js\plugins\prism.js" />
+    <None Include="wwwroot\admin\assets\js\uikit.js" />
+    <None Include="wwwroot\admin\assets\js\uikit.min.js" />
+    <None Include="wwwroot\admin\assets\js\vendor-all.js" />
+    <None Include="wwwroot\admin\assets\js\vendor-all.min.js" />
+    <None Include="wwwroot\lib\counterup\counterup.min.js" />
+    <None Include="wwwroot\lib\easing\easing.js" />
+    <None Include="wwwroot\lib\easing\easing.min.js" />
+    <None Include="wwwroot\lib\isotope\isotope.pkgd.js" />
+    <None Include="wwwroot\lib\isotope\isotope.pkgd.min.js" />
+    <None Include="wwwroot\lib\lightbox\js\lightbox.js" />
+    <None Include="wwwroot\lib\lightbox\js\lightbox.min.js" />
+    <None Include="wwwroot\lib\lightbox\links.php" />
+    <None Include="wwwroot\lib\owlcarousel\LICENSE" />
+    <None Include="wwwroot\lib\owlcarousel\owl.carousel.js" />
+    <None Include="wwwroot\lib\owlcarousel\owl.carousel.min.js" />
+    <None Include="wwwroot\lib\waypoints\links.php" />
+    <None Include="wwwroot\lib\waypoints\waypoints.min.js" />
+    <None Include="wwwroot\lib\wow\wow.js" />
+    <None Include="wwwroot\lib\wow\wow.min.js" />
+    <None Include="wwwroot\scss\bootstrap.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\bootstrap-grid.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\bootstrap-reboot.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\bootstrap-utilities.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\bootstrap.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_floating-labels.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_form-check.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_form-control.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_form-range.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_form-select.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_form-text.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_input-group.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_labels.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\forms\_validation.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\helpers\_clearfix.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\helpers\_colored-links.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\helpers\_position.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\helpers\_ratio.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\helpers\_stretched-link.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\helpers\_text-truncation.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\helpers\_visually-hidden.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_alert.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_border-radius.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_box-shadow.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_breakpoints.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_buttons.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_caret.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_clearfix.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_color-scheme.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_container.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_deprecate.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_forms.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_gradients.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_grid.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_image.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_list-group.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_lists.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_pagination.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_reset-text.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_resize.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_table-variants.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_text-truncate.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_transition.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_utilities.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\mixins\_visually-hidden.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\utilities\_api.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\vendor\_rfs.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_accordion.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_alert.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_badge.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_breadcrumb.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_button-group.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_buttons.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_card.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_carousel.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_close.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_containers.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_dropdown.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_forms.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_functions.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_grid.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_helpers.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_images.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_list-group.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_mixins.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_modal.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_nav.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_navbar.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_offcanvas.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_pagination.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_popover.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_progress.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_reboot.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_root.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_spinners.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_tables.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_toasts.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_tooltip.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_transitions.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_type.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_utilities.scss" />
+    <None Include="wwwroot\scss\bootstrap\scss\_variables.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\media\categories\default.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -9,10 +9,10 @@ namespace Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public string UserId { get; set; }
-        //Tạo phương thức ảo ràng buộc FK UserId vs Id cua Model User
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        //public long UserId { get; set; }
+        ////Tạo phương thức ảo ràng buộc FK UserId vs Id cua Model User
+        //[ForeignKey("UserId")]
+        //public virtual User User { get; set; }
 
         [StringLength(50)]
         public string? IpAddress { get; set; }

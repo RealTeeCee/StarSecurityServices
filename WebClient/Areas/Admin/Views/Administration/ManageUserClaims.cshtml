@@ -1,0 +1,42 @@
+﻿@model Models.ViewModel.UserClaimsViewModel
+
+@{
+    ViewData["Title"] = "Manage User Claims";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card">
+        <div class="card-header">
+            <h2>Manage User Permission</h2>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.Claims.Count; i++)
+            {
+                @if(Model.Claims[i].ClaimType != "All"){
+                    <div class="custom-control custom-checkbox">
+                        <input type="hidden" asp-for="@Model.Claims[i].ClaimType" />
+                        <input class="custom-control-input" asp-for="@Model.Claims[i].IsSelected" />
+                        <label class="custom-control-label" asp-for="@Model.Claims[i].IsSelected">
+                            <!-- Now when click on label it checked status toggle as expected -->
+                            @Model.Claims[i].ClaimType
+                        </label>
+                    </div>
+                }
+                
+            }
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Update" style="width:auto" class="btn btn-primary" />
+            <a asp-action="EditUser" asp-route-id="@Model.UserId" value="Update" style="width:auto" class="btn btn-primary" />Cancel</a>
+        </div>
+    </div>    
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

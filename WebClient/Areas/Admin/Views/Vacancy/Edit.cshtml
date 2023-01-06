@@ -1,0 +1,83 @@
+﻿@model Models.Vacancy
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Edit" enctype="multipart/form-data" class="w-100">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    @*<input type="hidden" asp-for="Id" class="form-control" />*@
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="Image" />
+
+    <div class="form-group">
+        <label asp-for="Image" class="control-label">Current Image</label>
+        <img src="~/media/vacancies/@Model.Image" width="200" alt="" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Image" class="control-label">New Image</label>
+        <input asp-for="ImageUpload" class="form-control" />
+        <img src="" id="imgUpload" alt="" />
+        <span asp-validation-for="ImageUpload" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <select asp-for="Status" class="form-control">
+            @if (Model.Status == 1)
+            {
+                <option value="0">In Active</option>
+                <option value="1" selected>Active</option>
+            }
+            else
+            {
+                <option value="0" selected>In Active</option>
+                <option value="1">Active</option>
+            }
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Phone" class="control-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Noted" class="control-label"></label>
+        <textarea asp-for="Noted" class="form-control"></textarea>
+        <span asp-validation-for="Noted" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        CKEDITOR.replace("Description");
+
+        $("#ImageUpload").change(function () {
+            readUrl(this);
+        });
+    </script>
+}

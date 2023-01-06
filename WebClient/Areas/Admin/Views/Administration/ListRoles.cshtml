@@ -1,0 +1,84 @@
+﻿@model IEnumerable<IdentityRole>
+
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@inject UserManager<User> userManager;
+
+@*  if need this service in multiple views. Considered importing it in _ViewImport file   *@
+@inject IAuthorizationService authorizationService 
+
+
+@{
+    ViewData["Title"] = "All Roles";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var currentRolesName = await userManager.GetRolesAsync(await userManager.FindByIdAsync(currentUserId));
+    int no = 0;
+}
+
+@*<div class="w-100">
+    <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Administration" asp-action="CreateRole">
+        Add New Role
+    </a>
+</div>*@
+
+@if(Model.Any())
+{
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Role Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                @foreach (var currentRoleName in currentRolesName)
+                {
+                    if ( (currentRoleName.Equals("Admin") && (role.Name == "GeneralAdmin" || role.Name == "Admin")) ||            
+                         (currentRoleName.Equals("GeneralAdmin") && role.Name == "GeneralAdmin" || role.Name == "SuperAdmin") )
+                    {
+                        continue;
+                    }
+                    <tr>
+                        <td>@(++no)</td>
+                        <td>@role.Name</td>
+                        <td>
+                            <form asp-action="DeleteRole" asp-route-id="@role.Id">
+                                @*  KHÔNG BỎ COMMENT NÀY DÒNG NÀY GIỮ ĐỂ THAM KHẢO CODE THÔI @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)*@
+
+                                <a class="btn btn-primary" asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id">
+                                    Update User in Role
+                                </a>
+                                @*<button type="submit" class="btn btn-danger confirmDeletion">Detete</button>*@
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+@*    <div class="d-flex w-100 justify-content-center">
+        <pagination page-count="@ViewBag.TotalPages" page-target="/admin/administration/listroles" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+    </div>*@
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+             No roles created yet
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">
+            @*Use the button below to create a role*@
+            Please contact to Developer to Created Role !
+        </h5>
+@*        <a class="btn btn-primary" style="width:auto" asp-controller="Administration" asp-action="CreateRole">
+            Create Role
+        </a>*@
+    </div>
+}

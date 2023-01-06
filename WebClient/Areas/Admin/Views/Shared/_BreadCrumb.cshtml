@@ -1,0 +1,16 @@
+﻿<div class="col-md-12">
+
+    <div class="page-header-title">
+        <h5 class="m-b-10">@(ViewBag.Action != null ? ViewBag.Action : ViewBag.List)</h5>
+    </div>
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-area="Admin" asp-controller="Home"><i class="feather icon-home"></i></a></li>
+        <li class="breadcrumb-item"><a asp-action="@ViewBag.AspAction" asp-area="Admin" asp-controller="@ViewBag.Controller">@ViewBag.List</a></li>
+        @if (ViewBag.Action != null)
+        {
+            <li class="breadcrumb-item"><a asp-action="@ViewBag.AspSubAction" asp-area="Admin" asp-controller="@ViewBag.Controller">@ViewBag.Action</a></li>
+        }
+       
+    </ul>
+
+</div>

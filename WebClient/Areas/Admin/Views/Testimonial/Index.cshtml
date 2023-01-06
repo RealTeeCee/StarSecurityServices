@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Models.Testimonial>
+
+@{
+    ViewData["Title"] = "Testimonial";
+    int no = 0;
+    int page = ViewBag.PageNumber;
+    int pageGreater = (page - 1) * 6;
+}
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            
+            <span class="d-block m-t-5">
+                <a class="btn btn-primary" asp-action="Create">Create New</a>
+            </span>
+        </div>
+        <div class="card-body table-border-style">
+            <div class="table-responsive">
+                <table class="table table-dark">
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                NO
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Title)
+                            </th>                    
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UpdatedAt)
+                            </th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="bg-dark">
+                                <td>@(page > 1 ? ++pageGreater : ++no)</td>
+                                <td>@item.Name</td>
+                                <td>@item.Title</td>                                
+                                <td><img src="~/media/testimonials/@item.Image" width="200" alt="" /></td>
+                                <td>@item.CreatedAt</td>
+                                <td>@item.UpdatedAt</td>
+                                <td>
+                                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                    <a class="confirmDeletion btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="d-flex w-100 justify-content-center">
+                    <pagination page-count="@ViewBag.TotalPages" page-target="/admin/testimonial" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
