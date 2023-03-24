@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'nguyen-StarSecurity'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_82A698BFA9B64B51B58003E7C4BAEBED }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D5D5346C4B5A4D35BAD1F63D62028A57 }}
           package: .
