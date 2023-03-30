@@ -1,4 +1,5 @@
-﻿using DataAccess.Data;
+﻿using Azure.Identity;
+using DataAccess.Data;
 using DataAccess.Repositories.IRepositories;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,9 +22,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+//Connect DB Regular way
+//var cs = builder.Configuration.GetConnectionString("StarDB");
+//builder.Services.AddDbContext<StarSecurityDbContext>(options => 
+//    options.UseSqlServer(cs));
 
-builder.Services.AddDbContext<StarSecurityDbContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("StarDB")));
+//Connect DB with Key Vault
+var keyVaultUrl = new Uri(builder.Configuration.GetSection("KeyVaultURL").Value!);
+var azureCredential = new DefaultAzureCredential(); //Connect to Azure Account
+builder.Configuration.AddAzureKeyVault(keyVaultUrl, azureCredential);
+
+var cs = builder.Configuration.GetSection("azuresql").Value; 
+builder.Services.AddDbContext<StarSecurityDbContext>(options =>
+    options.UseSqlServer(cs));
 
 
 builder.Services.AddIdentity<User, IdentityRole>(options => 
