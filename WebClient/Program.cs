@@ -29,6 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Connect DB with Key Vault
 var keyVaultUrl = new Uri(builder.Configuration.GetSection("KeyVaultURL").Value!);
+var clientId = "b42972c1-5a73-4b63-b585-7220a40ee70b";
 var azureCredential = new DefaultAzureCredential(); //Connect to Azure Account
 builder.Configuration.AddAzureKeyVault(keyVaultUrl, azureCredential);
 
